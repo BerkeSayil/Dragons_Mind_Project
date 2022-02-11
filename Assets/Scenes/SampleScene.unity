@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 462600018}
   - component: {fileID: 462600017}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: SceneGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,9 +149,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 462600016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 937bb74541a83ba46bd4f45d17175289, type: 3}
+  m_Script: {fileID: 11500000, guid: 79a2e6837903c3f44b64adb936661154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldWidth: 35
+  worldHeight: 20
+  cellSize: 5
+  buildingBlock: {fileID: 4952493165849670578, guid: 1e79214c1ed03664686ff9919f39d38d, type: 3}
 --- !u!4 &462600018
 Transform:
   m_ObjectHideFlags: 0
@@ -276,7 +280,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 75, y: 50, z: -10}
+  m_LocalPosition: {x: 87.5, y: 50, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

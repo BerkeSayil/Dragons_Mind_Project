@@ -6,18 +6,22 @@ public class Grid
 {
     private int width;
     private int height;
+    private int depthZ;
     private float cellSize;
 
-    private int[,] gridArray; //2D array
+    private int[,,] gridArray; //3D array
    
-    public Grid(int width, int height, float cellSize)
+    public Grid(int width, int height, float cellSize, int depthZ, string TAG = "Empty")
     {
         this.width = width;
         this.height = height;
+        this.depthZ = depthZ;
+
         this.cellSize = cellSize;
 
-        gridArray = new int[width, height];
+        gridArray = new int[width, height, depthZ];
 
+        //2D rendering
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
             for(int y = 0; y < gridArray.GetLength(1); y++)
@@ -39,5 +43,8 @@ public class Grid
     {
         return new Vector3(x, y) * cellSize;
     }
+
+    
+
 
 }
