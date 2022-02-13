@@ -155,6 +155,13 @@ MonoBehaviour:
   rows: 10
   cols: 10
   cellSize: 1
+  worldGenBlock:
+  - {fileID: 4952493165849670578, guid: 7880ccabb47a1da42b3008a7a4e7d346, type: 3}
+  - {fileID: 4952493165849670578, guid: 21bf3c1a417f9ff49a4bd601e382232b, type: 3}
+  - {fileID: 4952493165849670578, guid: f17de66493bb6fa40a6f9ec275682112, type: 3}
+  - {fileID: 4952493165849670578, guid: c244510583c5f774eafb7e543a75ae15, type: 3}
+  - {fileID: 4952493165849670578, guid: 652d52106ab72454abdeaecf60423c09, type: 3}
+  - {fileID: 4952493165849670578, guid: 98b5067c1caac6047b3540318ef6ae66, type: 3}
 --- !u!4 &462600018
 Transform:
   m_ObjectHideFlags: 0
