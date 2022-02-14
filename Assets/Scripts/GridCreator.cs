@@ -12,9 +12,11 @@ public class GridCreator : MonoBehaviour
     [SerializeField] int cellSize = 1;
 
     bool clickedOnGrid = false;
+    private int spacePrefabs = 0;
 
     [SerializeField] //TODO MAKE THIS AUTOMIZED
     private GameObject[] worldGenBlock = new GameObject[6];
+    private Vector2[] moonObjectCoord = new Vector2[2501];
    
 
     private void Start()
@@ -31,13 +33,34 @@ public class GridCreator : MonoBehaviour
         {
             for (int col = 0; col < cols; col++)
             {
-               
-
-                int tileRand = UnityEngine.Random.Range(0, 5);
-                GameObject tile = (GameObject)Instantiate(worldGenBlock[tileRand], transform);
-
                 float posX = col * cellSize;
                 float posY = row * -cellSize;
+                int[] moonHeavyDist = new int[] { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1};
+                int tileRand = (int)moonHeavyDist.GetValue(UnityEngine.Random.Range(0, 10));
+
+
+                if (tileRand != 0) // Random Space Background Degilse
+                {
+                    
+                    moonObjectCoord[spacePrefabs] = new Vector2(posX, posY);
+
+                    Vector2 currentPos = new Vector2(posX, posY);
+                    for (int i = 0; i < moonObjectCoord.Length; i++)
+                    {
+                        if ((currentPos - moonObjectCoord[i]).magnitude > cellSize)
+                        {
+                            tileRand = 0;
+                            Debug.Log("Execute");
+                        }
+                    
+                    }
+                    
+                    spacePrefabs += 1;
+
+                }
+                
+                GameObject tile = (GameObject)Instantiate(worldGenBlock[tileRand], transform);
+
 
                 tile.transform.position = new Vector2(posX, posY);
 
