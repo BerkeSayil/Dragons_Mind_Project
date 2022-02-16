@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &740409840758889023
+--- !u!1 &2754275003450196895
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 740409840758889021}
-  - component: {fileID: 740409840758889022}
+  - component: {fileID: 2754275003450196892}
+  - component: {fileID: 2754275003450196893}
   m_Layer: 0
   m_Name: SectorCreator
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &740409840758889021
+--- !u!4 &2754275003450196892
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 740409840758889023}
+  m_GameObject: {fileID: 2754275003450196895}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,21 +31,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &740409840758889022
+--- !u!114 &2754275003450196893
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 740409840758889023}
+  m_GameObject: {fileID: 2754275003450196895}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79a2e6837903c3f44b64adb936661154, type: 3}
+  m_Script: {fileID: 11500000, guid: 7566f7add23306b44961792595ce076c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 10
-  cols: 10
-  cellSize: 1
-  worldGenBlock:
-  - {fileID: 5997803697515165675, guid: ebbeda20704828d43a877b2d51eebb12, type: 3}
-  - {fileID: 5997803697515165675, guid: 8b3a50b135301534782cae55e0c26825, type: 3}
+  spaceVoidTile: {fileID: 4952493165849670578, guid: 7880ccabb47a1da42b3008a7a4e7d346, type: 3}
+  buildMatResourceTile: {fileID: 4952493165849670578, guid: 652d52106ab72454abdeaecf60423c09, type: 3}
+  gasResourceTiles: {fileID: 4952493165849670578, guid: f17de66493bb6fa40a6f9ec275682112, type: 3}
+  mapWidth: 64
+  mapHeight: 64

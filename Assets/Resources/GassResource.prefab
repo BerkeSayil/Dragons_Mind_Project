@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6908897027843722769}
   - component: {fileID: 1321563323336279097}
   m_Layer: 0
-  m_Name: DangerousStuff
-  m_TagString: BuildingTile
+  m_Name: GassResource
+  m_TagString: GasResourceTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.49056602, g: 0.15065347, b: 0.11415684, a: 1}
+  m_Color: {r: 0.5377358, g: 0.26717687, b: 0.41354072, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
