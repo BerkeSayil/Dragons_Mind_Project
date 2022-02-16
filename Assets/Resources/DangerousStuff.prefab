@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6908897027843722769}
   - component: {fileID: 1321563323336279097}
   m_Layer: 0
-  m_Name: Door
+  m_Name: DangerousStuff
   m_TagString: BuildingTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
