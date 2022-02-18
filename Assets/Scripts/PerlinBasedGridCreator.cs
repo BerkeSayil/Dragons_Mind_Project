@@ -10,7 +10,7 @@ public class PerlinBasedGridCreator : MonoBehaviour
     private Dictionary<int, GameObject> tileGroups;
 
 
-    [SerializeField] GameObject spaceVoidTile;
+    public GameObject spaceVoidTile;
     [SerializeField] GameObject buildMatResourceTile;
     [SerializeField] GameObject gasResourceTiles;
 
@@ -18,15 +18,20 @@ public class PerlinBasedGridCreator : MonoBehaviour
     [SerializeField] int mapHeight = 16;
 
     List<List<int>> noiseGrid = new List<List<int>>(); // Initialize outer list
-    List<List<GameObject>> tileGrid = new List<List<GameObject>>(); // Initialize outer list
+    List<List<GameObject>> tileGrid = new List<List<GameObject>>(); // Initialize  lists
+    public List<GameObject> spaceTiles = new List<GameObject>();
+    public List<GameObject> rockyTiles = new List<GameObject>();
+    public List<GameObject> resourceTiles = new List<GameObject>();
+
 
     float magnification = 7.0f; //4 - 20 are values recommended this zoomes in and out of the perlin depending on the need
 
     float xOffset = 0; // perlin noise shift in X axis
     float yOffset = 0; // perlin noise shift in Y axis
 
-    private string BUILDRESTILE = "BuildMaterilaResourceTile";
-                                   
+    public const string BUILDRESTILE = "BuildMaterilaResourceTile";
+    public const string SPACETILETAG = "SpaceTile";
+    public const string GASTILETAG = "GasResourceTile";
 
 
     private void Start()
@@ -39,7 +44,8 @@ public class PerlinBasedGridCreator : MonoBehaviour
 
         GenerateMap();
 
-
+        
+        
     }
 
     private void MixPerlinNoise()
@@ -47,7 +53,7 @@ public class PerlinBasedGridCreator : MonoBehaviour
         float columnOffset = UnityEngine.Random.Range(-100, 100);
         float rowOffset = UnityEngine.Random.Range(-100, 100);
 
-        float magg = UnityEngine.Random.Range(4.2f, 19.324f);
+        float magg = UnityEngine.Random.Range(4.2f, 12.324f);
 
         magnification = magg;
         xOffset = columnOffset;
@@ -61,8 +67,7 @@ public class PerlinBasedGridCreator : MonoBehaviour
 
             noiseGrid.Add(new List<int>()); // Initialize inner lists
             tileGrid.Add(new List<GameObject>()); // Initialize inner lists
-
-
+        
             for (int y = 0; y < mapHeight; y++)
             {
                 int tileId = GetIdUsingPerlin(x, y);
@@ -73,9 +78,20 @@ public class PerlinBasedGridCreator : MonoBehaviour
                 }
                 noiseGrid[x].Add(tileId);
                 CreateTile(tileId, x, y);
-                
-                
-                
+
+                if (tileGrid[x][y].CompareTag(SPACETILETAG))
+                {
+                    spaceTiles.Add(tileGrid[x][y]);
+                }
+                if (tileGrid[x][y].CompareTag(BUILDRESTILE))
+                {
+                    rockyTiles.Add(tileGrid[x][y]);
+                }
+                if (tileGrid[x][y].CompareTag(GASTILETAG))
+                {
+                    resourceTiles.Add(tileGrid[x][y]);
+                }
+
             }
         }
     }
@@ -171,5 +187,7 @@ public class PerlinBasedGridCreator : MonoBehaviour
             tileGroups.Add(prefabPair.Key, tileGroup);
         }
 
-    }   
+    }
+
+
 }
