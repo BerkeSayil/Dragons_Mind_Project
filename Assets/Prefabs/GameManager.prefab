@@ -44,3 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameCursor: {fileID: 2800000, guid: 4b9407860a0a2274593bba8ff833e3a7, type: 3}
+  AiPathfinding: {fileID: 0}
+  gridCreator: {fileID: 2754275003450196893, guid: 4690606a32e3df342bff7ef4a2f7e85c, type: 3}
+  spaceShip: {fileID: 2647568505201868444, guid: be1de829097cdf54bbcbd6d1ba841599, type: 3}
+  wallPrefab: {fileID: 4952493165849670578, guid: 0979781ce728c8242835961e6bb32f46, type: 3}
+  floorPrefab: {fileID: 4952493165849670578, guid: d7dfbd68ed8953640b932dde2bbdcc36, type: 3}

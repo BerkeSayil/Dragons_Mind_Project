@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &210205547 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2647568505201868444, guid: be1de829097cdf54bbcbd6d1ba841599, type: 3}
+  m_PrefabInstance: {fileID: 1448154408}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac27ec1d9f5d33c43a3d44160caf44f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &446864919
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -139,6 +150,10 @@ PrefabInstance:
       value: 64
       objectReference: {fileID: 0}
     - target: {fileID: -5269012214847008658, guid: 060973be221cdab43a079a81f91a8c74, type: 3}
+      propertyPath: spaceShip
+      value: 
+      objectReference: {fileID: 210205547}
+    - target: {fileID: -5269012214847008658, guid: 060973be221cdab43a079a81f91a8c74, type: 3}
       propertyPath: wallPrefab
       value: 
       objectReference: {fileID: 4952493165849670578, guid: 0979781ce728c8242835961e6bb32f46, type: 3}
@@ -150,6 +165,10 @@ PrefabInstance:
       propertyPath: gridCreator
       value: 
       objectReference: {fileID: 1552880444}
+    - target: {fileID: -5269012214847008658, guid: 060973be221cdab43a079a81f91a8c74, type: 3}
+      propertyPath: AiPathfinding
+      value: 
+      objectReference: {fileID: 1238921396}
     - target: {fileID: -5269012214847008658, guid: 060973be221cdab43a079a81f91a8c74, type: 3}
       propertyPath: spaceWorld.m_Bits
       value: 64
@@ -411,6 +430,124 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1238921394
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1238921395}
+  - component: {fileID: 1238921396}
+  m_Layer: 0
+  m_Name: A*
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1238921395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238921394}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1238921396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238921394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78396926cbbfc4ac3b48fc5fc34a87d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  data:
+    dataString: UEsDBBQAAAgIAAAYIey8Mp2jdAIAACsFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VMFy4jAM/RXG56WTEEpgb7uB0j20ZUp3esnFxArx4NgZ2ynQDv++spOQLDt7QkhP0tOTnC/Cpakgs0qvNWdPigH5PiLOJt9GffARTnSv5JZ/Qod558wWDkQ95pVartAfujSjSrCaZz/kXjhwgM5a8lzpcsX2kChjDbpzKgxgSCvrsiW6vkbkhD/jhUs5ozWJnfWJ1iIYXdDMQFrQPTQK7+5bbGs6cIOtZSZoWQFzxPuU2bRNmE09TOJILSLwFTIlBDctI2LPlZ84oZWpcR4EME5xQk8juJu7lAL4vrCO8DD/Jc8N2FYBTc9LrlGrpjD5qRoBS2oODbkPKmrXKpzMPbGm6NM/8XHow7lW5WPXNwxcD1vw7PBKzxk1dqDw0L3suYdeoyMVB7oT8F6AfFZrrWrJMGh17VJrA5Nl//c6WlJAduj9DdUbZ131oncLDe/i+TyMFnG8Ggdxuy430MVLcUoEL3de12nj2Arl9fcnARp39QvZ+4MxbV30Okq/DbzR/fCy2sAD18ZiqB1ZOq47VWsHJSsvoButtonSEvSwQgWSCnveYB17u9Cb2P+zHqh7RG33Nta9jZsU7+7xQXAT2qjjdXWmUMcnMMVLbQWX0OvuAs8oVKKkbO5tOFKXtq11TrNB2r7m7O9DI9Ekn9BgPo0m090ivo/G+Xy2202jIKTxjIVRTPwlcolzUrFpiLby4NpkX1zi1XXfltFa08rfPtP0uOafpTI9kstcbTMNIF+aClfioLEJPlS2YhwF2oK1XPqFk6+UCJUdgKXXQqmfdHWymqZ9lZRU/ENZ50lJ4j8mKXHu62VvNHxwOLrmXbELufwBUEsDBBQAAAgIAAAYIeyAcl7AbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrSSsVGaUaKBhYmxkUmSpbmpsW6ahVlSkomxgWGiuVmKobG5UixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAAAYIey8Mp2jdAIAACsFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAAAYIeyAcl7AbQAAAHgAAAAJACQAAAAAAAAAAAAAAMECAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAeQMAAAAA
+    upgradeData: 
+    file_cachedStartup: {fileID: 0}
+    data_cachedStartup: 
+    cacheStartup: 0
+  showNavGraphs: 1
+  showUnwalkableNodes: 1
+  debugMode: 0
+  debugFloor: 0
+  debugRoof: 1
+  manualDebugFloorRoof: 0
+  showSearchTree: 0
+  unwalkableNodeDebugSize: 0.3
+  logPathResults: 1
+  maxNearestNodeDistance: 100
+  scanOnStartup: 1
+  fullGetNearestSearch: 0
+  prioritizeGraphs: 0
+  prioritizeGraphsLimit: 1
+  colorSettings:
+    _SolidColor: {r: 0.11764706, g: 0.4, b: 0.7882353, a: 0.9}
+    _UnwalkableNode: {r: 1, g: 0, b: 0, a: 0.5}
+    _BoundsHandles: {r: 0.29, g: 0.454, b: 0.741, a: 0.9}
+    _ConnectionLowLerp: {r: 0, g: 1, b: 0, a: 0.5}
+    _ConnectionHighLerp: {r: 1, g: 0, b: 0, a: 0.5}
+    _MeshEdgeColor: {r: 0, g: 0, b: 0, a: 0.5}
+    _AreaColors:
+    - {r: 0, g: 0, b: 0, a: 0}
+  tagNames:
+  - Basic Ground
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 17
+  - 18
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 26
+  - 27
+  - 28
+  - 29
+  - 30
+  - 31
+  heuristic: 2
+  heuristicScale: 1
+  threadCount: 1
+  maxFrameTime: 10
+  batchGraphUpdates: 0
+  graphUpdateBatchingInterval: 0.2
+  euclideanEmbedding:
+    mode: 0
+    seed: 0
+    pivotPointRoot: {fileID: 0}
+    spreadOutCount: 1
+  showGraphs: 1
 --- !u!1001 &1448154408
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -422,6 +559,10 @@ PrefabInstance:
       propertyPath: gridder
       value: 
       objectReference: {fileID: 1552880444}
+    - target: {fileID: 2647568505201868444, guid: be1de829097cdf54bbcbd6d1ba841599, type: 3}
+      propertyPath: crewmate
+      value: 
+      objectReference: {fileID: 3731061916220120759, guid: ebaf4ddcb2366154994c012a7bb47ab1, type: 3}
     - target: {fileID: 3604414652415201206, guid: be1de829097cdf54bbcbd6d1ba841599, type: 3}
       propertyPath: m_Name
       value: StarterShip
@@ -618,11 +759,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2754275003450196893, guid: 4690606a32e3df342bff7ef4a2f7e85c, type: 3}
       propertyPath: mapWidth
-      value: 128
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 2754275003450196893, guid: 4690606a32e3df342bff7ef4a2f7e85c, type: 3}
       propertyPath: mapHeight
-      value: 128
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 2754275003450196895, guid: 4690606a32e3df342bff7ef4a2f7e85c, type: 3}
       propertyPath: m_Name

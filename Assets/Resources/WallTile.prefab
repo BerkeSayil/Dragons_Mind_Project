@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6908897027843722769}
   - component: {fileID: 1321563323336279097}
   - component: {fileID: 6946322186660576561}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: WallTile
   m_TagString: BuildingTile
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9195860302100675266}
   - component: {fileID: 6519183877963334299}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 90d2b05156c5f6c48bd764129e3bee30, type: 3}
-  m_Color: {r: 0.8773585, g: 0.5001262, b: 0.17105724, a: 1}
+  m_Color: {r: 0.24474896, g: 0.6226415, b: 0.31282693, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

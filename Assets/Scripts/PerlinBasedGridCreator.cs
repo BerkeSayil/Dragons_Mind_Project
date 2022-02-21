@@ -34,7 +34,7 @@ public class PerlinBasedGridCreator : MonoBehaviour
     public const string GASTILETAG = "GasResourceTile";
 
 
-    private void Start()
+    private void Awake()
     {
         CreateTileset();
 
