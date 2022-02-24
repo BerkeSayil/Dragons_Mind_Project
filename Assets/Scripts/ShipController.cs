@@ -12,7 +12,7 @@ public class ShipController : MonoBehaviour
     bool once = true;
     private int crewInsideShip = 3;
 
-    public List<GameObject> crewMembers = new List<GameObject>();
+    public List<GameObject> crewMembers = new List<GameObject>(); //list of crewmembers
 
 
     private void Update()
@@ -21,13 +21,8 @@ public class ShipController : MonoBehaviour
         {
             startPos = SpawnOnSpaceTile(gridder.spaceTiles);
 
-
-
             Camera.main.transform.position = new Vector3(startPos.x, startPos.y, Camera.main.transform.position.z);
             transform.position = startPos;
-
-
-
 
         }
         
@@ -36,7 +31,7 @@ public class ShipController : MonoBehaviour
     private Vector2 SpawnOnSpaceTile(List<GameObject> tiles)
     {
 
-        int spawnIndex = (int)Random.Range(0, tiles.Count);
+        int spawnIndex = (int)Random.Range(tiles.Count/6, tiles.Count/4);
         GameObject tile = tiles[spawnIndex];
 
         once = false;

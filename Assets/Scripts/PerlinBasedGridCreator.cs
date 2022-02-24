@@ -14,8 +14,8 @@ public class PerlinBasedGridCreator : MonoBehaviour
     [SerializeField] GameObject buildMatResourceTile;
     [SerializeField] GameObject gasResourceTiles;
 
-    [SerializeField] int mapWidth = 16;
-    [SerializeField] int mapHeight = 16;
+    private int mapWidth = 64;
+    private int mapHeight = 64;
 
     List<List<int>> noiseGrid = new List<List<int>>(); // Initialize outer list
     List<List<GameObject>> tileGrid = new List<List<GameObject>>(); // Initialize  lists
@@ -74,7 +74,7 @@ public class PerlinBasedGridCreator : MonoBehaviour
 
                 if (tileId == 0 || tileId == 2 || tileId == 3 || tileId == 4)
                 {
-                    tileId = checkIfTrapped(x, y, tileGrid, tileId);
+                    tileId = CheckIfTrapped(x, y, tileGrid, tileId);
                 }
                 noiseGrid[x].Add(tileId);
                 CreateTile(tileId, x, y);
@@ -96,7 +96,7 @@ public class PerlinBasedGridCreator : MonoBehaviour
         }
     }
     
-    private int checkIfTrapped(int x, int y, List<List<GameObject>> tileGrid, int tileId)
+    private int CheckIfTrapped(int x, int y, List<List<GameObject>> tileGrid, int tileId)
     {
         if(x == 0 || y == 0)
         {
@@ -187,6 +187,22 @@ public class PerlinBasedGridCreator : MonoBehaviour
             tileGroups.Add(prefabPair.Key, tileGroup);
         }
 
+    }
+    public GameObject GetUpTile(int x, int y)
+    { 
+        return tileGrid[x+1][y];
+    }
+    public GameObject GetDownTile(int x, int y)
+    {
+        return tileGrid[x-1][y];
+    }
+    public GameObject GetLeftTile(int x, int y)
+    {
+        return tileGrid[x][y-1];
+    }
+    public GameObject GetRightTile(int x, int y)
+    {
+        return tileGrid[x][y+1];
     }
 
 

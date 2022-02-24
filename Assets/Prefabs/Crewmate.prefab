@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec448b3415f7ea240b80bcbc1a7aa012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spaceVoid: {fileID: 4952493165849670578, guid: 7880ccabb47a1da42b3008a7a4e7d346, type: 3}
 --- !u!114 &5880891123065578596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,7 +101,7 @@ MonoBehaviour:
   repathRateCompatibility: NaN
   canSearchCompability: 0
   orientation: 1
-  enableRotation: 1
+  enableRotation: 0
   autoRepath:
     mode: 2
     interval: 0.5

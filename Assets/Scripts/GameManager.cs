@@ -1,64 +1,82 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //game manager related
     [SerializeField] Texture2D gameCursor;
     [SerializeField] AstarPath AiPathfinding;
 
-    bool onMineMode = false;
-    bool onBuildMode = false;
-    bool mining = false;
-    private int mineList = 0;
-
+    //world objects to access
     [SerializeField] PerlinBasedGridCreator gridCreator;
     [SerializeField] ShipController spaceShip;
 
+    //build mode items
     [SerializeField] GameObject wallPrefab;
     [SerializeField] GameObject floorPrefab;
 
-    private List<GameObject> tilesToMine = new List<GameObject>();
 
+    //game manager
+    private RaycastHit2D hit;
     private GameObject placeObject;
+    bool onMineMode = false;
+    bool onBuildMode = false;
+    private List<GameObject> crewMembers = new List<GameObject>();
 
     void Start()
     {
         Cursor.SetCursor(gameCursor, Vector2.zero, CursorMode.Auto);
         AiPathfinding.Scan();
 
-        StartCoroutine(MineTile(tilesToMine));
     }
 
 
     private void Update()
     {
 
-        if (onMineMode)
+        if (onMineMode) //UI mine mode
         {
-            
-            //do mine mode stuff
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0)) //Clicking to mine
             {
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
-                if (hit.collider == null)
+                if (IsClickedOnTile()) // click is on tile [hit is the gameobject clicked]
                 {
-                    Debug.Log("Null collider");
+                    if ((hit.collider.gameObject.CompareTag(PerlinBasedGridCreator.BUILDRESTILE)
+                        || hit.collider.gameObject.CompareTag(wallPrefab.tag))) // is the tile wall or buildRes 
+                    {
+                        GameObject tileToMine = hit.collider.gameObject;
+                        
+                        //below checks if any of them is space tile if so its minable if not no 
+                        
+                        //mine
+                        crewMembers = spaceShip.crewMembers;
+                        float minDist = 900f;
+                        GameObject crewClosest = null;
+                        foreach (GameObject crew in crewMembers)
+                        {
+                            if(Vector2.Distance(crew.transform.position, tileToMine.transform.position) < minDist)
+                            {
+                                 minDist = Vector2.Distance(crew.transform.position, tileToMine.transform.position);
+                                 crewClosest = crew;
+                            }
+                        }
+                        if(crewClosest == null)
+                        {
+                            Debug.Log("Something wrong with crewmate celection");
+                        }
+                        else
+                        {
+                            crewClosest.GetComponent<CrewmateScript>().MineTile(tileToMine);
+                        }
 
-                } else if (hit.collider.gameObject.CompareTag(PerlinBasedGridCreator.BUILDRESTILE) || hit.collider.gameObject.CompareTag(wallPrefab.tag))
-                {
-                    tilesToMine.Add(hit.collider.gameObject);
-                    mining = true;
+                    }
                 }
-
             }
-        }else if (onBuildMode)
+        }
+        else if (onBuildMode) //UI build mode
         {
-
-            //do build mode stuff
-
-            if (Input.GetMouseButtonDown(0) && placeObject != null)
+            if (Input.GetMouseButtonDown(0) && placeObject != null) 
             {
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
@@ -69,39 +87,27 @@ public class GameManager : MonoBehaviour
                 }
                 else if (hit.collider.gameObject.CompareTag(PerlinBasedGridCreator.SPACETILETAG))
                 {
-
                     Instantiate(placeObject, hit.collider.transform.position, Quaternion.identity, gridCreator.transform);
                     hit.collider.gameObject.SetActive(false);
                     AiPathfinding.Scan();
                 }
-
             }
-
-
-
-
         }
-        
     }
-    IEnumerator MineTile(List<GameObject> toMine)
-    {   
-        while(true)
+    private bool IsClickedOnTile()
+    {
+        hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+        if (hit.collider == null)
         {
-            yield return new WaitUntil(() => mining);
-            
-            int randomizedMember = (int)Random.Range(0, spaceShip.crewMembers.Count);
-            spaceShip.crewMembers[randomizedMember].GetComponent<CrewmateScript>().SetDestination(toMine[mineList].transform);
-
-            yield return new WaitUntil(() => spaceShip.crewMembers[randomizedMember].GetComponent<CrewmateScript>().isReachedDestination());
-            Instantiate(gridCreator.spaceVoidTile, toMine[mineList].transform.position, Quaternion.identity, gridCreator.transform);
-            toMine[mineList].SetActive(false);
-            AiPathfinding.Scan();
-            mineList += 1;
-            mining = false;
-
-            Debug.Log(mineList);
+            Debug.Log("Null collider");
+            return false;
         }
-        
+        else
+        {
+            return true;
+        }
+
     }
 
     public void PlaceWall()
