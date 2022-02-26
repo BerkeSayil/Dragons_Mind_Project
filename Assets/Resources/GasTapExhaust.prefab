@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6908897027843722769}
   - component: {fileID: 1321563323336279097}
-  - component: {fileID: 6946322186660576561}
-  m_Layer: 6
-  m_Name: FloorTile
-  m_TagString: BuildingTile
+  - component: {fileID: 8662015145838918623}
+  - component: {fileID: 7180423447996716136}
+  m_Layer: 7
+  m_Name: GasTapExhaust
+  m_TagString: GasResourceTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,7 +60,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6946322186660576561
+--- !u!114 &8662015145838918623
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,9 +73,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMinable: 0
-  isPlayerBuilt: 0
+  isPlayerBuilt: 1
   isGasTap: 0
+  isGasPipe: 0
+  isGasExhaust: 1
   isSpaceShipExterior: 1
+--- !u!114 &7180423447996716136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4952493165849670578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 999e12f39b900844aafbd4a88c226aa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxOutputGas: 50
 --- !u!1 &8883038272350454468
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9195860302100675266}
   - component: {fileID: 6519183877963334299}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,9 +161,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
-  m_Sprite: {fileID: 21300000, guid: 9624a0ba195ee3d4dae29dc9dfefb37b, type: 3}
-  m_Color: {r: 0.84383285, g: 0.32549018, b: 0.972549, a: 1}
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Color: {r: 0.42868158, g: 0.67402637, b: 0.8018868, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

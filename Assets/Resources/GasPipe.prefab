@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1321563323336279097}
   - component: {fileID: 6946322186660576561}
   m_Layer: 6
-  m_Name: FloorTile
-  m_TagString: BuildingTile
+  m_Name: GasPipe
+  m_TagString: GasPipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,8 +72,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMinable: 0
-  isPlayerBuilt: 0
+  isPlayerBuilt: 1
   isGasTap: 0
+  isGasPipe: 1
+  isGasExhaust: 0
   isSpaceShipExterior: 1
 --- !u!1 &8883038272350454468
 GameObject:
@@ -145,9 +147,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
-  m_Sprite: {fileID: 21300000, guid: 9624a0ba195ee3d4dae29dc9dfefb37b, type: 3}
-  m_Color: {r: 0.84383285, g: 0.32549018, b: 0.972549, a: 1}
+  m_SortingOrder: -3
+  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Color: {r: 0.5943396, g: 0.5917995, b: 0.4466892, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

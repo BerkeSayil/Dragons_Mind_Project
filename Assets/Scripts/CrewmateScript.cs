@@ -19,9 +19,10 @@ public class CrewmateScript : MonoBehaviour
         path = gameObject.GetComponent<AIPath>();
         
     }
-    public void MineTile(GameObject tileToMine)
+    public void MineTile(GameObject tile)
     {
-        StartCoroutine(TileMinerCoroutine(tileToMine));
+        StartCoroutine(TileMinerCoroutine(tile));
+        
     }
     IEnumerator TileMinerCoroutine(GameObject tileToMine)
     {
@@ -46,11 +47,15 @@ public class CrewmateScript : MonoBehaviour
 
     private void Mine(GameObject tile)
     {
-        Instantiate(spaceVoid, tile.transform.position, Quaternion.identity);
+        if(tile != null)
+        {
+            Instantiate(spaceVoid, tile.transform.position, Quaternion.identity);
 
-        Destroy(tile);
+            Destroy(tile);
 
-        notInPosition = true;
+            notInPosition = true;
+        }
+        
 
     }
 

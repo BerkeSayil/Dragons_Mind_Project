@@ -72,8 +72,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMinable: 1
-  isPassable: 0
-  isBuildable: 0
+  isPlayerBuilt: 1
+  isGasTap: 0
+  isSpaceShipExterior: 1
 --- !u!1 &8883038272350454468
 GameObject:
   m_ObjectHideFlags: 0

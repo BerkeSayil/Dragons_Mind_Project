@@ -204,6 +204,9 @@ public class PerlinBasedGridCreator : MonoBehaviour
     {
         return tileGrid[x][y+1];
     }
-
+    public void AddTile(int x, int y, GameObject tile)
+    {
+        tileGrid[x][y] = tile;
+    }
 
 }

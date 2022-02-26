@@ -16,19 +16,26 @@ public class GameManager : MonoBehaviour
     //build mode items
     [SerializeField] GameObject wallPrefab;
     [SerializeField] GameObject floorPrefab;
-
+    [SerializeField] GameObject gasTapPrefab;
+    [SerializeField] GameObject gasPipePrefab;
+    [SerializeField] GameObject gasExhaustPrefab;
 
     //game manager
-    private RaycastHit2D hit;
     private GameObject placeObject;
     bool onMineMode = false;
     bool onBuildMode = false;
     private List<GameObject> crewMembers = new List<GameObject>();
 
+
+    //to give acces to another script
+    public List<GameObject> minableTiles = new List<GameObject>();
+    public List<GameObject> gasPipesTiles = new List<GameObject>();
+
     void Start()
     {
         Cursor.SetCursor(gameCursor, Vector2.zero, CursorMode.Auto);
         AiPathfinding.Scan();
+        minableTiles = gridCreator.rockyTiles;
 
     }
 
@@ -38,41 +45,8 @@ public class GameManager : MonoBehaviour
 
         if (onMineMode) //UI mine mode
         {
-            if (Input.GetMouseButtonDown(0)) //Clicking to mine
-            {
-                if (IsClickedOnTile()) // click is on tile [hit is the gameobject clicked]
-                {
-                    if ((hit.collider.gameObject.CompareTag(PerlinBasedGridCreator.BUILDRESTILE)
-                        || hit.collider.gameObject.CompareTag(wallPrefab.tag))) // is the tile wall or buildRes 
-                    {
-                        GameObject tileToMine = hit.collider.gameObject;
-                        
-                        //below checks if any of them is space tile if so its minable if not no 
-                        
-                        //mine
-                        crewMembers = spaceShip.crewMembers;
-                        float minDist = 900f;
-                        GameObject crewClosest = null;
-                        foreach (GameObject crew in crewMembers)
-                        {
-                            if(Vector2.Distance(crew.transform.position, tileToMine.transform.position) < minDist)
-                            {
-                                 minDist = Vector2.Distance(crew.transform.position, tileToMine.transform.position);
-                                 crewClosest = crew;
-                            }
-                        }
-                        if(crewClosest == null)
-                        {
-                            Debug.Log("Something wrong with crewmate celection");
-                        }
-                        else
-                        {
-                            crewClosest.GetComponent<CrewmateScript>().MineTile(tileToMine);
-                        }
 
-                    }
-                }
-            }
+                    
         }
         else if (onBuildMode) //UI build mode
         {
@@ -80,34 +54,143 @@ public class GameManager : MonoBehaviour
             {
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-                if (hit.collider == null)
+                if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
                 {
-                    Debug.Log("Null collider");
+                    // code here only executes if the raycast hit an object in a valid layer and is NOT over a UI object
+                    if (hit.collider == null)
+                    {
+                        Debug.Log("Null collider");
 
+                    }//ozellestirilmis gas tap tarzi tillarin kontrolu yukarida
+                    else if (hit.collider.gameObject.CompareTag(PerlinBasedGridCreator.GASTILETAG)
+                        && placeObject.GetComponent<TileScript>().isGasTap)
+                    {
+                        SwitchTile(hit);
+                    }
+                    else if (hit.collider.gameObject.CompareTag(PerlinBasedGridCreator.SPACETILETAG)
+                        && placeObject.GetComponent<TileScript>().isSpaceShipExterior)
+                    {
+                        SwitchTile(hit);
+                    }
                 }
-                else if (hit.collider.gameObject.CompareTag(PerlinBasedGridCreator.SPACETILETAG))
-                {
-                    Instantiate(placeObject, hit.collider.transform.position, Quaternion.identity, gridCreator.transform);
-                    hit.collider.gameObject.SetActive(false);
-                    AiPathfinding.Scan();
-                }
+                
             }
         }
     }
-    private bool IsClickedOnTile()
-    {
-        hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-        if (hit.collider == null)
+    private void SwitchTile(RaycastHit2D hit)
+    {
+        TileScript tile = placeObject.GetComponent<TileScript>();
+        if (tile.isMinable)
         {
-            Debug.Log("Null collider");
-            return false;
+            GameObject tilePlaced = SwitchPrimer(hit);
+            minableTiles.Add(tilePlaced);
+
+        }else if (tile.isGasPipe && ConnectedToPipes(hit.collider.gameObject))
+        {
+            GameObject tilePlaced = SwitchPrimer(hit);
+            gasPipesTiles.Add(tilePlaced);
+
         }
-        else
+        else if(tile.isGasTap){
+
+            SwitchPrimer(hit);
+        }
+        else if (tile.isGasExhaust && ConnectedToPipes(hit.collider.gameObject))
+        {
+
+            SwitchPrimer(hit);
+        }
+
+    }
+
+    private GameObject SwitchPrimer(RaycastHit2D hit)
+    {
+        //Tile gets created space tile get deactivated and grid gets updated with the new tile. Pathfinding gets scanned
+        //return a gameobject to be inclued in the lists
+        GameObject tilePlaced = Instantiate(placeObject, hit.collider.transform.position, Quaternion.identity, gridCreator.transform);
+        gridCreator.AddTile((int)tilePlaced.transform.position.x, (int)tilePlaced.transform.position.y, tilePlaced);
+        hit.collider.gameObject.SetActive(false);
+        AiPathfinding.Scan();
+        return tilePlaced;
+    }
+    
+    private bool ConnectedToPipes(GameObject pipe)
+    {
+        //checks to see if any 4 direction has either a gas pipe or gas tap
+       
+        Vector2 pipePos = pipe.transform.position;
+        GameObject upTile = gridCreator.GetUpTile((int)pipePos.x, (int)pipePos.y);
+        GameObject downTile = gridCreator.GetDownTile((int)pipePos.x, (int)pipePos.y);
+        GameObject leftTile = gridCreator.GetLeftTile((int)pipePos.x, (int)pipePos.y);
+        GameObject rightTile = gridCreator.GetRightTile((int)pipePos.x, (int)pipePos.y);
+        
+
+        if (upTile.GetComponent<TileScript>().isGasTap || upTile.GetComponent<TileScript>().isGasPipe ||
+           downTile.GetComponent<TileScript>().isGasTap || downTile.GetComponent<TileScript>().isGasPipe ||
+           leftTile.GetComponent<TileScript>().isGasTap || leftTile.GetComponent<TileScript>().isGasPipe ||
+           rightTile.GetComponent<TileScript>().isGasTap || rightTile.GetComponent<TileScript>().isGasPipe)
         {
             return true;
         }
+        else
+        {
+            return false;
+        }
 
+    }
+
+    public void MineTiles(List<GameObject> tilesToMine)
+    {
+        StartCoroutine(MineTile(tilesToMine));
+
+    }
+    IEnumerator MineTile(List<GameObject> tilesToMine)
+    {
+        if (onMineMode)
+        {
+
+            //input is a list of tilestomine
+            //first get a random crewmate
+            //second get closest tilestomine for that crewmate
+            //third make crewmate mine that tile
+            //repeat between second and third for each
+
+            crewMembers = spaceShip.crewMembers;
+            int crewMemberIndex = (int)UnityEngine.Random.Range(0, crewMembers.Capacity);
+
+            while(tilesToMine.Count != 0)
+            {
+                float minDist = 900f;
+                GameObject tileClosest = null;
+                foreach (GameObject tile in tilesToMine)
+                {
+                    //Finds the closest tile
+                    if (Vector2.Distance(crewMembers[crewMemberIndex].transform.position, tile.transform.position) < minDist)
+                    {
+                        minDist = Vector2.Distance(crewMembers[crewMemberIndex].transform.position, tile.transform.position);
+                        tileClosest = tile;
+                    }
+                }
+
+                if (tileClosest == null)
+                {
+                    Debug.Log("Something wrong with tile celection");
+                }
+                else
+                {
+                    crewMembers[crewMemberIndex].GetComponent<CrewmateScript>().MineTile(tileClosest);
+                }
+
+                tilesToMine.Remove(tileClosest);
+                AiPathfinding.Scan();
+
+                yield return new WaitForSeconds(0.5f);
+            }
+            
+
+
+        }
     }
 
     public void PlaceWall()
@@ -118,6 +201,19 @@ public class GameManager : MonoBehaviour
     {
         placeObject = floorPrefab;
     }
+    public void PlaceGasTap()
+    {
+        placeObject = gasTapPrefab;
+    }
+    public void PlaceGasPipe()
+    {
+        placeObject = gasPipePrefab;
+    }
+    public void PlaceGasExhaust()
+    {
+        placeObject = gasExhaustPrefab;
+    }
+
     public void MineTileMode()
     {
         onMineMode = true;
