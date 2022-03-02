@@ -8,9 +8,13 @@ public class TileScript : MonoBehaviour
     public bool isMinable = false;
     public bool isPlayerBuilt = false;
     public bool isGasTap = false;
-    public bool isGasPipe = false;
     public bool isGasExhaust = false;
     public bool isSpaceShipExterior = false;
+    public bool isSpaceShipFloor = false;
+    public bool doesHaveOxygen = false;
+    public bool isPressurized = false;
+
+
 
 
 }

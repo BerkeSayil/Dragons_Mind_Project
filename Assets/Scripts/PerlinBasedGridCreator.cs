@@ -189,19 +189,26 @@ public class PerlinBasedGridCreator : MonoBehaviour
 
     }
     public GameObject GetUpTile(int x, int y)
-    { 
+    {
+        Debug.Log(tileGrid[x + 1][y]);
         return tileGrid[x+1][y];
     }
     public GameObject GetDownTile(int x, int y)
     {
+        Debug.Log(tileGrid[x - 1][y]);
+
         return tileGrid[x-1][y];
     }
     public GameObject GetLeftTile(int x, int y)
     {
+        Debug.Log(tileGrid[x][y - 1]);
+
         return tileGrid[x][y-1];
     }
     public GameObject GetRightTile(int x, int y)
     {
+        Debug.Log(tileGrid[x][y + 1]);
+
         return tileGrid[x][y+1];
     }
     public void AddTile(int x, int y, GameObject tile)

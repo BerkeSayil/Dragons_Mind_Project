@@ -12,11 +12,14 @@ public class CrewmateScript : MonoBehaviour
     private bool notInPosition = true;
 
     [SerializeField] GameObject spaceVoid;
-    
+    PerlinBasedGridCreator gridder;
+
     private void Start()
     {
         destinationSetter = gameObject.GetComponent<AIDestinationSetter>();
         path = gameObject.GetComponent<AIPath>();
+        //Don't do this its very consuming
+        gridder = FindObjectOfType<PerlinBasedGridCreator>();
         
     }
     public void MineTile(GameObject tile)
@@ -26,7 +29,6 @@ public class CrewmateScript : MonoBehaviour
     }
     IEnumerator TileMinerCoroutine(GameObject tileToMine)
     {
-        //TO DO type coroutine structure
         
         while (notInPosition)
         {
@@ -49,11 +51,12 @@ public class CrewmateScript : MonoBehaviour
     {
         if(tile != null)
         {
-            Instantiate(spaceVoid, tile.transform.position, Quaternion.identity);
-
+            GameObject space = Instantiate(spaceVoid, tile.transform.position, Quaternion.identity);
             Destroy(tile);
-
             notInPosition = true;
+
+            gridder.AddTile((int)space.transform.position.x, (int)space.transform.position.y, space);
+            
         }
         
 

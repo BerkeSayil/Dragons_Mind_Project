@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6149913045746380208}
   - component: {fileID: -5269012214847008658}
+  - component: {fileID: -1071599178009578009}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -49,3 +50,20 @@ MonoBehaviour:
   spaceShip: {fileID: 2647568505201868444, guid: be1de829097cdf54bbcbd6d1ba841599, type: 3}
   wallPrefab: {fileID: 4952493165849670578, guid: 0979781ce728c8242835961e6bb32f46, type: 3}
   floorPrefab: {fileID: 4952493165849670578, guid: d7dfbd68ed8953640b932dde2bbdcc36, type: 3}
+  gasTapPrefab: {fileID: 4952493165849670578, guid: 4e8b0d88c7d66444c94102849790cd3e, type: 3}
+  gasPipePrefab: {fileID: 4952493165849670578, guid: 1d0689badf89adf41b32d6c46b8b2aa2, type: 3}
+  gasExhaustPrefab: {fileID: 4952493165849670578, guid: 46fe7ed6e78b2c8439a04ac6f2cbe63e, type: 3}
+  minableTiles: []
+  gasPipesTiles: []
+--- !u!114 &-1071599178009578009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141566483918547462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca3645a138eb8f445a967c9e5c2a8aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

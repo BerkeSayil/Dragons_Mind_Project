@@ -10,10 +10,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] AstarPath AiPathfinding;
 
     //world objects to access
-    [SerializeField] PerlinBasedGridCreator gridCreator;
+    [SerializeField] public PerlinBasedGridCreator gridCreator;
     [SerializeField] ShipController spaceShip;
 
-    //build mode items
+    //build mode prefabs
     [SerializeField] GameObject wallPrefab;
     [SerializeField] GameObject floorPrefab;
     [SerializeField] GameObject gasTapPrefab;
@@ -24,12 +24,15 @@ public class GameManager : MonoBehaviour
     private GameObject placeObject;
     bool onMineMode = false;
     bool onBuildMode = false;
+    bool onDesignationMode = false;
     private List<GameObject> crewMembers = new List<GameObject>();
 
 
     //to give acces to another script
     public List<GameObject> minableTiles = new List<GameObject>();
     public List<GameObject> gasPipesTiles = new List<GameObject>();
+    public List<GameObject> floorTiles = new List<GameObject>();
+
 
     void Start()
     {
@@ -76,6 +79,11 @@ public class GameManager : MonoBehaviour
                 
             }
         }
+        if (onDesignationMode) //designation mode
+        {
+
+
+        }
     }
 
     private void SwitchTile(RaycastHit2D hit)
@@ -86,7 +94,7 @@ public class GameManager : MonoBehaviour
             GameObject tilePlaced = SwitchPrimer(hit);
             minableTiles.Add(tilePlaced);
 
-        }else if (tile.isGasPipe && ConnectedToPipes(hit.collider.gameObject))
+        }else if (tile.isSpaceShipExterior && ConnectedToPipes(hit.collider.gameObject))
         {
             GameObject tilePlaced = SwitchPrimer(hit);
             gasPipesTiles.Add(tilePlaced);
@@ -100,6 +108,10 @@ public class GameManager : MonoBehaviour
         {
 
             SwitchPrimer(hit);
+        }else if (tile.isSpaceShipFloor)
+        {
+            GameObject tilePlaced = SwitchPrimer(hit);
+            floorTiles.Add(tilePlaced);
         }
 
     }
@@ -126,10 +138,10 @@ public class GameManager : MonoBehaviour
         GameObject rightTile = gridCreator.GetRightTile((int)pipePos.x, (int)pipePos.y);
         
 
-        if (upTile.GetComponent<TileScript>().isGasTap || upTile.GetComponent<TileScript>().isGasPipe ||
-           downTile.GetComponent<TileScript>().isGasTap || downTile.GetComponent<TileScript>().isGasPipe ||
-           leftTile.GetComponent<TileScript>().isGasTap || leftTile.GetComponent<TileScript>().isGasPipe ||
-           rightTile.GetComponent<TileScript>().isGasTap || rightTile.GetComponent<TileScript>().isGasPipe)
+        if (upTile.GetComponent<TileScript>().isGasTap || upTile.GetComponent<TileScript>().isSpaceShipExterior ||
+           downTile.GetComponent<TileScript>().isGasTap || downTile.GetComponent<TileScript>().isSpaceShipExterior ||
+           leftTile.GetComponent<TileScript>().isGasTap || leftTile.GetComponent<TileScript>().isSpaceShipExterior ||
+           rightTile.GetComponent<TileScript>().isGasTap || rightTile.GetComponent<TileScript>().isSpaceShipExterior)
         {
             return true;
         }
@@ -222,10 +234,14 @@ public class GameManager : MonoBehaviour
     {
         onBuildMode = true;
     }
-    
+    public void DesignationMode()
+    {
+        onDesignationMode = true;
+    }
     public void CancelModes()
     {
         onBuildMode = false;
         onMineMode = false;
+        onDesignationMode = false;
     }
 }

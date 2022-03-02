@@ -93,7 +93,6 @@ GameObject:
   - component: {fileID: 6908897027843722769}
   - component: {fileID: 1321563323336279097}
   - component: {fileID: 6946322186660576561}
-  - component: {fileID: -5402460839136422253}
   m_Layer: 7
   m_Name: GasTapTile
   m_TagString: BuildingTile
@@ -158,19 +157,9 @@ MonoBehaviour:
   isMinable: 0
   isPlayerBuilt: 0
   isGasTap: 1
+  isGasPipe: 0
+  isGasExhaust: 0
   isSpaceShipExterior: 0
---- !u!114 &-5402460839136422253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4952493165849670578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93922a115cae77741ba9003890c4d5ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8883038272350454468
 GameObject:
   m_ObjectHideFlags: 0

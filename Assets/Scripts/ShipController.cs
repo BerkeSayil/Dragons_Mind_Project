@@ -31,7 +31,7 @@ public class ShipController : MonoBehaviour
     private Vector2 SpawnOnSpaceTile(List<GameObject> tiles)
     {
 
-        int spawnIndex = (int)Random.Range(tiles.Count/6, tiles.Count/4);
+        int spawnIndex = (int)Random.Range(0, tiles.Count-10);
         GameObject tile = tiles[spawnIndex];
 
         once = false;
@@ -54,14 +54,7 @@ public class ShipController : MonoBehaviour
 
             crewMembers[i - 1] = crewMemberCreated;
 
-            
-
-            
-            
         }
-
-
-        
 
     }
     

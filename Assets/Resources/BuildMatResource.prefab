@@ -71,10 +71,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ba11f076c713b942b209f3b9ee4d3c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tag: Empty
   isMinable: 1
-  isPassable: 0
-  isBuildable: 0
+  isPlayerBuilt: 0
+  isGasTap: 0
+  isGasExhaust: 0
+  isSpaceShipExterior: 1
+  doesHaveOxygen: 0
+  isPressurized: 0
 --- !u!1 &8883038272350454468
 GameObject:
   m_ObjectHideFlags: 0
