@@ -75,7 +75,7 @@ MonoBehaviour:
   isPlayerBuilt: 1
   isGasTap: 0
   isGasExhaust: 0
-  isSpaceShipExterior: 1
+  isSpaceShipExterior: 0
   isSpaceShipFloor: 1
   doesHaveOxygen: 0
   isPressurized: 0

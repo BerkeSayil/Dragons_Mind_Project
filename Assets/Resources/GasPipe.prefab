@@ -77,6 +77,9 @@ MonoBehaviour:
   isGasPipe: 1
   isGasExhaust: 0
   isSpaceShipExterior: 1
+  isSpaceShipFloor: 0
+  doesHaveOxygen: 0
+  isPressurized: 0
 --- !u!1 &8883038272350454468
 GameObject:
   m_ObjectHideFlags: 0

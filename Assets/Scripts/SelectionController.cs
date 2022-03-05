@@ -13,6 +13,7 @@ public class SelectionController : MonoBehaviour
 
     List<GameObject> selectedTiles = new List<GameObject>();
     List<GameObject> minableTiles = new List<GameObject>();
+    List<GameObject> buildableTiles = new List<GameObject>();
 
     Image selectionImage;
     
@@ -22,6 +23,7 @@ public class SelectionController : MonoBehaviour
         minableTiles = manager.minableTiles;
         selectionBox = gameObject.GetComponent<RectTransform>();
         selectionImage = gameObject.GetComponent<Image>();
+        buildableTiles = manager.buildableTiles;
     }
     private void Update()
     {
@@ -84,7 +86,7 @@ public class SelectionController : MonoBehaviour
         foreach (GameObject tile in selectedTiles)
         {
             minableTiles.Remove(tile);
-            
+            buildableTiles.Add(tile);
         }
 
         

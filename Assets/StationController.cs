@@ -28,8 +28,14 @@ public class StationController : MonoBehaviour
     // script related
     private Vector2 startPos;
     private int selectedDesignationType = 0; // 0 = null , 1 = personal room , 2 = storage, 3 = rec room, 4 = cafeteria, 5 = kitchen
+    private Color personalRoomDesg = new Color(132/255f, 231 / 255f, 119 / 255f, 1f); // bright green
+    private Color storageDesg = new Color(200 / 255f, 209 / 255f, 74 / 255f, 1); // yellow bright mustard
+    private Color recrationalDesg = new Color(74 / 255f, 200 / 255f, 214 / 255f, 1); //light blue
+    private Color CafeteriaDesg = new Color(216 / 255f, 76 / 255f, 76 / 255f, 1); //pastel red
+    private Color KitchenDesg = new Color(185 / 255f, 55 / 255f, 185 / 255f, 1); //pink
+
     private List<GameObject> selectedTiles = new List<GameObject>();
-    private List<GameObject> floorTiles = new List<GameObject>();
+    private List<GameObject> selectableTiles = new List<GameObject>();
 
 
     // get from outside
@@ -58,9 +64,11 @@ public class StationController : MonoBehaviour
                 if (Input.GetMouseButtonDown(0)) // left click
                 {
                     startPos = Input.mousePosition;
+                    designationSelector.SetActive(true);
                 }
                 if (Input.GetMouseButtonUp(0)) // left release
                 {
+                    
                     ReleaseSelectionBox();
                 }
                 if (Input.GetMouseButton(0)) // left hold down
@@ -88,27 +96,28 @@ public class StationController : MonoBehaviour
     void ReleaseSelectionBox()
     {
 
-        floorTiles = manager.floorTiles;
-
+        selectableTiles = manager.designatableTiles;
         selectionImage.enabled = false;
 
         Vector2 min = selectionBox.anchoredPosition - (selectionBox.sizeDelta / 2);
         Vector2 max = selectionBox.anchoredPosition + (selectionBox.sizeDelta / 2);
 
-        foreach (GameObject tiles in floorTiles)
+        foreach (GameObject tiles in selectableTiles)
         {
-            if (tiles != null)
+            if (tiles == null)
             {
+                Debug.Log("Designation Null");
+            }else{
                 Vector2 screenPos = Camera.main.WorldToScreenPoint(tiles.transform.position);
-
                 if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
                 {
                     selectedTiles.Add(tiles);
-                    Debug.Log("A");
                 }
             }
         }
+        
         SetTileDesignation(selectedDesignationType, selectedTiles);
+        selectedTiles.Clear();
 
     }
 
@@ -116,8 +125,31 @@ public class StationController : MonoBehaviour
     {
         foreach ( GameObject tile in selectedTiles)
         {
-            tile.GetComponentInChildren<SpriteRenderer>().color = Color.cyan;
-            Debug.Log(tile.transform.position);
+            if(selectedDesignationType == 1)
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().color = personalRoomDesg;
+            }
+            else if (selectedDesignationType == 2)
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().color = storageDesg;
+
+            }
+            else if (selectedDesignationType == 3)
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().color = recrationalDesg;
+
+            }
+            else if (selectedDesignationType == 4)
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().color = CafeteriaDesg;
+
+            }
+            else if (selectedDesignationType == 5)
+            {
+                tile.GetComponentInChildren<SpriteRenderer>().color = KitchenDesg;
+
+            }
+
         }
 
     }

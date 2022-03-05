@@ -12,15 +12,22 @@ public class CrewmateScript : MonoBehaviour
     private bool notInPosition = true;
 
     [SerializeField] GameObject spaceVoid;
+
+    GameManager manager;
     PerlinBasedGridCreator gridder;
 
     private void Start()
     {
         destinationSetter = gameObject.GetComponent<AIDestinationSetter>();
         path = gameObject.GetComponent<AIPath>();
+
+
         //Don't do this its very consuming
+        //memory eating potential
         gridder = FindObjectOfType<PerlinBasedGridCreator>();
-        
+        manager = FindObjectOfType<GameManager>();
+
+
     }
     public void MineTile(GameObject tile)
     {
@@ -38,6 +45,24 @@ public class CrewmateScript : MonoBehaviour
         }
         yield return new WaitForSeconds(0.5f);
         Mine(tileToMine);
+    }
+    public void BuildTile(GameObject tileBuiltOn, GameObject tileBuilt)
+    {
+        StartCoroutine(TileBuilderCoroutine(tileBuiltOn, tileBuilt));
+
+    }
+    IEnumerator TileBuilderCoroutine(GameObject tileBuiltOn, GameObject tileBuilt)
+    {
+
+        while (notInPosition)
+        {
+            SetDestination(tileBuiltOn.transform);
+            CheckIfInPosition();
+            yield return null;
+        }
+        
+        Build(tileBuiltOn, tileBuilt);
+        yield return new WaitForSeconds(0.5f);
     }
     private void CheckIfInPosition()
     {
@@ -61,6 +86,35 @@ public class CrewmateScript : MonoBehaviour
         
 
     }
+    private void Build(GameObject tileToBuildOn, GameObject tileToBuild)
+    {
+        if (tileToBuildOn != null)
+        {
+            //ozellestirilmis gas tap tarzi tillarin kontrolu yukarida
+            if (tileToBuildOn.CompareTag(PerlinBasedGridCreator.GASTILETAG)
+                && tileToBuild.GetComponent<TileScript>().isGasTap) // gas tap only placed on gas tile check
+            {
+                manager.SwitchTile(tileToBuildOn, tileToBuild);
+            }
+            else if (tileToBuildOn.CompareTag(PerlinBasedGridCreator.SPACETILETAG)
+                && tileToBuild.GetComponent<TileScript>().isSpaceShipExterior) // spaceship exterior only placed on space tile check
+            {
+                manager.SwitchTile(tileToBuildOn, tileToBuild);
+            }
+            else if (tileToBuildOn.CompareTag(PerlinBasedGridCreator.SPACETILETAG)
+               && tileToBuild.GetComponent<TileScript>().isSpaceShipFloor) // spaceship floor only placed on space tile check
+            {
+                manager.SwitchTile(tileToBuildOn, tileToBuild);
+            }
+
+            notInPosition = true;
+            
+            
+        }
+
+
+    }
+
 
     public void SetDestination(Transform dest)
     {
