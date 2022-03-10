@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
-    
+
     [SerializeField] PerlinBasedGridCreator gridder;
-    [SerializeField] GameObject crewmate;
+    [SerializeField] public List<GameObject> crewMembers = new List<GameObject>(); //list of crewmembers
+
 
     private Vector2 startPos;
     bool once = true;
     private int crewInsideShip = 3;
 
-    public List<GameObject> crewMembers = new List<GameObject>(); //list of crewmembers
-
+    
 
     private void Update()
     {
@@ -31,7 +31,7 @@ public class ShipController : MonoBehaviour
     private Vector2 SpawnOnSpaceTile(List<GameObject> tiles)
     {
 
-        int spawnIndex = (int)Random.Range(0, tiles.Count-10);
+        int spawnIndex = (int)Random.Range(10 , tiles.Count-10);
         GameObject tile = tiles[spawnIndex];
 
         once = false;
@@ -46,13 +46,12 @@ public class ShipController : MonoBehaviour
     private void SpawnCrewmates(int spaceShipIndex, List<GameObject> tiles, int crewmateAmount)
     {
 
-        for (int i = 1; i < crewmateAmount + 1; i++)
+        for (int i = 0; i < crewmateAmount; i++)
         {
-            Vector2 crewmatePos = tiles[spaceShipIndex + i].transform.position;
+            Vector2 crewmatePos = tiles[spaceShipIndex + i + 1].transform.position;
 
-            GameObject crewMemberCreated = (GameObject)Instantiate(crewmate, crewmatePos, Quaternion.identity);
+            crewMembers[i].transform.position = crewmatePos;
 
-            crewMembers[i - 1] = crewMemberCreated;
 
         }
 
