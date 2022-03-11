@@ -4,52 +4,52 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -4208201591781012874
-    second: Wall_Atlas_Smooth_0
+    second: Wall_SW
   - first:
       213: -1241954905309199463
-    second: Wall_Atlas_Smooth_1
+    second: Wall_NSW
   - first:
       213: -6960399543081976937
-    second: Wall_Atlas_Smooth_2
+    second: Wall_SEW
   - first:
       213: -2878018753566350309
-    second: Wall_Atlas_Smooth_3
+    second: Wall_NSEW
   - first:
       213: -2070312606263268786
-    second: Wall_Atlas_Smooth_4
+    second: Wall_W
   - first:
       213: 4470405985209425531
-    second: Wall_Atlas_Smooth_5
+    second: Wall_NW
   - first:
       213: 299065271736226381
-    second: Wall_Atlas_Smooth_6
+    second: Wall_EW
   - first:
       213: -4910654028408699487
-    second: Wall_Atlas_Smooth_7
+    second: Wall_NEW
   - first:
       213: 2820210385661513867
-    second: Wall_Atlas_Smooth_8
+    second: Wall_S
   - first:
       213: 8854060597361730339
-    second: Wall_Atlas_Smooth_9
+    second: Wall_NS
   - first:
       213: 4669670316028417957
-    second: Wall_Atlas_Smooth_10
+    second: Wall_SE
   - first:
       213: -7393403023413210963
-    second: Wall_Atlas_Smooth_11
+    second: Wall_NSE
   - first:
       213: 1571270711978000229
-    second: Wall_Atlas_Smooth_12
+    second: Wall_
   - first:
       213: 4685230634278553191
-    second: Wall_Atlas_Smooth_13
+    second: Wall_N
   - first:
       213: 2609317690189643764
-    second: Wall_Atlas_Smooth_14
+    second: Wall_E
   - first:
       213: 5098013459170898292
-    second: Wall_Atlas_Smooth_15
+    second: Wall_NE
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -175,7 +175,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_0
+      name: Wall_SW
       rect:
         serializedVersion: 2
         x: 0
@@ -196,7 +196,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_1
+      name: Wall_NSW
       rect:
         serializedVersion: 2
         x: 64
@@ -217,7 +217,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_2
+      name: Wall_SEW
       rect:
         serializedVersion: 2
         x: 128
@@ -238,7 +238,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_3
+      name: Wall_NSEW
       rect:
         serializedVersion: 2
         x: 192
@@ -259,7 +259,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_4
+      name: Wall_W
       rect:
         serializedVersion: 2
         x: 0
@@ -280,7 +280,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_5
+      name: Wall_NW
       rect:
         serializedVersion: 2
         x: 64
@@ -301,7 +301,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_6
+      name: Wall_EW
       rect:
         serializedVersion: 2
         x: 128
@@ -322,7 +322,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_7
+      name: Wall_NEW
       rect:
         serializedVersion: 2
         x: 192
@@ -343,7 +343,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_8
+      name: Wall_S
       rect:
         serializedVersion: 2
         x: 0
@@ -364,7 +364,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_9
+      name: Wall_NS
       rect:
         serializedVersion: 2
         x: 64
@@ -385,7 +385,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_10
+      name: Wall_SE
       rect:
         serializedVersion: 2
         x: 128
@@ -406,7 +406,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_11
+      name: Wall_NSE
       rect:
         serializedVersion: 2
         x: 192
@@ -427,7 +427,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_12
+      name: Wall_
       rect:
         serializedVersion: 2
         x: 0
@@ -448,7 +448,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_13
+      name: Wall_N
       rect:
         serializedVersion: 2
         x: 64
@@ -469,7 +469,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_14
+      name: Wall_E
       rect:
         serializedVersion: 2
         x: 128
@@ -490,7 +490,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_Atlas_Smooth_15
+      name: Wall_NE
       rect:
         serializedVersion: 2
         x: 192

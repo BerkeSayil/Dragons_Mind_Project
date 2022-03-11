@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-
+using UnityEngine;
 
 public class Tile
 {
     // Tile can have 1 of these
     LooseObject looseObject;
-    InstalledObject installedObject;
+    public Furniture furniture { get; protected set; }
 
     // A tile is self aware
-    World world;
+    public World World { get; protected set; }
     public int x { get; protected set; }
     public int y { get; protected set; }
 
@@ -28,7 +28,7 @@ public class Tile
 
     public Tile(World world, int x, int y)
     {
-        this.world = world;
+        this.World = world;
         this.x = x;
         this.y = y;
     }
@@ -44,6 +44,28 @@ public class Tile
         cbTileTypeChanged -= callback;
     }
 
+    public bool PlaceInstalledObject(Furniture objInstance)
+    {
+        if(objInstance == null)
+        {
+            // If we send null it means uninstall whatever was here.
+            furniture = null;
+            return true;
+        }
+        
+        if(furniture != null)
+        {
+            Debug.LogError("Trying to install object but there already is one.");
+            return false;
+        }
+
+        // If it didn't fall into those traps than we are good to go.
+
+        furniture = objInstance;
+        return true;
+
+    }
+    
     public TileType Type
     {
         get

@@ -15,6 +15,7 @@ public class MouseController : MonoBehaviour
     List<GameObject> buildingHintList;
 
     Tile.TileType buildModeTile = Tile.TileType.Floor;
+    string buildModeObjectType;
     bool buildModeIsObjects = false;
 
 
@@ -105,9 +106,8 @@ public class MouseController : MonoBehaviour
                         if (buildModeIsObjects)
                         {
                             // Create the installed objects on the tile given. And assign.
-                            // FIXME: Right now we just assume walls.
-                            
 
+                            WorldController.Instance.World.PlaceFurnitureAt(buildModeObjectType, t);
                         }
                         else
                         {
@@ -136,19 +136,19 @@ public class MouseController : MonoBehaviour
 
     public void SetModeBuildFloor()
     {
-        bool buildModeIsObjects = false;
+        buildModeIsObjects = false;
         buildModeTile = Tile.TileType.Floor;
     }
     public void SetModeMineMode()
     {
-        bool buildModeIsObjects = false;
+        buildModeIsObjects = false;
         buildModeTile = Tile.TileType.Empty;
 
     }
-    public void SetModeBuildWalls()
+    public void SetModeBuildInstalledObject( string objectType)
     {
-        bool buildModeIsObjects = true;
-
+        buildModeIsObjects = true;
+        buildModeObjectType = objectType;
 
     }
 
