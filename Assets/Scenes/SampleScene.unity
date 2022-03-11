@@ -1007,7 +1007,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floorSprite: {fileID: 21300000, guid: 8f2eb002a94ae65499d11af2e19a0cb8, type: 3}
-  wallSprite: {fileID: 1571270711978000229, guid: 6d292a113ba734d4482b64924b245630, type: 3}
 --- !u!1001 &1448154408
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1015,6 +1014,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 81529643887000919, guid: be1de829097cdf54bbcbd6d1ba841599, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2647568505201868444, guid: be1de829097cdf54bbcbd6d1ba841599, type: 3}
       propertyPath: gridder
       value: 

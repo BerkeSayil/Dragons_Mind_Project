@@ -67,11 +67,15 @@ public class WorldController : MonoBehaviour
     {
         if(tileData.Type == Tile.TileType.Floor)
         {
+            // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
             tileGO.GetComponent<SpriteRenderer>().sprite = floorSprite;
+            tileGO.GetComponent<SpriteRenderer>().sortingOrder = 1;
         }
         else if(tileData.Type == Tile.TileType.Empty)
         {
             tileGO.GetComponent<SpriteRenderer>().sprite = null;
+            tileGO.GetComponent<SpriteRenderer>().sortingOrder = 0;
+
         }
         else
         {
@@ -98,6 +102,7 @@ public class WorldController : MonoBehaviour
         GameObject furnGO = furnitureGameObjectMap[furn];
         furnGO.GetComponent<SpriteRenderer>().sprite =
             GetSpriteForInstalledObject(furn);
+
     }
 
     public void OnFurnitureCreated(Furniture furn) {
@@ -115,6 +120,9 @@ public class WorldController : MonoBehaviour
 
         furnGO.AddComponent<SpriteRenderer>().sprite = 
             GetSpriteForInstalledObject(furn);
+
+        // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
+        furnGO.GetComponent<SpriteRenderer>().sortingOrder = 2;
 
 
         // Whenever objects anything changes (door animatons n stuff.)
