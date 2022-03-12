@@ -27,11 +27,11 @@ public class Furniture
 
     Action<Furniture> cbOnChanged;
 
+    Func<Tile, bool> FuncToPositionValidate;
 
-
-    //TODO: Implement larger objects
-    //TODO: Implement object rotation
-
+    //TOFIX: Implement larger objects
+    //TOFIX: Implement object rotation
+     
     protected Furniture(){
 
     }
@@ -48,10 +48,18 @@ public class Furniture
         obj.height = height;
         obj.linksToNeighboor = linksToNeighboor;
 
+        obj.FuncToPositionValidate = obj.IsValidPosition;
+
+
         return obj;
     }
     static public Furniture PlaceInstance(Furniture proto, Tile tile)
     {
+        if(proto.FuncToPositionValidate(tile) == false) {
+            // Cannot place here.
+            return null;
+        }
+
         Furniture furn = new Furniture();
 
         furn.objectType = proto.objectType;
@@ -60,14 +68,16 @@ public class Furniture
         furn.height = proto.height;
         furn.linksToNeighboor = proto.linksToNeighboor;
 
+
+
         furn.tile = tile;
 
         //TODO:
         if(tile.PlaceInstalledObject(furn) == false){
             // means we can't place here probly something already placed.
 
-            // so we can't return our object and give null.
-            // obj will be garbage collected.
+            // so we can't return our furniture and give null.
+            // furn will be garbage collected.
             return null;
         }
 
@@ -105,6 +115,37 @@ public class Furniture
 
         return furn;
     }
+
+    public bool ValidatePositionOfFurniture(Tile t) {
+        return FuncToPositionValidate(t);
+    }
+
+
+    // TODO: Shouldn't call this directly fix it being public
+    public bool IsValidPosition(Tile t) {
+        // check if is there a base tile there ?
+        if(t.Type != Tile.TileType.Floor) {
+            return false;
+        }
+        // check if is there is another furniture already occupying that tile ?
+        if(t.furniture != null) {
+            return false;
+        }
+
+        return true;
+
+    }
+    // TODO: Don't call this directly too so fix them being public
+    public bool IsValidPositionDoor(int x, int y) {
+        // also check if there is walls in both sides ?
+        // check if is there a base tile there ?
+        // check if is there is another furniture already occupying that tile ?
+
+
+        return true;
+
+    }
+
     public void RegisterOnChangedCallback(Action<Furniture> callbackFunc)
     {
         cbOnChanged += callbackFunc;

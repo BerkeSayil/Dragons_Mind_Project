@@ -39,7 +39,7 @@ public class MouseController : MonoBehaviour
 
     private void HandleMouseSelection()
     {
-        // Don't do shit if over UI element
+        // Don't do if over UI element
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
 
 
@@ -80,7 +80,7 @@ public class MouseController : MonoBehaviour
             {
                 for (int y = startY; y <= endY; y++)
                 {
-                    Tile t = WorldController.Instance.World.GetTileAt(x, y);
+                    Tile t = WorldController.Instance.world.GetTileAt(x, y);
                     if (t != null)
                     {
                         // Display the building hint on top of tile.
@@ -100,15 +100,39 @@ public class MouseController : MonoBehaviour
             {
                 for (int y = startY; y <= endY; y++)
                 {
-                    Tile t = WorldController.Instance.World.GetTileAt(x, y);
+                    Tile t = WorldController.Instance.world.GetTileAt(x, y);
                     if (t != null)
                     {
                         if (buildModeIsObjects)
                         {
                             // Create the installed objects on the tile given. And assign.
 
-                            WorldController.Instance.World.PlaceFurnitureAt(buildModeObjectType, t);
-                        }
+                            // Furniture type here exist in the scope so it prevents furniture changing mid build
+                            // you remember that problem... yeah this is the fix.
+
+                            string furnitureType = buildModeObjectType;
+
+                            // We check if it's a valid position and if so
+                            // create a job and queue it for something else to come and do.
+                            if (WorldController.Instance.world.IsFurniturePlacementValid(furnitureType, t)
+                                && t.pendingFurnitureJob == null
+
+                                ){
+                                Job j = new Job(t, (theJob) =>
+                                {
+                                    WorldController.Instance.world.
+                                    PlaceFurnitureAt(furnitureType, theJob.tile);
+                                    t.pendingFurnitureJob = null;
+                                });
+
+                                // TODO: This being this way very easy to clear or forget make it automated in
+                                // some other way possible
+                                t.pendingFurnitureJob = j;
+                                j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingFurnitureJob = null; });
+
+                                WorldController.Instance.world.jobQueue.Enqueue(j);
+                            } 
+                        } 
                         else
                         {
                             t.Type = buildModeTile;

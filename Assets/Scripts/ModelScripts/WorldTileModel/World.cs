@@ -12,6 +12,13 @@ public class World
     public int height { get; }
 
     Action<Furniture> cbFurnitureCreated;
+    Action<Tile> cbTileChanged;
+
+    // TODO: This should be replaced with a dedicated
+    // class for managing job queues (plural!!!)
+    // might look into making it semi-static or self initializing...
+    public Queue<Job> jobQueue;
+
 
     public World(int width = 128, int height = 128)
     {
@@ -24,10 +31,13 @@ public class World
             for (int y = 0; y < height; y++)
             {
                 tiles[x, y] = new Tile(this, x, y);
+                tiles[x, y].RegisterTileTypeChangedCallback(OnTileChanged);
             }
         }
 
         CreateFurniturePrototypes();
+
+        jobQueue = new Queue<Job>();
     }
 
     protected void CreateFurniturePrototypes()
@@ -80,13 +90,32 @@ public class World
         }
 
     }
+    public bool IsFurniturePlacementValid(string furnitureType, Tile tile) {
+        return furniturePrototypes[furnitureType].ValidatePositionOfFurniture(tile);
+
+
+    }
+    public void RegisterTileChanged(Action<Tile> callbackFunc) {
+        cbTileChanged += callbackFunc;
+    }
+    public void UnregisterTileChanged(Action<Tile> callbackFunc) {
+        cbTileChanged -= callbackFunc;
+    }
 
     public void RegisterFurnitureCreated(Action<Furniture> callbackFunc)
     {
         cbFurnitureCreated += callbackFunc;
     }
-    public void UnregisterInstalledObjectCreated(Action<Furniture> callbackFunc)
+    public void UnregisterFurnitureCreated(Action<Furniture> callbackFunc)
     {
         cbFurnitureCreated -= callbackFunc;
+    }
+
+    void OnTileChanged(Tile t) {
+        if(cbTileChanged == null) {
+            return;
+        }
+
+        cbTileChanged(t);
     }
 }
