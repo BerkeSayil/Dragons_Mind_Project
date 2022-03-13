@@ -17,7 +17,7 @@ public class World
     // TODO: This should be replaced with a dedicated
     // class for managing job queues (plural!!!)
     // might look into making it semi-static or self initializing...
-    public Queue<Job> jobQueue;
+    public JobQueue jobQueue;
 
 
     public World(int width = 128, int height = 128)
@@ -37,7 +37,7 @@ public class World
 
         CreateFurniturePrototypes();
 
-        jobQueue = new Queue<Job>();
+        jobQueue = new JobQueue();
     }
 
     protected void CreateFurniturePrototypes()
@@ -118,4 +118,16 @@ public class World
 
         cbTileChanged(t);
     }
+
+    public Furniture GetFurniturePrototype(string objectType) {
+
+        if(furniturePrototypes.ContainsKey(objectType) == false) {
+
+            Debug.Log("furniturePrototypes doesn't contain the key");
+            return null;
+        }
+        return furniturePrototypes[objectType];
+    }
+
+
 }

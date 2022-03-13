@@ -3,12 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpriteController : MonoBehaviour
+public class FurnitureSpriteController : MonoBehaviour
 {
-    [SerializeField] Sprite floorSprite;
-    [SerializeField] Sprite defaultEmptySprite;
-
-    Dictionary<Tile, GameObject> tileGameObjectMap;
+ 
     Dictionary<Furniture, GameObject> furnitureGameObjectMap;
     Dictionary<string, Sprite> furnitureSprites;
 
@@ -19,33 +16,9 @@ public class SpriteController : MonoBehaviour
 
         LoadSprites();
 
-        
-
         furnitureGameObjectMap = new Dictionary<Furniture, GameObject>();
-        tileGameObjectMap = new Dictionary<Tile, GameObject>();
-
-        // Create a gameobject for every tile so we have visual representation.
-        for (int x = 0; x < world.width; x++) {
-            for (int y = 0; y < world.height; y++) {
-                Tile tileData = world.GetTileAt(x, y);
-
-                GameObject tileGO = new GameObject();
-                tileGO.name = "Tile_" + x + "_" + y;
-                tileGO.transform.position = new Vector2(tileData.x, tileData.y);
-                tileGO.transform.SetParent(this.transform, true);
-
-                // adding a sprite renderer and giving it the defaultyEmpty sprite.
-                tileGO.AddComponent<SpriteRenderer>();
-                tileGO.GetComponent<SpriteRenderer>().sprite = defaultEmptySprite;
-
-                tileGameObjectMap.Add(tileData, tileGO);
-
-            }
-        }
-
 
         world.RegisterFurnitureCreated(OnFurnitureCreated);
-        world.RegisterTileChanged(OnTileChanged);
     }
 
     private void LoadSprites() {
@@ -56,33 +29,6 @@ public class SpriteController : MonoBehaviour
         Sprite[] sprites = Resources.LoadAll<Sprite>("Sprite");
         foreach (Sprite s in sprites) {
             furnitureSprites[s.name] = s;
-        }
-    }
-
-    void OnTileChanged(Tile tileData)
-    {
-        if(tileGameObjectMap.ContainsKey(tileData) == false) {
-            Debug.Log("tileGameObjectMap doesn't contain key");
-            return;
-        }
-
-        GameObject tileGO = tileGameObjectMap[tileData];
-
-        if(tileData.Type == Tile.TileType.Floor)
-        {
-            // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
-            tileGO.GetComponent<SpriteRenderer>().sprite = floorSprite;
-            tileGO.GetComponent<SpriteRenderer>().sortingOrder = 1;
-        }
-        else if(tileData.Type == Tile.TileType.Empty)
-        {
-            tileGO.GetComponent<SpriteRenderer>().sprite = null;
-            tileGO.GetComponent<SpriteRenderer>().sortingOrder = 0;
-
-        }
-        else
-        {
-            Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
         }
     }
 
@@ -104,7 +50,7 @@ public class SpriteController : MonoBehaviour
         // Updates sprites on a change function
         GameObject furnGO = furnitureGameObjectMap[furn];
         furnGO.GetComponent<SpriteRenderer>().sprite =
-            GetSpriteForInstalledObject(furn);
+            GetSpriteForFurniture(furn);
 
     }
 
@@ -122,7 +68,7 @@ public class SpriteController : MonoBehaviour
         furnGO.transform.SetParent(this.transform, true);
 
         furnGO.AddComponent<SpriteRenderer>().sprite = 
-            GetSpriteForInstalledObject(furn);
+            GetSpriteForFurniture(furn);
 
         // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
         furnGO.GetComponent<SpriteRenderer>().sortingOrder = 2;
@@ -132,7 +78,7 @@ public class SpriteController : MonoBehaviour
         furn.RegisterOnChangedCallback(OnFurnitureChanged);
     }
 
-    Sprite GetSpriteForInstalledObject(Furniture furn) {
+    public Sprite GetSpriteForFurniture(Furniture furn) {
         if(furn.linksToNeighboor == false) {
             return furnitureSprites[furn.objectType];
         }
@@ -175,6 +121,22 @@ public class SpriteController : MonoBehaviour
 
     }
 
-    
+    public Sprite GetSpriteForFurniture(string objectType) {
+
+        if (furnitureSprites.ContainsKey(objectType)) {
+            return furnitureSprites[objectType];
+        }
+        if (furnitureSprites.ContainsKey(objectType + "_")) {
+            return furnitureSprites[objectType + "_"];
+        }
+
+        Debug.LogError("No sprite with name " + objectType);
+
+        return null;
+
+    }
+
 
 }
+
+    
