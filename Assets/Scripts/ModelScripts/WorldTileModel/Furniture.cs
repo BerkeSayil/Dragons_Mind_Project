@@ -72,7 +72,6 @@ public class Furniture
 
         furn.tile = tile;
 
-        //TODO:
         if(tile.PlaceInstalledObject(furn) == false){
             // means we can't place here probly something already placed.
 

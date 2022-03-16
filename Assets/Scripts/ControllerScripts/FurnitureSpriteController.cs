@@ -9,6 +9,8 @@ public class FurnitureSpriteController : MonoBehaviour
     Dictionary<Furniture, GameObject> furnitureGameObjectMap;
     Dictionary<string, Sprite> furnitureSprites;
 
+    const int FURNITURE_LAYER = 8;
+
    World world {
         get { return WorldController.Instance.world; }
     }
@@ -49,13 +51,15 @@ public class FurnitureSpriteController : MonoBehaviour
 
         // Updates sprites on a change function
         GameObject furnGO = furnitureGameObjectMap[furn];
-        furnGO.GetComponent<SpriteRenderer>().sprite =
-            GetSpriteForFurniture(furn);
+        SpriteRenderer furnSprite = furnGO.GetComponent<SpriteRenderer>();
+
+        furnSprite.sprite = GetSpriteForFurniture(furn);
+        furnSprite.sortingLayerName = "Furniture";
 
     }
 
     public void OnFurnitureCreated(Furniture furn) {
-        //FIXME: DOESNOT consider multi tiles objects
+        //FIXME: DOES NOT consider multi tiles objects
 
         // Create a visual gameobject 
         GameObject furnGO = new GameObject();
@@ -70,8 +74,16 @@ public class FurnitureSpriteController : MonoBehaviour
         furnGO.AddComponent<SpriteRenderer>().sprite = 
             GetSpriteForFurniture(furn);
 
+        BoxCollider2D furnGOCollider = furnGO.AddComponent<BoxCollider2D>();
+
+        // TODO: Make this understand how big a furniture is and apply with that in mind.
+        furnGOCollider.size = new Vector2 (1f,1f);
+
+        // TODO: Implement better layering system for movement cost consideration maybe ?
+        furnGO.layer = FURNITURE_LAYER; // This layer is designed to be furniture layer and A* sees this as blockadge
+
         // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
-        furnGO.GetComponent<SpriteRenderer>().sortingOrder = 2;
+        furnGO.GetComponent<SpriteRenderer>().sortingLayerName = "Furniture";
 
 
         // Whenever objects anything changes (door animatons n stuff.)

@@ -17,9 +17,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Space
-  - Blockadge
-  - 
+  - Empty
+  - Floor
+  - Furniture
   - 
   - 
   - 
@@ -44,9 +44,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Tiles
+    uniqueID: 3429195895
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Furniture
+    uniqueID: 2761212977
+    locked: 0
+  - name: Jobs
+    uniqueID: 2801010009
+    locked: 0
+  - name: Characters
+    uniqueID: 3009627151
+    locked: 0
   - name: TileUI
-    uniqueID: 3429195895
+    uniqueID: 3510751791
     locked: 0

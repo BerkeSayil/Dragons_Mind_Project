@@ -6,13 +6,17 @@ using UnityEngine;
 public class World
 {
     Tile[,] tiles;
+    List<Character> characters;
     Dictionary<string, Furniture> furniturePrototypes;
 
     public int width { get; }
     public int height { get; }
 
+    public GameObject characterPrefab { get; set; }
+
     Action<Furniture> cbFurnitureCreated;
     Action<Tile> cbTileChanged;
+    Action<GameObject> cbCharacterCreated;
 
     // TODO: This should be replaced with a dedicated
     // class for managing job queues (plural!!!)
@@ -38,6 +42,23 @@ public class World
         CreateFurniturePrototypes();
 
         jobQueue = new JobQueue();
+
+        // Creates characters for us. 
+        characters = new List<Character>();
+
+    }
+
+    //TODO: FIX
+    public Character CreateCharacter(Tile t) {
+        GameObject c = GameObject.Instantiate(characterPrefab);
+        Character cScript =c.GetComponent<Character>();
+        characters.Add(cScript);
+        // because we registered this cb as charactercreated this goes and call that
+        // with the given variable.
+        if(cbCharacterCreated != null) {
+            cbCharacterCreated(c);
+        }
+        return cScript;
     }
 
     protected void CreateFurniturePrototypes()
@@ -109,6 +130,12 @@ public class World
     public void UnregisterFurnitureCreated(Action<Furniture> callbackFunc)
     {
         cbFurnitureCreated -= callbackFunc;
+    }
+    public void RegisterCharacterCreated(Action<GameObject> callbackFunc) {
+        cbCharacterCreated += callbackFunc;
+    }
+    public void UnregisterCharacterCreated(Action<GameObject> callbackFunc) {
+        cbCharacterCreated -= callbackFunc;
     }
 
     void OnTileChanged(Tile t) {

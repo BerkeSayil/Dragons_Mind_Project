@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class TileSpriteController : MonoBehaviour
 {
@@ -10,7 +11,10 @@ public class TileSpriteController : MonoBehaviour
 
     Dictionary<Tile, GameObject> tileGameObjectMap;
 
-   World world {
+    const int EMPTY_LAYER = 6;
+    const int FLOOR_LAYER = 7;
+
+    World world {
         get { return WorldController.Instance.world; }
     }
     void Start() {
@@ -29,7 +33,14 @@ public class TileSpriteController : MonoBehaviour
 
                 // adding a sprite renderer and giving it the defaultyEmpty sprite.
                 tileGO.AddComponent<SpriteRenderer>();
-                tileGO.GetComponent<SpriteRenderer>().sprite = defaultEmptySprite;
+                SpriteRenderer renderer = tileGO.GetComponent<SpriteRenderer>();
+                renderer.sprite = defaultEmptySprite;
+                renderer.sortingLayerName = "Tiles";
+
+                // setting collisionBox layer for pathfinding.
+                tileGO.layer = EMPTY_LAYER;
+                BoxCollider2D collider =  tileGO.AddComponent<BoxCollider2D>();
+                collider.size = new Vector2(1f, 1f);
 
                 tileGameObjectMap.Add(tileData, tileGO);
 
@@ -43,7 +54,8 @@ public class TileSpriteController : MonoBehaviour
 
     void OnTileChanged(Tile tileData)
     {
-        if(tileGameObjectMap.ContainsKey(tileData) == false) {
+
+        if (tileGameObjectMap.ContainsKey(tileData) == false) {
             Debug.Log("tileGameObjectMap doesn't contain key");
             return;
         }
@@ -55,11 +67,15 @@ public class TileSpriteController : MonoBehaviour
             // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
             tileGO.GetComponent<SpriteRenderer>().sprite = floorSprite;
             tileGO.GetComponent<SpriteRenderer>().sortingOrder = 1;
+            tileGO.layer = FLOOR_LAYER;
+
+
         }
         else if(tileData.Type == Tile.TileType.Empty)
         {
             tileGO.GetComponent<SpriteRenderer>().sprite = defaultEmptySprite;
             tileGO.GetComponent<SpriteRenderer>().sortingOrder = 0;
+            tileGO.layer = EMPTY_LAYER;
 
         }
         else
@@ -76,6 +92,4 @@ public class TileSpriteController : MonoBehaviour
         return world.GetTileAt(x, y);
 
     }
-    
-
 }

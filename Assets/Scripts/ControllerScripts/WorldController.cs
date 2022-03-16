@@ -10,6 +10,8 @@ public class WorldController : MonoBehaviour
 
     public World world { get; protected set; }
 
+    [SerializeField] GameObject characterPrefab;
+
     void OnEnable() {
 
         if (Instance != null) {
@@ -20,11 +22,17 @@ public class WorldController : MonoBehaviour
         
         world = new World(); //default empty world
 
+        // TODO: Fuckin bad implemantation.
+        world.characterPrefab = characterPrefab;
+
+
         // Get the camera to middle of the world
         Camera.main.transform.position = new Vector3(world.width / 2,
                 world.height / 2, Camera.main.transform.position.z);
 
+     
     }
+
     public Tile GetTileAtCoord(Vector3 coordinates)
     {
         int x = Mathf.FloorToInt(coordinates.x);

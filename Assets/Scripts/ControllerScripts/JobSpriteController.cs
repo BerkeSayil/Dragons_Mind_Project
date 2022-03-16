@@ -33,8 +33,8 @@ public class JobSpriteController : MonoBehaviour
         SpriteRenderer sr = jobGO.GetComponent<SpriteRenderer>();
 
         // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
-        sr.sortingOrder = 2;
         // this will make alpha lower so its more transparent
+        sr.sortingLayerName = "Jobs";
         sr.color = new Color(0.5f,0.5f,1f,0.25f);
 
         job.RegisterJobCompleteCallback(OnJobEnded);

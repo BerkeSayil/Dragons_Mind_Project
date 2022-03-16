@@ -39,7 +39,7 @@ public class Tile
         set {
             TileType oldType = type;
             type = value;
-            // call callback to let things now we changed this
+            // call callback to let things know we changed this
             if (cbTileChanged != null && oldType != type)
                 cbTileChanged(this);
         }
@@ -49,7 +49,7 @@ public class Tile
     {
         if(objInstance == null)
         {
-            // If we send null it means uninstall whatever was here.
+            // TODO: we should be ablo to send null to uninstall whatever was here.
             furniture = null;
             return true;
         }
@@ -67,7 +67,27 @@ public class Tile
 
     }
     
-   
+
+   public bool IsNeighboor(Tile tile, bool diagOkay = false) {
+
+        // same X but only 1 diff in Y
+        if(this.x == tile.x && ( this.y == tile.y + 1 || this.y == tile.y - 1)) {
+            return true;
+        }
+        if (this.y == tile.y && (this.x == tile.x + 1 || this.x == tile.x - 1)) {
+            return true;
+        }
+        if (diagOkay) {
+            if (this.x == tile.x + 1 && (this.y == tile.y + 1 || this.y == tile.y - 1)) {
+                return true;
+            }
+            if (this.x == tile.x - 1 && (this.y == tile.y + 1 || this.y == tile.y - 1)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
     public void RegisterTileTypeChangedCallback(Action<Tile> callback) {
