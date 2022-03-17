@@ -17,7 +17,7 @@ public class Furniture
     // For example a metal floor (cost 1) with a table on it ( cost 2) that's on fire (cost 3)
     // would result in (1+2+3) (6 cost) so 1/6 th of movement speed.
     // 0 cost means it's impassible like a wall.
-    float movementCost;
+    public float movementCost { get; protected set; }
 
     // a couch could be 3x2 so it has empty space before it too.
     int width;

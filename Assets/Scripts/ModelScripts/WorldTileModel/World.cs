@@ -74,6 +74,40 @@ public class World
             1, //height
             true // links to neighboors to look like linked.
             ));
+        furniturePrototypes.Add("Door",
+            Furniture.CreatePrototype(
+            "Door",
+            1, // impassible
+            1, //width
+            1, //height
+            false // links to neighboors to look like linked.
+            ));
+
+    }
+
+    public void SetUpExampleStation() {
+
+        Debug.Log("Example Station");
+
+        int l = width / 2 - 5;
+        int b = height / 2 - 5;
+
+        for (int x = l - 10 ; x < l + 15; x++) {
+            for (int y = b - 10; y < b + 15 ; y++) {
+                tiles[x, y].Type = Tile.TileType.Floor;
+
+                if((x == l + 3 ) || (x == (l+4)) || (y == b - 3) || (y == (b + 4))) {
+                    if(x != (l + 3) && y != (b + 9)) {
+                        PlaceFurnitureAt("Wall", tiles[x,y]);
+                    }  
+                }
+                if ((x == l - 10) || (x == (l + 14)) || (y == b - 10) || (y == (b + 14))) {
+                    PlaceFurnitureAt("Wall", tiles[x, y]);
+                    
+                }
+            }
+        }
+
 
     }
 

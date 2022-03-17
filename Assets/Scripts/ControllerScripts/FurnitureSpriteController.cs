@@ -10,8 +10,9 @@ public class FurnitureSpriteController : MonoBehaviour
     Dictionary<string, Sprite> furnitureSprites;
 
     const int FURNITURE_LAYER = 8;
+    const int IMPASSIBE_LAYER = 9;
 
-   World world {
+    World world {
         get { return WorldController.Instance.world; }
     }
     void Start() {
@@ -55,7 +56,6 @@ public class FurnitureSpriteController : MonoBehaviour
 
         furnSprite.sprite = GetSpriteForFurniture(furn);
         furnSprite.sortingLayerName = "Furniture";
-
     }
 
     public void OnFurnitureCreated(Furniture furn) {
@@ -80,7 +80,13 @@ public class FurnitureSpriteController : MonoBehaviour
         furnGOCollider.size = new Vector2 (1f,1f);
 
         // TODO: Implement better layering system for movement cost consideration maybe ?
-        furnGO.layer = FURNITURE_LAYER; // This layer is designed to be furniture layer and A* sees this as blockadge
+         // This layer is designed to be furniture layer and A* sees this as blockadge
+        if(furn.movementCost == 0) {
+            furnGO.layer = IMPASSIBE_LAYER;
+        }
+        else {
+            furnGO.layer = FURNITURE_LAYER;
+        }
 
         // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
         furnGO.GetComponent<SpriteRenderer>().sortingLayerName = "Furniture";

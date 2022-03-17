@@ -32,7 +32,9 @@ public class WorldController : MonoBehaviour
 
      
     }
-
+    public void CreateStarterBase() {
+        Instance.world.SetUpExampleStation();
+    }
     public Tile GetTileAtCoord(Vector3 coordinates)
     {
         int x = Mathf.FloorToInt(coordinates.x);

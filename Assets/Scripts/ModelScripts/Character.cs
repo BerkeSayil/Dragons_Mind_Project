@@ -8,8 +8,10 @@ public class Character : MonoBehaviour
 {
     public Tile currTile;
     Tile destTile; // if not moving this equals to currTile
+    Vector3 destTilePos;
 
-    float movementPercentage; // Goes to 1 from 0 as we progress fron currTile => destTile
+    bool areWeCloseEnough = false;
+    float reachDist = 1f;
 
     float timeDeltaTime;
     AIPath path;
@@ -17,16 +19,7 @@ public class Character : MonoBehaviour
     Job myJob;
     Action<Character> cbCharacterChanged;
 
-    public float X {
-        get {
-            return Mathf.Lerp(currTile.x, destTile.x, movementPercentage);
-        }
-    }
-    public float Y {
-        get {
-            return Mathf.Lerp(currTile.y, destTile.y, movementPercentage);
-        }
-    }
+
     private void Awake() {
         currTile = destTile = WorldController.Instance.world.GetTileAt(WorldController.Instance.world.width / 2, WorldController.Instance.world.height / 2);
         path = gameObject.GetComponent<AIPath>();
@@ -35,7 +28,6 @@ public class Character : MonoBehaviour
     public void Update() {
 
         timeDeltaTime = Time.deltaTime;
-
         // if don't have job, get a job
         if (myJob == null) {
             // grab a job.
@@ -52,12 +44,16 @@ public class Character : MonoBehaviour
             }
         }
 
-        
-        if (path.reachedDestination) {
+        if ((transform.position - destTilePos).sqrMagnitude < reachDist * reachDist) {
+            areWeCloseEnough = true;
+        }
+
+        if (areWeCloseEnough) {
             if (myJob != null) {
                 myJob.DoWork(timeDeltaTime);
+                areWeCloseEnough = false;
             }
-            currTile = destTile;
+            
             return;
         }
         
@@ -73,6 +69,8 @@ public class Character : MonoBehaviour
     public void SetDestination(Tile tile) {
         if(tile != null) {
             destTile = tile;
+            destTilePos = new Vector3(tile.x, tile.y);
+
             path.destination = new Vector3(tile.x, tile.y);
         }
 
@@ -92,6 +90,7 @@ public class Character : MonoBehaviour
             return;
         }
         AstarPath.active.Scan();
+        currTile = destTile;
         myJob = null;
     }
 
