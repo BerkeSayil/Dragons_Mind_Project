@@ -106,64 +106,58 @@ public class Room
                 newRoom.AssignTile(t);
 
                 Tile t2;
-                
+
+                // we hit open space by edge of map or empty tile
+                // this room is actually part of outside so bail out early
+                // it takes a lot of unneccasry time otherwise
+                // delete the new room and re assign all tiles to outside
+                // repeated for every immediate neighboor
+
                 t2 = t.North();
 
-                if (t2 == null || t2.Type == Tile.TileType.Empty) {
-                    // we hit open space by edge of map or empty tile
-                    // this room is actually part of outside so bail out early
-                    // it takes a lot of unneccasry time otherwise
-                    // delete the new room and re assign all tiles to outside
-                    newRoom.UnassignAllTiles();
-                    return;
-                }
+                    if (t2 == null || t2.Type == Tile.TileType.Empty) {
+                    
+                        newRoom.UnassignAllTiles();
+                        return;
+                    }
 
-                if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
-                    tilesToCheck.Enqueue(t2);
-                }
+                    if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
+                        tilesToCheck.Enqueue(t2);
+                    }
 
                 t2 = t.South();
 
-                if (t2 == null || t2.Type == Tile.TileType.Empty) {
-                    // we hit open space by edge of map or empty tile
-                    // this room is actually part of outside so bail out early
-                    // it takes a lot of unneccasry time otherwise
-                    // delete the new room and re assign all tiles to outside
-                    newRoom.UnassignAllTiles();
-                    return;
-                }
-                if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
-                    tilesToCheck.Enqueue(t2);
-                }
+                    if (t2 == null || t2.Type == Tile.TileType.Empty) {
+                    
+                        newRoom.UnassignAllTiles();
+                        return;
+                    }
+                    if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
+                        tilesToCheck.Enqueue(t2);
+                    }
 
                 t2 = t.East();
 
-                if (t2 == null || t2.Type == Tile.TileType.Empty) {
-                    // we hit open space by edge of map or empty tile
-                    // this room is actually part of outside so bail out early
-                    // it takes a lot of unneccasry time otherwise
-                    // delete the new room and re assign all tiles to outside
-                    newRoom.UnassignAllTiles();
-                    return;
-                }
-                if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
-                    tilesToCheck.Enqueue(t2);
-                }
+                    if (t2 == null || t2.Type == Tile.TileType.Empty) {
+                    
+                        newRoom.UnassignAllTiles();
+                        return;
+                    }
+                    if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
+                        tilesToCheck.Enqueue(t2);
+                    }
 
                 t2 = t.West();
 
-                if (t2 == null || t2.Type == Tile.TileType.Empty) {
-                    // we hit open space by edge of map or empty tile
-                    // this room is actually part of outside so bail out early
-                    // it takes a lot of unneccasry time otherwise
-                    // delete the new room and re assign all tiles to outside
-                    newRoom.UnassignAllTiles();
-                    return;
-                }
+                    if (t2 == null || t2.Type == Tile.TileType.Empty) {
+                    
+                        newRoom.UnassignAllTiles();
+                        return;
+                    }
 
-                if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
-                    tilesToCheck.Enqueue(t2);
-                }
+                    if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
+                        tilesToCheck.Enqueue(t2);
+                    }
 
 
             }

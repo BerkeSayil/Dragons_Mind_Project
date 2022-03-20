@@ -143,24 +143,4 @@ public class Character : MonoBehaviour
 
     }
 
-    /*
-    // TODO: Find a better way to get this script.
-    [SerializeField] CharacterSpriteController characterSpriteController;
-
-    private void Start() {
-
-        characterSpriteController.RegisterCharacterReadyForAI(ReadyAI);
-
-    }
-
-    private void ReadyAI(GameObject character) {
-        // Do config of AI
-
-        AIPath aiPath = character.AddComponent<AIPath>();
-        aiPath.gravity = Vector3.zero;
-
-
-
-    }
-    */
 }

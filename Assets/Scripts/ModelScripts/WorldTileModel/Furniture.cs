@@ -6,11 +6,9 @@ using UnityEngine;
 //InstalledObjects are like walls, doors, furniture (carpet, desk, bar)
 public class Furniture
 {
-    // base tile but objects could be multiple tiles
-    public Tile tile{ get; protected set; }
-
-    // Tells what sprite to render.
-    public string objectType { get; protected set; }
+    
+    public Tile tile{ get; protected set; } // base tile but objects could be multiple tiles
+    public string objectType { get; protected set; } // Tells what sprite to render.
 
     // Multipler of cost ( value of 2 is twice as slow)
     // Tile types and other enviromental effects can further increase the cost 
@@ -19,20 +17,20 @@ public class Furniture
     // 0 cost means it's impassible like a wall.
     public float movementCost { get; protected set; }
 
-    public bool stationExterior { get; protected set; }
+    public bool stationExterior { get; protected set; } // determines if this protects from void so will it create a new room? 
 
     // a couch could be 3x2 so it has empty space before it too.
     int width;
     int height;
 
-    public bool linksToNeighboor { get; protected set; }
+    public bool linksToNeighboor { get; protected set; } // if we want a sprite to change with regard to surrounding tiles.
 
     Action<Furniture> cbOnChanged;
 
     Func<Tile, bool> FuncToPositionValidate;
 
-    //TOFIX: Implement larger objects
-    //TOFIX: Implement object rotation
+    //TODO: Implement larger objects
+    //TODO: Implement object rotation
      
     protected Furniture(){
 

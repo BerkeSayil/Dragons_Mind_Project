@@ -20,6 +20,14 @@ public class MouseController : MonoBehaviour
         buildingHintList = new List<GameObject>();
     }
 
+
+    public Vector3 GetMousePosition() {
+        return currentFrameMousePos;
+    }
+
+    public Tile GetTileUnderMouse() {
+        return WorldController.Instance.world.GetTileAt((int)currentFrameMousePos.x, (int)currentFrameMousePos.y);
+    }
     private void Update()
     {
         currentFrameMousePos = Camera.main.ScreenToWorldPoint((Input.mousePosition));

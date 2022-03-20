@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tile
 {
     // Tile can have 1 of these
-    LooseObject looseObject;
+    Inventory looseObject;
     public Furniture furniture { get; protected set; }
 
     public Job pendingFurnitureJob;
