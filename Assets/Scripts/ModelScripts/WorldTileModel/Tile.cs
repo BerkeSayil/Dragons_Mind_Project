@@ -11,6 +11,8 @@ public class Tile
 
     public Job pendingFurnitureJob;
 
+    public Room room;
+
     // A tile is self aware
     public World World { get; protected set; }
     public int x { get; protected set; }
@@ -98,5 +100,18 @@ public class Tile
     }
     public void UnRegisterTileTypeChangedCallback(Action<Tile> callback) {
         cbTileChanged -= callback;
+    }
+
+    public Tile North() {
+        return World.GetTileAt(x,y + 1);
+    }
+    public Tile South() {
+        return World.GetTileAt(x, y - 1);
+    }
+    public Tile East() {
+        return World.GetTileAt(x + 1, y);
+    }
+    public Tile West() {
+        return World.GetTileAt(x - 1, y);
     }
 }

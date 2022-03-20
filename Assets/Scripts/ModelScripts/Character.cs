@@ -9,12 +9,15 @@ public class Character : MonoBehaviour
     public Tile currTile;
     Tile destTile; // if not moving this equals to currTile
     Vector3 destTilePos;
+    Vector3 currTilePos;
 
     bool areWeCloseEnough = false;
     float reachDist = 1f;
 
     float timeDeltaTime;
     AIPath path;
+    GraphNode node1;
+    GraphNode node2;
 
     Job myJob;
     Action<Character> cbCharacterChanged;
@@ -22,7 +25,13 @@ public class Character : MonoBehaviour
 
     private void Awake() {
         currTile = destTile = WorldController.Instance.world.GetTileAt(WorldController.Instance.world.width / 2, WorldController.Instance.world.height / 2);
+        currTilePos = gameObject.transform.position;
         path = gameObject.GetComponent<AIPath>();
+
+        AstarPath.active.Scan();
+
+        node1 = AstarPath.active.GetNearest(currTilePos, NNConstraint.Default).node;
+        node2 = AstarPath.active.GetNearest(destTilePos, NNConstraint.Default).node;
     }
     
     public void Update() {
@@ -33,8 +42,13 @@ public class Character : MonoBehaviour
             // grab a job.
             myJob = currTile.World.jobQueue.Dequeue();
             if(myJob != null) {
+                //TODO: Check if the job is reachable.
+                if (isPathPossible() == false && myJob != null) {
+                    AbandonJob();
+                    return;
+                }
                 // we have a new job.
-                if(myJob.tile != destTile) {
+                if (myJob.tile != destTile) {
                     SetDestination(myJob.tile);
                 }
                 
@@ -44,10 +58,16 @@ public class Character : MonoBehaviour
             }
         }
 
+        
+
+        
+
+
+
         if ((transform.position - destTilePos).sqrMagnitude < reachDist * reachDist) {
             areWeCloseEnough = true;
         }
-
+        
         if (areWeCloseEnough) {
             if (myJob != null) {
                 myJob.DoWork(timeDeltaTime);
@@ -66,12 +86,38 @@ public class Character : MonoBehaviour
         
 
     }
+
+    private bool isPathPossible() {
+        node1 = AstarPath.active.GetNearest(transform.position, NNConstraint.Default).node;
+        node2 = AstarPath.active.GetNearest(new Vector2(myJob.tile.x, myJob.tile.y), NNConstraint.Default).node;
+
+        return PathUtilities.IsPathPossible(node1, node2);
+    }
+
+    private void AbandonJob() {
+
+        destTile = currTile;
+        currTilePos = gameObject.transform.position;
+
+        currTile.World.jobQueue.Enqueue(myJob);
+        myJob = null;
+
+        node1 = AstarPath.active.GetNearest(currTilePos, NNConstraint.Default).node;
+        node2 = AstarPath.active.GetNearest(destTilePos, NNConstraint.Default).node;
+
+    }
+
     public void SetDestination(Tile tile) {
         if(tile != null) {
+
+
             destTile = tile;
             destTilePos = new Vector3(tile.x, tile.y);
 
             path.destination = new Vector3(tile.x, tile.y);
+
+            node1 = AstarPath.active.GetNearest(currTilePos, NNConstraint.Default).node;
+            node2 = AstarPath.active.GetNearest(destTilePos, NNConstraint.Default).node;
         }
 
     }
@@ -91,7 +137,10 @@ public class Character : MonoBehaviour
         }
         AstarPath.active.Scan();
         currTile = destTile;
+        currTilePos = destTilePos = new Vector3(j.tile.x, j.tile.y);
         myJob = null;
+
+
     }
 
     /*

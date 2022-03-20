@@ -7,6 +7,8 @@ public class World
 {
     Tile[,] tiles;
     List<Character> characters;
+    public List<Room> rooms;
+
     Dictionary<string, Furniture> furniturePrototypes;
 
     public int width { get; }
@@ -29,6 +31,10 @@ public class World
         this.width = width;
         this.height = height;
 
+        // room system list and first room as outside
+        rooms = new List<Room>();
+        rooms.Add(new Room()); // Creates the outside?
+
         tiles = new Tile[width, height];
         for (int x = 0; x < width; x++)
         {
@@ -36,6 +42,7 @@ public class World
             {
                 tiles[x, y] = new Tile(this, x, y);
                 tiles[x, y].RegisterTileTypeChangedCallback(OnTileChanged);
+                tiles[x, y].room = GetOutsideRoom(); // they all belong to outside at start
             }
         }
 
@@ -46,8 +53,27 @@ public class World
         // Creates characters for us. 
         characters = new List<Character>();
 
+        
+    }
+    public void AddRoom(Room r) {
+        rooms.Add(r);
     }
 
+    public Room GetOutsideRoom() {
+
+        return rooms[0];
+    }
+    public void DeleteRooms(Room r) {
+        if(r == GetOutsideRoom()) {
+            return;
+        }
+
+        rooms.Remove(r);
+
+        r.UnassignAllTiles();
+        
+
+    }
     //TODO: FIX
     public Character CreateCharacter(Tile t) {
         GameObject c = GameObject.Instantiate(characterPrefab);
@@ -72,7 +98,8 @@ public class World
             0, // impassible
             1, //width
             1, //height
-            true // links to neighboors to look like linked.
+            true, // links to neighboors to look like linked.
+            true // can this be used as exterior blockadge ?
             ));
         furniturePrototypes.Add("Door",
             Furniture.CreatePrototype(
@@ -80,7 +107,8 @@ public class World
             1, // impassible
             1, //width
             1, //height
-            false // links to neighboors to look like linked.
+            false, // links to neighboors to look like linked.
+            true //TODO: it actually need to check if closed ?)
             ));
 
     }
@@ -107,6 +135,8 @@ public class World
                 }
             }
         }
+        //TODO: Get rid of this while you get rid of the example station.
+        GameObject.Find("A*").GetComponent<AstarPath>().Scan();
 
 
     }
@@ -133,15 +163,20 @@ public class World
             return;
         }
 
-        Furniture obj = Furniture.PlaceInstance(furniturePrototypes[objectType], t);
-        if(obj == null) {
+        Furniture furniture = Furniture.PlaceInstance(furniturePrototypes[objectType], t);
+        if(furniture == null) {
             //There was something already there probly so no cally cally the callback
             return;
         }
 
+        // Should we recalculate our rooms ?
+        if (furniture.stationExterior) {
+            Room.DoFloodFillRoom(furniture);
+        }
+
         if(cbFurnitureCreated != null)
         {
-            cbFurnitureCreated(obj);
+            cbFurnitureCreated(furniture);
         }
 
     }

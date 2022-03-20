@@ -19,6 +19,8 @@ public class Furniture
     // 0 cost means it's impassible like a wall.
     public float movementCost { get; protected set; }
 
+    public bool stationExterior { get; protected set; }
+
     // a couch could be 3x2 so it has empty space before it too.
     int width;
     int height;
@@ -38,7 +40,7 @@ public class Furniture
 
     // this is a prototypical version
     static public Furniture CreatePrototype(string objectType, float movementCost = 1f, 
-        int width = 1, int height = 1, bool linksToNeighboor = false )
+        int width = 1, int height = 1, bool linksToNeighboor = false , bool stationExterior = false )
     {
         Furniture obj = new Furniture();
 
@@ -47,6 +49,7 @@ public class Furniture
         obj.width = width;
         obj.height = height;
         obj.linksToNeighboor = linksToNeighboor;
+        obj.stationExterior = stationExterior;
 
         obj.FuncToPositionValidate = obj.IsValidPosition;
 
@@ -67,7 +70,7 @@ public class Furniture
         furn.width = proto.width;
         furn.height = proto.height;
         furn.linksToNeighboor = proto.linksToNeighboor;
-
+        furn.stationExterior = proto.stationExterior;
 
 
         furn.tile = tile;
