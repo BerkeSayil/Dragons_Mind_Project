@@ -75,7 +75,7 @@ public class Room
         if (tile == null) {
             return; // we try to flood fill off the map.
         }
-
+        //TODO: This kinda be not working when we break walls.
         if (tile.room != oldRoom) {
             // means we already identified that "new" room 
             return;
@@ -162,6 +162,10 @@ public class Room
 
             }
         }
+        newRoom.atmosO2 = oldRoom.atmosO2;
+        newRoom.atmosCO2 = oldRoom.atmosCO2;
+        newRoom.atmosN2 = oldRoom.atmosN2;
+
 
         // Tell the world a new room has been created.
         tile.World.AddRoom(newRoom);

@@ -43,6 +43,7 @@ public class World
                 tiles[x, y] = new Tile(this, x, y);
                 tiles[x, y].RegisterTileTypeChangedCallback(OnTileChanged);
                 tiles[x, y].room = GetOutsideRoom(); // they all belong to outside at start
+                tiles[x, y].designationType = GetDefaultDesignation(); // all tiles are designated as empty at first
             }
         }
 
@@ -58,7 +59,10 @@ public class World
     public void AddRoom(Room r) {
         rooms.Add(r);
     }
+    public Designation.DesignationType GetDefaultDesignation() {
 
+        return Designation.DesignationType.None;
+    }
     public Room GetOutsideRoom() {
 
         return rooms[0];

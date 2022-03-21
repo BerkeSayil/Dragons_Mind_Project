@@ -13,6 +13,8 @@ public class Tile
 
     public Room room;
 
+    public Designation.DesignationType designationType;
+
     // A tile is self aware
     public World World { get; protected set; }
     public int x { get; protected set; }
@@ -33,7 +35,7 @@ public class Tile
     }
 
     TileType type = TileType.Empty;
-
+    
     public TileType Type {
         get {
             return type;

@@ -77,7 +77,6 @@ public class MouseController : MonoBehaviour
             EasyPooling.Despawn(go);
         }
 
-
         if (Input.GetMouseButton(0))
         {
             for (int x = startX; x <= endX; x++)
