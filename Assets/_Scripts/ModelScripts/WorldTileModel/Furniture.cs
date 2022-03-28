@@ -20,8 +20,8 @@ public class Furniture
     public bool stationExterior { get; protected set; } // determines if this protects from void so will it create a new room? 
 
     // a couch could be 3x2 so it has empty space before it too.
-    int width;
-    int height;
+    public int width { get; protected set; }
+    public int height { get; protected set; }
 
     public bool linksToNeighboor { get; protected set; } // if we want a sprite to change with regard to surrounding tiles.
 
@@ -29,9 +29,8 @@ public class Furniture
 
     Func<Tile, bool> FuncToPositionValidate;
 
-    //TODO: Implement larger objects
     //TODO: Implement object rotation
-     
+    
     protected Furniture(){
 
     }
@@ -115,9 +114,61 @@ public class Furniture
 
         return furn;
     }
-
     public bool ValidatePositionOfFurniture(Tile t) {
-        return FuncToPositionValidate(t);
+
+        //Multi functional until 3 by 3 
+
+        /*        1 2 3 
+         *      3 X X X 
+         *      2 X X X 
+         *      1 X X X 
+         */
+
+        switch (width) {
+            case 1: // X: 1 Y : 1,2,3
+
+                if (height == 1) return (FuncToPositionValidate(t));
+
+                if (height == 2) return (FuncToPositionValidate(t)
+                        && FuncToPositionValidate(t.North()));
+
+                if (height == 3) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.North()) &&
+                        FuncToPositionValidate(t.North().North()) 
+                        );
+                break;
+            case 2: // X: 2 Y : 1,2,3
+                
+                if (height == 1) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East()));
+
+                if (height == 2) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East()) 
+                        && FuncToPositionValidate(t.North()) && FuncToPositionValidate(t.North().East()));
+
+                if (height == 3) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East())
+                        && FuncToPositionValidate(t.North()) && FuncToPositionValidate(t.North().East()) &&
+                        FuncToPositionValidate(t.North().North()) && FuncToPositionValidate(t.North().North().East()) 
+                        );
+                break;
+            case 3: // X: 3 Y : 1,2,3
+                if (height == 1) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East()) && 
+                        FuncToPositionValidate(t.East().East()));
+
+                if (height == 2) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East()) && FuncToPositionValidate(t.East().East())
+                        && FuncToPositionValidate(t.North()) && FuncToPositionValidate(t.North().East()) 
+                        && FuncToPositionValidate(t.North().East().East()));
+
+                if (height == 3) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East()) && FuncToPositionValidate(t.East().East())
+                        && FuncToPositionValidate(t.North()) && FuncToPositionValidate(t.North().East()) && FuncToPositionValidate(t.North().East().East()) 
+                        && FuncToPositionValidate(t.North().North()) && FuncToPositionValidate(t.North().North().East())
+                        && FuncToPositionValidate(t.East().East().North()) && FuncToPositionValidate(t.East().East().North().North())
+                        );
+
+                break;
+            default:
+                return false;
+                
+        }
+        return false;
+
     }
 
 

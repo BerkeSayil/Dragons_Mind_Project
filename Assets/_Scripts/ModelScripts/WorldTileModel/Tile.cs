@@ -70,9 +70,8 @@ public class Tile
         return true;
 
     }
-    
 
-   public bool IsNeighboor(Tile tile, bool diagOkay = false) {
+    public bool IsNeighboor(Tile tile, bool diagOkay = false) {
 
         // same X but only 1 diff in Y
         if(this.x == tile.x && ( this.y == tile.y + 1 || this.y == tile.y - 1)) {

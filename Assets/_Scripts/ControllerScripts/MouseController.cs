@@ -51,6 +51,7 @@ public class MouseController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             dragStartPos = currentFrameMousePos;
+
         }
 
         int startX = Mathf.FloorToInt(dragStartPos.x);
@@ -69,6 +70,7 @@ public class MouseController : MonoBehaviour
             endY = startY;
             startY = temp;
         }
+
         // This makes it so our building hints resize as we move mouse
         while (buildingHintList.Count > 0)
         {
@@ -100,20 +102,32 @@ public class MouseController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             BuildModeController bmc = GameObject.FindObjectOfType<BuildModeController>();
+            DesignationController dsc = GameObject.FindObjectOfType<DesignationController>();
 
             for (int x = startX; x <= endX; x++)
             {
                 for (int y = startY; y <= endY; y++)
                 {
                     Tile t = WorldController.Instance.world.GetTileAt(x, y);
+
                     if (t != null)
                     {
                         // Call buildmode controller DoBuild(t).
-                        bmc.DoBuild(t);
+                        if (bmc.areWeBuilding) {
+                            bmc.DoBuild(t);
+                        }
+                        if (dsc.areWeDesignating) {
+                            dsc.AddToDesignation(t);
+                        }
+                        
 
                     }
                 }
             }
+            if (dsc.areWeDesignating) {
+                dsc.DoDesignate();
+            }
+            
         }
     }
 

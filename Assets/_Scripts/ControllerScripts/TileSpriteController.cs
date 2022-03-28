@@ -11,12 +11,16 @@ public class TileSpriteController : MonoBehaviour
 
     Dictionary<Tile, GameObject> tileGameObjectMap;
 
+
     const int EMPTY_LAYER = 6;
     const int FLOOR_LAYER = 7;
 
     World world {
         get { return WorldController.Instance.world; }
     }
+
+
+
     void Start() {
 
         tileGameObjectMap = new Dictionary<Tile, GameObject>();
@@ -41,6 +45,7 @@ public class TileSpriteController : MonoBehaviour
                 tileGO.layer = EMPTY_LAYER;
                 BoxCollider2D collider =  tileGO.AddComponent<BoxCollider2D>();
                 collider.size = new Vector2(1f, 1f);
+                
 
                 tileGameObjectMap.Add(tileData, tileGO);
 
@@ -48,6 +53,9 @@ public class TileSpriteController : MonoBehaviour
         }
 
         world.RegisterTileChanged(OnTileChanged);
+        GameObject.Find("DesignationController").
+            GetComponent<DesignationController>().
+            RegisterTileDesignationChangedCallback(OnTileChanged);
     }
 
     
@@ -66,7 +74,6 @@ public class TileSpriteController : MonoBehaviour
         {
             // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
             tileGO.GetComponent<SpriteRenderer>().sprite = floorSprite;
-            tileGO.GetComponent<SpriteRenderer>().sortingOrder = 1;
             tileGO.layer = FLOOR_LAYER;
 
 
@@ -74,13 +81,35 @@ public class TileSpriteController : MonoBehaviour
         else if(tileData.Type == Tile.TileType.Empty)
         {
             tileGO.GetComponent<SpriteRenderer>().sprite = defaultEmptySprite;
-            tileGO.GetComponent<SpriteRenderer>().sortingOrder = 0;
             tileGO.layer = EMPTY_LAYER;
 
         }
         else
         {
             Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
+        }
+
+        if(tileData.designationType != Designation.DesignationType.None) {
+            if (tileData.designationType == Designation.DesignationType.Cafeteria) {
+                tileGO.GetComponent<SpriteRenderer>().color = Color.cyan;
+            }
+            if (tileData.designationType == Designation.DesignationType.Engine) {
+                tileGO.GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+            if (tileData.designationType == Designation.DesignationType.Kitchen) {
+                tileGO.GetComponent<SpriteRenderer>().color = Color.magenta;
+            }
+            if (tileData.designationType == Designation.DesignationType.LifeSupport) {
+                tileGO.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+            if (tileData.designationType == Designation.DesignationType.PersonalCrewRoom) {
+                tileGO.GetComponent<SpriteRenderer>().color = Color.green;
+            }
+            if (tileData.designationType == Designation.DesignationType.TradeGoods) {
+                tileGO.GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+            
+
         }
     }
 

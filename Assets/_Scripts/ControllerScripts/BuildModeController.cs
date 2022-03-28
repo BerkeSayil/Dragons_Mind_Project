@@ -8,30 +8,31 @@ public class BuildModeController : MonoBehaviour
 {
     Tile.TileType buildModeTile = Tile.TileType.Floor;
     string buildModeObjectType;
-    bool buildModeIsObjects = false;
+    bool buildModeIsFurniture = false;
+    public bool areWeBuilding = false;
 
-
+    
     public void SetModeBuildFloor()
     {
-        buildModeIsObjects = false;
+        buildModeIsFurniture = false;
         buildModeTile = Tile.TileType.Floor;
     }
     public void SetModeMineMode()
     {
-        buildModeIsObjects = false;
+        buildModeIsFurniture = false;
         buildModeTile = Tile.TileType.Empty;
 
     }
     public void SetModeBuildInstalledObject( string objectType)
     {
-        buildModeIsObjects = true;
+        buildModeIsFurniture = true;
         buildModeObjectType = objectType;
 
     }
 
     public void DoBuild(Tile t) {
 
-        if (buildModeIsObjects) {
+        if (buildModeIsFurniture) {
             // Create the installed objects on the tile given. And assign.
 
             // Furniture type here exist in the scope so it prevents furniture changing mid build
@@ -49,7 +50,7 @@ public class BuildModeController : MonoBehaviour
                 {
                     WorldController.Instance.world.
                     PlaceFurnitureAt(furnitureType, theJob.tile);
-
+                    
                     t.pendingFurnitureJob = null;
                 });
 
@@ -68,5 +69,7 @@ public class BuildModeController : MonoBehaviour
             t.Type = buildModeTile;
         }
     }
-
+    public void SetBuildingMode(bool isBuilding) {
+        areWeBuilding = isBuilding;
+    }
 }
