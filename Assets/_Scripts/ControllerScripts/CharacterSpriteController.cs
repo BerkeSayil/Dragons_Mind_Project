@@ -10,6 +10,8 @@ public class CharacterSpriteController : MonoBehaviour
 
     Action<GameObject> cbOnCharacterReadyForAI;
 
+    public string jobType { get; protected set; }
+
     World world {
         get { return WorldController.Instance.world; }
     }
@@ -23,8 +25,12 @@ public class CharacterSpriteController : MonoBehaviour
         // callback we gave to register gets called it actually on character created.
         world.RegisterCharacterCreated(OnCharacterCreated);
 
-        //TODO: Fix place like why would we want it in the middle of the world ?
-        Character c = world.CreateCharacter(world.GetTileAt((world.width / 2),(world.height / 2)));
+    }
+
+    public void SpawnCharacter(string jobType) { //TODO: Make this also understand what job a character should be and do so accordingly
+
+        Character c = world.CreateCharacter(world.GetTileAt((world.width / 2), (world.height / 2)));
+
     }
 
     private void LoadSprites() {
@@ -48,12 +54,11 @@ public class CharacterSpriteController : MonoBehaviour
         character.transform.position = new Vector2(characterScript.currTile.x + 0.5f, characterScript.currTile.y +0.5f);
         character.transform.SetParent(this.transform, true);
 
-        // TODO: Better sprite?
+        // TODO: change sprite based on occupation
         character.AddComponent<SpriteRenderer>().sprite = characterSprites["character_0003"];
 
         character.GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
 
-        // TODO: We might want to move this to elsewhere ?
         CircleCollider2D collider = character.AddComponent<CircleCollider2D>();
 
         collider.radius = 0.45f; // to ensure its just enough smaller than a tile.

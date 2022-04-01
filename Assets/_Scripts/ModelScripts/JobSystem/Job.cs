@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Job 
 {
@@ -11,15 +8,17 @@ public class Job
 
     public Tile tile { get; protected set; }
     float jobTime;
+    public JobType jobOccupation { get; protected set; }
 
     public string jobObjectType { get; protected set; }
 
     Action<Job> cbJobComplete;
     Action<Job> cbJobCancel;
-    public Job(Tile tile, string jobObjectType , Action<Job>cbJobComplete ,float jobTime = 1f) {
+    public Job(Tile tile, string jobObjectType , Action<Job>cbJobComplete, JobType occupationType ,float jobTime = 1f) {
         this.tile = tile;
         this.jobObjectType = jobObjectType;
         this.jobTime = jobTime;
+        this.jobOccupation = occupationType;
 
         this.cbJobComplete += cbJobComplete;
 
@@ -54,5 +53,13 @@ public class Job
             cbJobCancel(this);
         }
         
+    }
+
+    public enum JobType {
+        Construction,
+        Haul,
+        Dismantle,
+        TODO
+            //TODO: Add more job types as game evolves.
     }
 }

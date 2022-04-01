@@ -182,6 +182,7 @@ public class Furniture
         if(t.furniture != null) {
             return false;
         }
+        
 
         return true;
 

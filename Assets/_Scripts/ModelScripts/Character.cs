@@ -24,27 +24,38 @@ public class Character : MonoBehaviour
 
 
     private void Awake() {
-        currTile = destTile = WorldController.Instance.world.GetTileAt(WorldController.Instance.world.width / 2, WorldController.Instance.world.height / 2);
-        currTilePos = gameObject.transform.position;
+        currTile = destTile = WorldController.Instance.world.GetTileAt
+            (WorldController.Instance.world.width / 2, WorldController.Instance.world.height / 2);
+
+        currTilePos = new Vector3(currTile.x, currTile.y);
+
         path = gameObject.GetComponent<AIPath>();
 
         AstarPath.active.Scan();
 
-        node1 = AstarPath.active.GetNearest(currTilePos, NNConstraint.Default).node;
-        node2 = AstarPath.active.GetNearest(destTilePos, NNConstraint.Default).node;
+        
+
+        node1 = GetNodeOnTile(currTilePos);
+        node2 = GetNodeOnTile(destTilePos);
     }
-    
+    public GraphNode GetNodeOnTile(Vector3 pos) {
+   
+        return AstarPath.active.GetNearest(pos, NNConstraint.Default).node;
+      
+
+    }
     public void Update() {
 
         timeDeltaTime = Time.deltaTime;
         // if don't have job, get a job
         if (myJob == null) {
-            // grab a job.
-            myJob = currTile.World.jobQueue.Dequeue();
+
+            GrabJob();
+
             if(myJob != null) {
                 //TODO: Check if the job is reachable.
-                if (isPathPossible() == false && myJob != null) {
-                    AbandonJob();
+                if (IsPathPossible(myJob) == false && myJob != null) {
+                    AbandonJob(myJob.tile, myJob.jobObjectType);
                     return;
                 }
                 // we have a new job.
@@ -57,11 +68,6 @@ public class Character : MonoBehaviour
                 myJob.RegisterJobCompleteCallback(OnJobEnded);
             }
         }
-
-        
-
-        
-
 
 
         if ((transform.position - destTilePos).sqrMagnitude < reachDist * reachDist) {
@@ -87,23 +93,80 @@ public class Character : MonoBehaviour
 
     }
 
-    private bool isPathPossible() {
-        node1 = AstarPath.active.GetNearest(transform.position, NNConstraint.Default).node;
-        node2 = AstarPath.active.GetNearest(new Vector2(myJob.tile.x, myJob.tile.y), NNConstraint.Default).node;
+    private void GrabJob() {
+        if (WorldController.Instance.world.jobQueue.Dequeue() == null) return;
+
+        myJob = PrioritizedJob(WorldController.Instance.world.jobQueue.Dequeue());
+
+    }
+
+    public virtual Job PrioritizedJob(ArrayList jobsList ) { //TODO: Well I mean do this.
+        /*
+         * Check for the following criteria to understand who to prioritize
+         * 
+         * what is closer (closeness score ?)
+         * what is mostImportant (construction, something of chaotic nature, ...)
+         * this also should filter with character job in mind so we don't get another occupants jobs.
+         * 
+         */
+        if (jobsList.Count == 0) return null;
+
+        float minDist = Mathf.Infinity;
+        Job minDistJob = null;
+
+        foreach (Job job in jobsList) {
+
+            if (IsPathPossible(job)) {
+                
+                float distanceToJob = Vector2.Distance
+                            (new Vector2(transform.position.x, transform.position.y), new Vector2(job.tile.x, job.tile.y)); 
+
+                if (distanceToJob < minDist) {
+                    minDist = distanceToJob;
+                    minDistJob = job;
+                }
+
+
+
+            }
+
+        }
+        if(minDistJob == null) return null;
+
+        WorldController.Instance.world.jobQueue.RemoveMyJob(minDistJob);
+
+        return minDistJob;
+    }
+
+    public bool IsPathPossible(Job myJob) {
+        
+        node1 = GetNodeOnTile(currTilePos);
+        node2 = GetNodeOnTile(new Vector2(myJob.tile.x, myJob.tile.y));
 
         return PathUtilities.IsPathPossible(node1, node2);
     }
 
-    private void AbandonJob() {
+    private void AbandonJob(Tile t, string furnitureType) {
 
         destTile = currTile;
         currTilePos = gameObject.transform.position;
 
-        currTile.World.jobQueue.Enqueue(myJob);
+        //TODO: This doesn't need to be here maybe figure out why it was here in the first place?
+
+        /*
+        Job j = new Job(t, furnitureType, (theJob) =>
+        {
+            WorldController.Instance.world.
+            PlaceFurnitureAt(furnitureType, theJob.tile);
+
+            t.pendingFurnitureJob = null;
+        });
+        */
+
         myJob = null;
 
-        node1 = AstarPath.active.GetNearest(currTilePos, NNConstraint.Default).node;
-        node2 = AstarPath.active.GetNearest(destTilePos, NNConstraint.Default).node;
+        node1 = GetNodeOnTile(currTilePos);
+        node2 = GetNodeOnTile(destTilePos);
 
     }
 
@@ -116,8 +179,9 @@ public class Character : MonoBehaviour
 
             path.destination = new Vector3(tile.x, tile.y);
 
-            node1 = AstarPath.active.GetNearest(currTilePos, NNConstraint.Default).node;
-            node2 = AstarPath.active.GetNearest(destTilePos, NNConstraint.Default).node;
+
+            node1 = GetNodeOnTile(currTilePos);
+            node2 = GetNodeOnTile(destTilePos);
         }
 
     }

@@ -23,6 +23,18 @@ public class BuildModeController : MonoBehaviour
         buildModeTile = Tile.TileType.Empty;
 
     }
+    public void UninstallInstalledObject() {
+
+        buildModeIsFurniture = false;
+        // This check the marked tiles for furniture objects
+        // Removes them
+        // Creates an inventory (looseObject) in the given tile
+        // Which should in turn would get hauled back to tradegoods designation if any exists in designations list ?
+
+
+
+
+    }
     public void SetModeBuildInstalledObject( string objectType)
     {
         buildModeIsFurniture = true;
@@ -52,7 +64,9 @@ public class BuildModeController : MonoBehaviour
                     PlaceFurnitureAt(furnitureType, theJob.tile);
                     
                     t.pendingFurnitureJob = null;
-                });
+                }, 
+                Job.JobType.Construction
+                );
 
 
                 // TODO: This being this way very easy to clear or forget make it automated in

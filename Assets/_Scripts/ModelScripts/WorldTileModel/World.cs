@@ -20,12 +20,14 @@ public class World
     Action<Furniture> cbFurnitureCreated;
     Action<Tile> cbTileChanged;
     Action<GameObject> cbCharacterCreated;
+    Action<Designation> cbDesigChanged;
+
 
     // TODO: This should be replaced with a dedicated
     // class for managing job queues (plural!!!)
     // might look into making it semi-static or self initializing...
     public JobQueue jobQueue;
-
+    
 
     public World(int width = 128, int height = 128)
     {
@@ -64,8 +66,10 @@ public class World
     }
     public void AddDesignation(Designation d) {
         designations.Add(d);
+        d.RegisterDesignationTypeChangedCallback(OnDesignationChanged);
     }
-    public void RemoveDesignation(Designation d) {
+
+    public void RemoveDesignation(Designation d) { //TODO: Designation removing should exist in a capacity
         designations.Remove(d);
     }
     public Designation.DesignationType GetDefaultDesignation() {
@@ -89,11 +93,14 @@ public class World
     }
     //TODO: This is not how we want to create characters
     public Character CreateCharacter(Tile t) {
+
         GameObject c = GameObject.Instantiate(characterPrefab);
         Character cScript =c.GetComponent<Character>();
+
         characters.Add(cScript);
         // because we registered this cb as charactercreated this goes and call that
         // with the given variable.
+
         if(cbCharacterCreated != null) {
             cbCharacterCreated(c);
         }
@@ -145,7 +152,7 @@ public class World
             Furniture.CreatePrototype(
             "Desk",
             0, // impassible
-            1, //width
+            2, //width
             1, //height
             false, //TODO: This could look like linked depending on the sprites we use
             false // can this be used as exterior blockadge ?
@@ -360,6 +367,13 @@ public class World
 
 
     }
+    public void RegisterDesignationChanged(Action<Designation> callbackFunc) {
+        cbDesigChanged += callbackFunc;
+    }
+    public void UnregisterDesignationChanged(Action<Designation> callbackFunc) {
+        cbDesigChanged -= callbackFunc;
+    }
+
     public void RegisterTileChanged(Action<Tile> callbackFunc) {
         cbTileChanged += callbackFunc;
     }
@@ -388,6 +402,15 @@ public class World
         }
 
         cbTileChanged(t);
+    }
+
+    private void OnDesignationChanged(Designation d) {
+        
+        if(cbDesigChanged == null) {
+            return;
+        }
+
+        cbDesigChanged(d);
     }
 
     public Furniture GetFurniturePrototype(string objectType) {

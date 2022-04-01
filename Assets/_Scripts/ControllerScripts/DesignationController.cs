@@ -11,8 +11,9 @@ public class DesignationController : MonoBehaviour
 
     Dictionary<string, Designation.DesignationType> designationTypes;
     Action<Tile> cbTileChangedDesignation;
-
+    
     World world;
+    Dictionary<Designation, GameObject> designationGameObjectMap = new Dictionary<Designation, GameObject>();
 
     List<Tile> tiles;
     private void Start() {
@@ -21,6 +22,7 @@ public class DesignationController : MonoBehaviour
 
         world = WorldController.Instance.world;
         world.RegisterFurnitureCreated(UpdateDesignationFurns);
+        world.RegisterDesignationChanged(UpdateDesignation);
     }
 
     public void UpdateDesignationFurns(Furniture furn) {
@@ -48,12 +50,29 @@ public class DesignationController : MonoBehaviour
                 cbTileChangedDesignation(t);
         }
 
+        designationGameObjectMap.Add(designation, designationGO);
+
         if (designation.IsFunctional()) return;
 
         designationGO.SetActive(false);
 
+
+
     }
-    
+
+    private void UpdateDesignation(Designation d) {
+
+        if(designationGameObjectMap.ContainsKey(d) == false) {
+            Debug.Log("You are searching for a non existing designation but it wasn't removed from this dictionary probably ?");
+            return;
+        }
+        if (designationGameObjectMap[d].activeInHierarchy == false) {
+            if (d.IsFunctional()) {
+                designationGameObjectMap[d].SetActive(true);
+            }
+        }
+       
+    }
 
     public void SetDesignationMode(string designationType) {
 
@@ -78,8 +97,6 @@ public class DesignationController : MonoBehaviour
 
     public void DoDesignate() {
 
-        //TODO: FIX SOMETIMES DESIGNATE PAINTING AREAS NOT MEANT TO BE DESIGNATED!
-
         Designation designation = new Designation(tiles, designationModeType) ;
 
         bool isDesignationValid = designation.IsValidDesignation(tiles);
@@ -99,8 +116,8 @@ public class DesignationController : MonoBehaviour
     }
 
     public void RegisterTileDesignationChangedCallback(Action<Tile> callback) {
-        // the place where this gets called is subscribed to the cbTileTypeChanged
-        // so when cbTileTypeChanged Action gets called in return this function callsback to
+        // the place where this gets called is subscribed to the cbTileDesignationChanged
+        // so when cbTileDesignationChanged Action gets called in return this function callsback to
         // original script where its called.
         cbTileChangedDesignation += callback;
     }

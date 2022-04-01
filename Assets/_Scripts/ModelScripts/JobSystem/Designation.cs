@@ -44,7 +44,6 @@ public class Designation {
     }
 
     public Designation(List<Tile> tiles, Designation.DesignationType type) {
-        //TODO: room = tile.room;
         this.tiles = new List<Tile>(tiles);
         this.type = type;
  
@@ -93,6 +92,14 @@ public class Designation {
     }
 
     private void GetNeighbooringTilesFurnitures() {
+        /*
+         * XXXXX
+         * X   X
+         * X   X
+         * XXXXX
+         * 
+         * 
+         */
         // top most
         for (int i = minX; i <= maxX; i++) {
             Tile t = world.GetTileAt(i, maxY);
@@ -100,6 +107,7 @@ public class Designation {
             Tile t3 = t.North();
             if (t3.furniture != null) {
                 neighbooringFurnitures.Add(t3.furniture.objectType);
+
             }
         }
         // bottom
@@ -109,6 +117,7 @@ public class Designation {
             Tile t3 = t.South();
             if (t3.furniture != null) {
                 neighbooringFurnitures.Add(t3.furniture.objectType);
+
             }
         }
         // left 
@@ -118,6 +127,7 @@ public class Designation {
             Tile t3 = t.West();
             if (t3.furniture != null) {
                 neighbooringFurnitures.Add(t3.furniture.objectType);
+
             }
         }
         // right
@@ -127,6 +137,7 @@ public class Designation {
             Tile t3 = t.East();
             if (t3.furniture != null) {
                 neighbooringFurnitures.Add(t3.furniture.objectType);
+
             }
         }
 
@@ -134,39 +145,57 @@ public class Designation {
 
     private bool IsRoomItself() {
         //This function is needed if a designation has to be room by themselves and can't be a common place with an open floor plan.
-
         int wallAmount = NumberOfInList(neighbooringFurnitures, "Wall");
         int doorAmount = NumberOfInList(neighbooringFurnitures, "Door");
 
         int sorroundingAmount =(int)(2 * width + 2 * height);
 
         if (wallAmount + doorAmount >= sorroundingAmount) return true;
-     
+        
+
         return false;
+    }
+
+    private int NumberOfInList(List<String> list, string whatWeWantCountOf) {
+        int numberOfOccurences = 0;
+        foreach (String str in list) {
+            if (str == whatWeWantCountOf) numberOfOccurences += 1;
+        }
+        return numberOfOccurences;
+
     }
 
     public bool IsFunctional() {
         //So the way these designations work with world is they are the inner area of walls and doors.
         //walls and doors should not be in the designation itself!
 
-        
+        GetNeighbooringTilesFurnitures();
+
         if (Type == DesignationType.PersonalCrewRoom) {
+
 
             if (furnitures.Contains("SleepingPod") && IsRoomItself()) {
                 Debug.Log("Crew Room is functional");
+
                 return true;
             }
             return false;
         }else if(Type == DesignationType.Kitchen) {
+
+
             if (furnitures.Contains("FoodProcesser") && neighbooringFurnitures.Contains("Door")) {
                 Debug.Log("Kitchen is functional");
+
                 return true;
             }
             return false;
         }
         else if(Type == DesignationType.Cafeteria) {
+
+
             if (NumberOfInList(furnitures, "Desk") > 2 && neighbooringFurnitures.Contains("Door")) {
                 Debug.Log("Cafeteria is functional");
+
                 return true;
             }
             return false;
@@ -175,6 +204,7 @@ public class Designation {
             //TODO: MIGHT LOOK INTO ELECTRIC SYSTEM NEXT WE'LL USE TILE NEIGHBOOR NORTHSOUTHEASTWEST METHODS THERE
             if (furnitures.Contains("Engine")) {
                 Debug.Log("Engine is functional");
+
                 return true;
             }
             return false;
@@ -184,6 +214,7 @@ public class Designation {
             //TODO: IS FUNCTIONAL WE MIGHT DO SOME SPECIAL CASE FOR THIS.
             if (furnitures.Contains("LifeSupportMaintainer") && furnitures.Contains("AtmosProvider")) {
                 Debug.Log("LifeSupport is functional");
+
                 return true;
             }
             return false;
@@ -193,6 +224,7 @@ public class Designation {
             // Trade goods not really picky
 
             Debug.Log("TradeGoods is functional");
+
             return true;
 
         }
@@ -200,15 +232,6 @@ public class Designation {
             return false;
         }
 
-
-    }
-
-    private int NumberOfInList(List<String> list, string whatWeWantCountOf) {
-        int numberOfOccurences = 0;
-        foreach (String str in list) {
-            if (str == whatWeWantCountOf) numberOfOccurences += 1;
-        }
-        return numberOfOccurences;
 
     }
 
