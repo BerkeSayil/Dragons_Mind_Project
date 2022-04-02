@@ -11,6 +11,8 @@ public class Tile
 
     public Job pendingFurnitureJob;
 
+    public Job pendingTileJob;
+
     public Room room;
 
     public Designation.DesignationType designationType;
@@ -114,5 +116,11 @@ public class Tile
     }
     public Tile West() {
         return World.GetTileAt(x - 1, y);
+    }
+
+    public bool ValidateTileChange(TileType tileType) {
+        if (tileType != type) return true;
+
+        return false;
     }
 }

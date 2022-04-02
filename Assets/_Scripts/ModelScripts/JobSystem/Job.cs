@@ -12,11 +12,24 @@ public class Job
 
     public string jobObjectType { get; protected set; }
 
+    public Tile.TileType jobTileType { get; protected set; }
+
     Action<Job> cbJobComplete;
     Action<Job> cbJobCancel;
     public Job(Tile tile, string jobObjectType , Action<Job>cbJobComplete, JobType occupationType ,float jobTime = 1f) {
         this.tile = tile;
         this.jobObjectType = jobObjectType;
+        this.jobTime = jobTime;
+        this.jobOccupation = occupationType;
+       
+
+        this.cbJobComplete += cbJobComplete;
+
+    }
+
+    public Job(Tile tile, Tile.TileType tileType, Action<Job> cbJobComplete, JobType occupationType, float jobTime = 1f) {
+        this.tile = tile;
+        this.jobTileType = tileType;
         this.jobTime = jobTime;
         this.jobOccupation = occupationType;
 

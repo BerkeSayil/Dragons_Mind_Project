@@ -53,7 +53,7 @@ public class Character : MonoBehaviour
             GrabJob();
 
             if(myJob != null) {
-                //TODO: Check if the job is reachable.
+                 // Check if the job is reachable. If not abandon job.
                 if (IsPathPossible(myJob) == false && myJob != null) {
                     AbandonJob(myJob.tile, myJob.jobObjectType);
                     return;

@@ -25,6 +25,7 @@ public class WorkerAI : Character {
         foreach (Job job in jobsListTotal) {
 
             if (job.jobOccupation == construction) jobsList.Add(job);
+            //TODO: Implement dismantle jobs too and figure which will be priority?
 
         }
 

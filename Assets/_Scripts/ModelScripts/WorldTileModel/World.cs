@@ -188,6 +188,8 @@ public class World
 
     }
 
+    
+
     public void SetUpExampleStation() {
 
         Debug.Log("Example Station");
@@ -228,6 +230,16 @@ public class World
         return tiles[x, y];
     }
 
+    public void PlaceTileAt(Tile.TileType tileType, Tile t) {
+
+        t.Type = tileType;
+
+    }
+
+    public void RemoveFurnitureAt(string objectType, Tile t) {
+        //TODO: Remove furniture create inventory type object in its place
+
+    }
     public void PlaceFurnitureAt(string objectType, Tile t)
     {
         // if width or height bigger than 1 on world call PlaceFurnitureAt for those other tiles too
@@ -238,6 +250,7 @@ public class World
             return;
         }
         Furniture furniture = Furniture.PlaceInstance(furniturePrototypes[objectType], t);
+
         // should this type of furniture create furniture instances on multiple tiles ?
         List<Furniture> furnitures = new List<Furniture> {
             furniture
@@ -365,8 +378,13 @@ public class World
     public bool IsFurniturePlacementValid(string furnitureType, Tile tile) {
         return furniturePrototypes[furnitureType].ValidatePositionOfFurniture(tile);
 
+    }
+
+    public bool IsTilePlacementValid(Tile.TileType tileType, Tile tile) {
+        return tile.ValidateTileChange(tileType);
 
     }
+
     public void RegisterDesignationChanged(Action<Designation> callbackFunc) {
         cbDesigChanged += callbackFunc;
     }

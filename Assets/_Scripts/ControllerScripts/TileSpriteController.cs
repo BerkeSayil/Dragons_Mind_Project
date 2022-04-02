@@ -58,7 +58,20 @@ public class TileSpriteController : MonoBehaviour
             RegisterTileDesignationChangedCallback(OnTileChanged);
     }
 
-    
+    public Sprite GetSpriteForTile(Tile.TileType jobTileType) {
+        //TODO: When you fix serialize field sprite things you will need to fix these too!
+
+        if(jobTileType == Tile.TileType.Empty) {
+            return defaultEmptySprite;
+        }
+        
+        if(jobTileType == Tile.TileType.Floor) {
+            return floorSprite;
+        }
+
+        return null; // This shouldn't come up
+
+    }
 
     void OnTileChanged(Tile tileData)
     {

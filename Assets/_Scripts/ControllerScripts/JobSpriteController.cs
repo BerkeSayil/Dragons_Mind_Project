@@ -8,9 +8,12 @@ public class JobSpriteController : MonoBehaviour
     // TODO: change later
     Dictionary<Job, GameObject> jobGameObjectMap;
     FurnitureSpriteController fcs;
+    TileSpriteController tcs;
 
     private void Start() {
         fcs = GameObject.FindObjectOfType<FurnitureSpriteController>();
+        tcs = GameObject.FindObjectOfType<TileSpriteController>();
+
 
         WorldController.Instance.world.
             jobQueue.RegisterJobCreationCallback(OnJobCreated);
@@ -18,8 +21,7 @@ public class JobSpriteController : MonoBehaviour
     }
     
     void OnJobCreated(Job job) {
-        // TODO: We only do furniture building jobs
-        // expands on this.
+        // TODO: We only do furniture building jobs expands on this.
         GameObject jobGO = new GameObject();
 
         if (jobGameObjectMap.ContainsKey(job)) {
@@ -33,14 +35,28 @@ public class JobSpriteController : MonoBehaviour
         jobGO.name = "Job_" + job.jobObjectType + "_" + job.tile.x + "_" + job.tile.y;
         jobGO.transform.position = new Vector2(job.tile.x, job.tile.y);
         jobGO.transform.SetParent(this.transform, true);
-        
-        jobGO.AddComponent<SpriteRenderer>().sprite = fcs.GetSpriteForFurniture(job.jobObjectType);
-        SpriteRenderer sr = jobGO.GetComponent<SpriteRenderer>();
 
-        // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
-        // this will make alpha lower so its more transparent
-        sr.sortingLayerName = "Jobs";
-        sr.color = new Color(0.5f,0.5f,1f,0.25f);
+        // if what we want to place is furniture
+        if (job.jobObjectType != null) {     
+            jobGO.AddComponent<SpriteRenderer>().sprite = fcs.GetSpriteForFurniture(job.jobObjectType);
+            SpriteRenderer sr = jobGO.GetComponent<SpriteRenderer>();
+            // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
+            // this will make alpha lower so its more transparent
+            sr.sortingLayerName = "Jobs";
+            sr.color = new Color(0.5f, 0.5f, 1f, 0.25f);
+
+        }
+        else if (job.jobTileType != Tile.TileType.Empty){
+
+            jobGO.AddComponent<SpriteRenderer>().sprite = tcs.GetSpriteForTile(job.jobTileType);
+            SpriteRenderer sr = jobGO.GetComponent<SpriteRenderer>();
+            // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
+            // this will make alpha lower so its more transparent
+            sr.sortingLayerName = "Jobs";
+            sr.color = new Color(0.5f, 0.5f, 1f, 0.25f);
+        }
+
+        
 
         job.RegisterJobCompleteCallback(OnJobEnded);
         job.RegisterJobCancelCallback(OnJobEnded);

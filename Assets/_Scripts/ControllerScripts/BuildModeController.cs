@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class BuildModeController : MonoBehaviour
 {
-    Tile.TileType buildModeTile = Tile.TileType.Floor;
+    Tile.TileType buildModeTile = Tile.TileType.Empty;
     string buildModeObjectType;
     bool buildModeIsFurniture = false;
     public bool areWeBuilding = false;
@@ -39,7 +39,7 @@ public class BuildModeController : MonoBehaviour
     {
         buildModeIsFurniture = true;
         buildModeObjectType = objectType;
-
+        
     }
 
     public void DoBuild(Tile t) {
@@ -58,13 +58,12 @@ public class BuildModeController : MonoBehaviour
                 && t.pendingFurnitureJob == null
 
                 ) {
-                Job j = new Job(t, furnitureType, (theJob) =>
-                {
+                Job j = new Job(t, furnitureType, (theJob) => {
                     WorldController.Instance.world.
                     PlaceFurnitureAt(furnitureType, theJob.tile);
-                    
+
                     t.pendingFurnitureJob = null;
-                }, 
+                },
                 Job.JobType.Construction
                 );
 
@@ -79,8 +78,93 @@ public class BuildModeController : MonoBehaviour
 
             }
         }
-        else {
-            t.Type = buildModeTile;
+
+        if (buildModeTile == Tile.TileType.Floor) {
+            // mid change fix
+            Tile.TileType buildModeTile = this.buildModeTile;
+
+            // We check if it's a valid position and if so
+            // create a job and queue it for something else to come and do.
+            if (WorldController.Instance.world.IsTilePlacementValid(buildModeTile, t)
+                && t.pendingTileJob == null) {
+                Job j = new Job(t, buildModeTile, (theJob) => {
+                    WorldController.Instance.world.
+                    PlaceTileAt(buildModeTile, theJob.tile);
+
+                    t.pendingTileJob = null;
+                },
+                Job.JobType.Construction
+                );
+
+
+                // TODO: This being this way very easy to clear or forget make it automated in some other way possible
+                t.pendingTileJob = j;
+                j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingTileJob = null; });
+
+                WorldController.Instance.world.jobQueue.Enqueue(j);
+
+
+            }
+        }
+        else if (buildModeTile == Tile.TileType.Empty) {
+
+            // mid change fix
+            Tile.TileType buildModeTile = this.buildModeTile;
+
+            // We check if it's a valid position and if so
+            // create a job and queue it for something else to come and do.
+            if (t.furniture != null) {
+                // dismantle furniture and create an inventory in its place.
+
+                string furnitureType = null;
+
+                if (WorldController.Instance.world.IsFurniturePlacementValid(furnitureType, t) == false
+                    && t.pendingFurnitureJob == null
+                    ) {
+                    Job j = new Job(t, furnitureType, (theJob) => {
+                        WorldController.Instance.world.
+                        RemoveFurnitureAt(furnitureType, theJob.tile);
+
+                        t.pendingFurnitureJob = null;
+                    },
+                    Job.JobType.Construction
+                    );
+
+
+                    // TODO: This being this way very easy to clear or forget make it automated in
+                    // some other way possible
+                    t.pendingFurnitureJob = j;
+                    j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingFurnitureJob = null; });
+
+                    WorldController.Instance.world.jobQueue.Enqueue(j);
+
+
+
+                }
+                else if (WorldController.Instance.world.IsTilePlacementValid(buildModeTile, t)
+                && t.pendingTileJob == null) {
+                    Job j = new Job(t, buildModeTile, (theJob) => {
+                        WorldController.Instance.world.
+                        PlaceTileAt(buildModeTile, theJob.tile);
+
+                        t.pendingTileJob = null;
+                    },
+                    Job.JobType.Construction
+                    );
+
+
+                    // TODO: This being this way very easy to clear or forget make it automated in some other way possible
+                    t.pendingTileJob = j;
+                    j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingTileJob = null; });
+
+                    WorldController.Instance.world.jobQueue.Enqueue(j);
+
+
+                }
+            }
+
+            //t.Type = buildModeTile;
+
         }
     }
     public void SetBuildingMode(bool isBuilding) {
