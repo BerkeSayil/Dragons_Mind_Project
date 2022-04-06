@@ -9,9 +9,11 @@ public class Room
     public float atmosCO2 = 0;
 
     List<Tile> tiles;
+    
 
     public Room() {
         tiles = new List<Tile>();
+       
     }
 
     public void AssignTile(Tile t) {
@@ -67,6 +69,41 @@ public class Room
             
             world.DeleteRooms(oldRoom);
         }
+
+    }
+    public static void DoReverseFloodFillRoom(List<Room> neighboorRoomsList, Room minIndexedRoom) {
+
+        
+        World world = WorldController.Instance.world;
+
+        foreach (Room room in neighboorRoomsList) {
+
+            if(room.Equals(minIndexedRoom) == false) {
+
+                // this room is not the min index room so all of these tiles should become minindexroom's
+                // also delete this room if it's not outsideRoom 
+                if(room.Equals(world.GetOutsideRoom()) == false) {
+                    
+                    List<Tile> tilesToReassign = new List<Tile>(room.tiles);
+
+                    foreach (Tile tile in tilesToReassign) {
+                        minIndexedRoom.AssignTile(tile);
+                    }
+
+                    world.DeleteRooms(room);
+                }
+                else {
+                    // this is not min index but outside room
+
+                    foreach (Tile tile in room.tiles) {
+                        minIndexedRoom.AssignTile(tile);
+                    }
+                }
+
+            }
+
+        }
+
 
     }
 
@@ -171,5 +208,12 @@ public class Room
         tile.World.AddRoom(newRoom);
 
     }
+
     
+    public bool Equals(Room obj) {
+        
+        return tiles.Equals(obj.tiles);
+    }
+
+
 }

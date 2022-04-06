@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class World
@@ -18,6 +19,10 @@ public class World
     public GameObject characterPrefab { get; set; }
 
     Action<Furniture> cbFurnitureCreated;
+    Action<Furniture> cbFurnitureChanged;
+
+    Action<Inventory> cbInventoryCreated;
+
     Action<Tile> cbTileChanged;
     Action<GameObject> cbCharacterCreated;
     Action<Designation> cbDesigChanged;
@@ -215,6 +220,7 @@ public class World
         //TODO: Get rid of this while you get rid of the example station.
         GameObject.Find("A*").GetComponent<AstarPath>().Scan();
 
+        
 
     }
 
@@ -238,6 +244,68 @@ public class World
 
     public void RemoveFurnitureAt(string objectType, Tile t) {
         //TODO: Remove furniture create inventory type object in its place
+
+        if (furniturePrototypes.ContainsKey(objectType) == false) {
+            Debug.LogError("installedObjectPrototypes doesn't contain key: " + objectType);
+            return;
+        }
+
+        // bu tiledaki bu obje furnitureini kaldir.
+        // tile in 4 yanini kontrol et + bu 4 tile icin furniturechange callback at komsularinin gitmesine gore duzelsinler
+        // 4 yanda room u null olanlari discard et
+        // kalan odalardan index numarasi kucuk olani bul 
+        // index numarasi buyuk olan odalardaki butun tile lari da kucuk olanin tilelari arasina kat birlesmis olsunlar
+        // buyuk indexli artik ici bos odalari dunya listesinden sil
+
+        Furniture whatFurnitureWas = furniturePrototypes[objectType];
+        Furniture.DismantleFurniture(furniturePrototypes[objectType], t);
+
+        List<Room> neighboorRooms = new List<Room>();
+
+        int northIndex = int.MaxValue;
+        int southIndex = int.MaxValue;
+        int eastIndex = int.MaxValue;
+        int westIndex = int.MaxValue;
+
+        // if this is an exterior tile we need to recalculate rooms
+        if (whatFurnitureWas.stationExterior) {
+
+            if (t.North().room != null) {
+                northIndex = rooms.IndexOf(t.North().room);
+                neighboorRooms.Add(rooms[northIndex]);
+            }
+            if (t.South().room != null) {
+                southIndex = rooms.IndexOf(t.South().room);
+                neighboorRooms.Add(rooms[southIndex]);
+            }
+            if (t.East().room != null) {
+                eastIndex = rooms.IndexOf(t.East().room);
+                neighboorRooms.Add(rooms[eastIndex]);
+            }
+            if (t.West().room != null) {
+                westIndex = rooms.IndexOf(t.West().room);
+                neighboorRooms.Add(rooms[westIndex]);
+            }
+
+        }
+
+        List<int> minIndexList = new List<int>();
+        minIndexList.Add(northIndex);
+        minIndexList.Add(southIndex);
+        minIndexList.Add(eastIndex);
+        minIndexList.Add(westIndex);
+
+        int minIndex = minIndexList.Any() ? minIndexList.Min() : -1; // if there is any ? for true get min else(:) get -1
+
+        Room minIndexedRoom = rooms[minIndex];
+
+        if(neighboorRooms != null) {
+            
+            Room.DoReverseFloodFillRoom(neighboorRooms, minIndexedRoom);
+        }
+
+        minIndexedRoom.AssignTile(t);
+
 
     }
     public void PlaceFurnitureAt(string objectType, Tile t)
@@ -376,6 +444,7 @@ public class World
 
     }
     public bool IsFurniturePlacementValid(string furnitureType, Tile tile) {
+        
         return furniturePrototypes[furnitureType].ValidatePositionOfFurniture(tile);
 
     }
@@ -406,6 +475,12 @@ public class World
     public void UnregisterFurnitureCreated(Action<Furniture> callbackFunc)
     {
         cbFurnitureCreated -= callbackFunc;
+    }
+    public void RegisterInventoryCreated(Action<Inventory> callbackFunc) {
+        cbInventoryCreated += callbackFunc;
+    }
+    public void UnregisterInventoryCreated(Action<Inventory> callbackFunc) {
+        cbInventoryCreated -= callbackFunc;
     }
     public void RegisterCharacterCreated(Action<GameObject> callbackFunc) {
         cbCharacterCreated += callbackFunc;

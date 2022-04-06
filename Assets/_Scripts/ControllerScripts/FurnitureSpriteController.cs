@@ -45,6 +45,7 @@ public class FurnitureSpriteController : MonoBehaviour
     }
     void OnFurnitureChanged(Furniture furn) {
         // Make sure furniture sprites are correct;
+        
         if(furnitureGameObjectMap.ContainsKey(furn) == false) {
             Debug.Log("OnFurnitureChanged ~ something funky.");
             return;
@@ -52,12 +53,39 @@ public class FurnitureSpriteController : MonoBehaviour
 
         // Updates sprites on a change function
         GameObject furnGO = furnitureGameObjectMap[furn];
+
         SpriteRenderer furnSprite = furnGO.GetComponent<SpriteRenderer>();
+        
+        
 
         furnSprite.sprite = GetSpriteForFurniture(furn);
         furnSprite.sortingLayerName = "Furniture";
     }
 
+    void OnFurnitureRemoved(Furniture furn) {
+        // Make sure furniture sprites are correct;
+
+        if (furnitureGameObjectMap.ContainsKey(furn) == false) {
+            Debug.Log("OnFurnitureChanged ~ something funky.");
+            return;
+        }
+
+        // Updates sprites on a change function
+        GameObject furnGO = furnitureGameObjectMap[furn];
+
+
+        // gets rid of the furniture while at it and for it to work we get tile before getting rid of it
+        Tile tileFurnGotRemoved = furn.tile;
+        furn.tile.PlaceInstalledObject(null);
+
+        // updates 4 direction furnitures to update
+        if (tileFurnGotRemoved.North().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.North().furniture);
+        if (tileFurnGotRemoved.South().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.South().furniture);
+        if (tileFurnGotRemoved.East().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.East().furniture);
+        if (tileFurnGotRemoved.West().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.West().furniture);
+
+        furnGO.SetActive(false);
+    }
     public void OnFurnitureCreated(Furniture furn) {
         //FIXME: DOES NOT consider multi tiles objects
 
@@ -94,6 +122,9 @@ public class FurnitureSpriteController : MonoBehaviour
 
         // Whenever objects anything changes (door animatons n stuff.)
         furn.RegisterOnChangedCallback(OnFurnitureChanged);
+
+        // Whenever object get removed
+        furn.RegisterOnRemovedCallback(OnFurnitureRemoved);
     }
 
     public Sprite GetSpriteForFurniture(Furniture furn) {

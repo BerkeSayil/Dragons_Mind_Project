@@ -26,6 +26,7 @@ public class Furniture
     public bool linksToNeighboor { get; protected set; } // if we want a sprite to change with regard to surrounding tiles.
 
     Action<Furniture> cbOnChanged;
+    Action<Furniture> cbOnRemoved;
 
     Func<Tile, bool> FuncToPositionValidate;
 
@@ -55,6 +56,8 @@ public class Furniture
     }
     static public Furniture PlaceInstance(Furniture proto, Tile tile)
     {
+
+
         if(proto.FuncToPositionValidate(tile) == false) {
             // Cannot place here.
             return null;
@@ -114,6 +117,18 @@ public class Furniture
 
         return furn;
     }
+
+    public static void DismantleFurniture(Furniture furniture, Tile t) {
+        
+        Furniture prototypeOfDismantled = furniture;
+
+        // tells tile that there is no furniture than updates neighboors for sprites
+        if (t.furniture == null) return;
+
+        t.furniture.cbOnRemoved(t.furniture);
+
+    }
+
     public bool ValidatePositionOfFurniture(Tile t) {
 
         //Multi functional until 3 by 3 
@@ -202,8 +217,16 @@ public class Furniture
     {
         cbOnChanged += callbackFunc;
     }
+
     public void UnregisterOnChangedCallback(Action<Furniture> callbackFunc)
     {
         cbOnChanged -= callbackFunc;
+    }
+    public void RegisterOnRemovedCallback(Action<Furniture> callbackFunc) {
+        cbOnRemoved += callbackFunc;
+    }
+
+    public void UnregisterOnRemovedCallback(Action<Furniture> callbackFunc) {
+        cbOnRemoved -= callbackFunc;
     }
 }

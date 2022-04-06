@@ -77,9 +77,7 @@ public class BuildModeController : MonoBehaviour
 
 
             }
-        }
-
-        if (buildModeTile == Tile.TileType.Floor) {
+        }else if (buildModeTile == Tile.TileType.Floor) {
             // mid change fix
             Tile.TileType buildModeTile = this.buildModeTile;
 
@@ -116,7 +114,7 @@ public class BuildModeController : MonoBehaviour
             if (t.furniture != null) {
                 // dismantle furniture and create an inventory in its place.
 
-                string furnitureType = null;
+                string furnitureType = t.furniture.objectType;
 
                 if (WorldController.Instance.world.IsFurniturePlacementValid(furnitureType, t) == false
                     && t.pendingFurnitureJob == null

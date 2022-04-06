@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tile
 {
     // Tile can have 1 of these
-    Inventory looseObject;
+    public Inventory looseObject { get; protected set; }
     public Furniture furniture { get; protected set; }
 
     public Job pendingFurnitureJob;
@@ -50,12 +50,30 @@ public class Tile
                 cbTileChanged(this);
         }
     }
+    public bool PlaceInventoryObject(Inventory looseObjectInstance) {
+        if (looseObjectInstance == null) {
+            // TODO: we should be ablo to send null to uninstall whatever was here.
+            looseObject = null;
+            return true;
+        }
+
+        if (looseObject != null) {
+            Debug.LogError("Trying to place inventory on Tile but there already is one.");
+            return false;
+        }
+
+        // If it didn't fall into those traps than we are good to go.
+
+        looseObject = looseObjectInstance;
+        return true;
+
+    }
+
 
     public bool PlaceInstalledObject(Furniture objInstance)
     {
         if(objInstance == null)
         {
-            // TODO: we should be ablo to send null to uninstall whatever was here.
             furniture = null;
             return true;
         }
