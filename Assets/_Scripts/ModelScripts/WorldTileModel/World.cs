@@ -12,6 +12,7 @@ public class World
     public List<Designation> designations;
 
     Dictionary<string, Furniture> furniturePrototypes;
+    Dictionary<string, Inventory> inventoryPrototypes;
 
     public int width { get; }
     public int height { get; }
@@ -58,6 +59,7 @@ public class World
         }
 
         CreateFurniturePrototypes();
+        CreateInventoryPrototypes();
 
         jobQueue = new JobQueue();
 
@@ -117,7 +119,7 @@ public class World
         furniturePrototypes = new Dictionary<string, Furniture>();
 
         // TODO: Make this get read from a data, XML, json or some other file
-        furniturePrototypes.Add("Wall", 
+        furniturePrototypes.Add("Wall",
             Furniture.CreatePrototype( 
             "Wall", 
             0, // impassible
@@ -193,11 +195,23 @@ public class World
 
     }
 
-    
+    protected void CreateInventoryPrototypes() {
+        inventoryPrototypes = new Dictionary<string, Inventory>();
+
+        // TODO: Make this get read from a data, XML, json or some other file
+        inventoryPrototypes.Add("Wall_Scrap",
+            Inventory.CreateInventoryProto(
+            "Wall_Scrap", // what the object is
+            12, // how much are there in this stack
+            12 // how much can there be for this tile
+            ));
+       
+
+    }
 
     public void SetUpExampleStation() {
 
-        Debug.Log("Example Station");
+        //TODO: Debug 
 
         int l = width / 2 - 5;
         int b = height / 2 - 5;
@@ -220,7 +234,15 @@ public class World
         //TODO: Get rid of this while you get rid of the example station.
         GameObject.Find("A*").GetComponent<AstarPath>().Scan();
 
-        
+        //TODO: This code generates inventory at the tile use this with accordance with spaceship delivery for requested furniture
+
+        /*
+        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes["Wall_Scrap"], GetTileAt(width / 2, height / 2));
+
+        if (cbInventoryCreated != null) {
+            cbInventoryCreated(inv);
+        }
+        */
 
     }
 
@@ -259,6 +281,15 @@ public class World
 
         Furniture whatFurnitureWas = furniturePrototypes[objectType];
         Furniture.DismantleFurniture(furniturePrototypes[objectType], t);
+
+        //TODO: We don't care about it being multiple tile when generating deconstructed inventory also don't think we should tbh ?
+
+       
+        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes["Wall_Scrap"], t);
+
+        if (cbInventoryCreated != null) {
+            cbInventoryCreated(inv);
+        }
 
         List<Room> neighboorRooms = new List<Room>();
 

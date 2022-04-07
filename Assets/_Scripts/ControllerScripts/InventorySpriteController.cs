@@ -63,45 +63,38 @@ public class InventorySpriteController : MonoBehaviour
     void OnInventoryChanged(Inventory inv) {
         // Make sure furniture sprites are correct;
 
-        if (furnitureGameObjectMap.ContainsKey(inv) == false) {
+        if (inventoryGameObjectMap.ContainsKey(inv) == false) {
             Debug.Log("OnFurnitureChanged ~ something funky.");
             return;
         }
 
         // Updates sprites on a change function
-        GameObject furnGO = furnitureGameObjectMap[inv];
+        GameObject invGO = inventoryGameObjectMap[inv];
 
-        SpriteRenderer furnSprite = furnGO.GetComponent<SpriteRenderer>();
+        SpriteRenderer invSpriteRend = invGO.GetComponent<SpriteRenderer>();
 
 
 
-        furnSprite.sprite = GetSpriteForFurniture(inv);
-        furnSprite.sortingLayerName = "Furniture";
+        invSpriteRend.sprite = inventorySprites[inv.objectType]; ;
+        invSpriteRend.sortingLayerName = "Furniture"; // furn and inv being on the same layer isn't an issue
     }
 
     void OnInventoryRemoved(Inventory inv) {
         // Make sure furniture sprites are correct;
 
-        if (furnitureGameObjectMap.ContainsKey(inv) == false) {
+        if (inventoryGameObjectMap.ContainsKey(inv) == false) {
             Debug.Log("OnFurnitureChanged ~ something funky.");
             return;
         }
 
         // Updates sprites on a change function
-        GameObject furnGO = furnitureGameObjectMap[inv];
+        GameObject invGO = inventoryGameObjectMap[inv];
 
 
         // gets rid of the furniture while at it and for it to work we get tile before getting rid of it
-        Tile tileFurnGotRemoved = inv.tile;
-        inv.tile.PlaceInstalledObject(null);
+        inv.tile.PlaceInventoryObject(null);
 
-        // updates 4 direction furnitures to update
-        if (tileFurnGotRemoved.North().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.North().furniture);
-        if (tileFurnGotRemoved.South().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.South().furniture);
-        if (tileFurnGotRemoved.East().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.East().furniture);
-        if (tileFurnGotRemoved.West().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.West().furniture);
-
-        furnGO.SetActive(false);
+        invGO.SetActive(false);
     }
 
 }

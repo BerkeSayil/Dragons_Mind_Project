@@ -7,7 +7,7 @@ using UnityEngine;
 public class Inventory {
 
     public string objectType { get; protected set; } // like "Steel Plate"
-    public int maxStackSize { get; protected set; }  // how much could be in there
+    public int maxStackSize { get; protected set; }  // how much could be in there : 1 for furnitures but 12 for resource type ?
     public int stackSize { get; protected set; } // how much is there
     public Tile tile { get; protected set; }
 
@@ -19,19 +19,39 @@ public class Inventory {
 
     }
 
-    static public Inventory CreateInventoryAtTile(Tile t, string objectType, int stackSize, int maxStackSize = 32) {
+    static public Inventory CreateInventoryProto(string objectType, int stackSize, int maxStackSize = 12) {
 
         Inventory inventory = new Inventory();
 
         inventory.objectType = objectType;
         inventory.stackSize = stackSize;
         inventory.maxStackSize = maxStackSize;
-        inventory.tile = t;
-        
-        t.PlaceInventoryObject(inventory);
-
-
+   
         return inventory;
+    }
+
+
+    static public Inventory PlaceInstance(Inventory proto, Tile tile) {
+
+        Inventory inv = new Inventory();
+
+        inv.objectType = proto.objectType;
+        inv.stackSize = proto.stackSize;
+        inv.maxStackSize = proto.maxStackSize;
+
+
+        inv.tile = tile;
+
+        if (tile.PlaceInventoryObject(inv) == false) {
+            // means we can't place here probly something already placed.
+
+            // so we can't return our furniture and give null.
+            // furn will be garbage collected.
+            return null;
+        }
+
+      
+        return inv;
     }
 
     public void RegisterOnChangedCallback(Action<Inventory> callbackFunc) {
