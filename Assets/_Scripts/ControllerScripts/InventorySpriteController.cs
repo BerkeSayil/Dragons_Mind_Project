@@ -42,9 +42,6 @@ public class InventorySpriteController : MonoBehaviour
 
         invGO.layer = INVENTORY_LAYER;
         
-        // Whenever objects anything changes (door animatons n stuff.)
-        inv.RegisterOnChangedCallback(OnInventoryChanged);
-
         //TODO: Make us also display the amount in the bottom maybe but not neccasry tbh ??!
 
         // Whenever object get removed
@@ -61,25 +58,6 @@ public class InventorySpriteController : MonoBehaviour
         foreach (Sprite s in sprites) {
             inventorySprites[s.name] = s;
         }
-    }
-
-    void OnInventoryChanged(Inventory inv) {
-        // Make sure furniture sprites are correct;
-
-        if (inventoryGameObjectMap.ContainsKey(inv) == false) {
-            Debug.Log("OnFurnitureChanged ~ something funky.");
-            return;
-        }
-
-        // Updates sprites on a change function
-        GameObject invGO = inventoryGameObjectMap[inv];
-
-        SpriteRenderer invSpriteRend = invGO.GetComponent<SpriteRenderer>();
-
-
-
-        invSpriteRend.sprite = inventorySprites[inv.objectType]; ;
-        invSpriteRend.sortingLayerName = "Furniture"; // furn and inv being on the same layer isn't an issue
     }
 
     void OnInventoryRemoved(Inventory inv) {

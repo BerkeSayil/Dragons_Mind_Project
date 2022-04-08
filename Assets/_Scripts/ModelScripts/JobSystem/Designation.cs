@@ -166,6 +166,8 @@ public class Designation {
     }
 
     public bool IsFunctional() {
+        //TODO: This gets called way more than neccessary.
+
         //So the way these designations work with world is they are the inner area of walls and doors.
         //walls and doors should not be in the designation itself!
 

@@ -54,7 +54,7 @@ public class Tile
     }
     public bool PlaceInventoryObject(Inventory looseObjectInstance) {
         if (looseObjectInstance == null) {
-            // TODO: we should be ablo to send null to uninstall whatever was here.
+            // sending null removes from tile
             looseObject = null;
             return true;
         }
@@ -70,7 +70,6 @@ public class Tile
         return true;
 
     }
-
 
     public bool PlaceInstalledObject(Furniture objInstance)
     {

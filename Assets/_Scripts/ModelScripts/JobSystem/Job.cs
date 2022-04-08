@@ -9,6 +9,7 @@ public class Job
     public Tile tile { get; protected set; }
     float jobTime;
     public JobType jobOccupation { get; protected set; }
+    public bool haulingJob { get; protected set; }
 
     public string jobObjectType { get; protected set; }
 
@@ -36,6 +37,18 @@ public class Job
         this.cbJobComplete += cbJobComplete;
 
     }
+
+    public Job(Tile tile, bool haulingJob, Action<Job> cbJobComplete, JobType occupationType, float jobTime = 0.2f) {
+        this.tile = tile;
+        this.haulingJob = haulingJob;
+        this.jobTime = jobTime;
+        this.jobOccupation = occupationType;
+
+
+        this.cbJobComplete += cbJobComplete;
+
+    }
+
 
     public void RegisterJobCompleteCallback(Action<Job> cb) {
         cbJobComplete += cb;
@@ -70,7 +83,7 @@ public class Job
 
     public enum JobType { // These jobs are based on what type of occupant will do it
         Construction, // build, dismantle furnitures and haul goods 
-        ConstructionSecond,
+        ConstructionSecond, // this is for picking up inventory and hauling it off
         Engineering,
         Trader,
         Visitor,

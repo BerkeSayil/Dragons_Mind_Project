@@ -7,8 +7,6 @@ using UnityEngine;
 public class Inventory {
 
     public string objectType { get; protected set; } // like "Steel Plate"
-    public int maxStackSize { get; protected set; }  // how much could be in there : 1 for furnitures but 12 for resource type ?
-    public int stackSize { get; protected set; } // how much is there
     public Tile tile { get; protected set; }
 
     Action<Inventory> cbOnChanged;
@@ -19,26 +17,22 @@ public class Inventory {
 
     }
 
-    static public Inventory CreateInventoryProto(string objectType, int stackSize, int maxStackSize = 12) {
+    static public Inventory CreateInventoryProto(string objectType) {
 
         Inventory inventory = new Inventory();
 
         inventory.objectType = objectType;
-        inventory.stackSize = stackSize;
-        inventory.maxStackSize = maxStackSize;
+        
    
         return inventory;
     }
-
 
     static public Inventory PlaceInstance(Inventory proto, Tile tile) {
 
         Inventory inv = new Inventory();
 
         inv.objectType = proto.objectType;
-        inv.stackSize = proto.stackSize;
-        inv.maxStackSize = proto.maxStackSize;
-
+        
 
         inv.tile = tile;
 
@@ -54,9 +48,7 @@ public class Inventory {
         return inv;
     }
 
-    public static void DismantleFurniture(Inventory inv, Tile t) {
-
-        Inventory prototypeOfHauled = inv;
+    public static void PickInventoryUp(Tile t) {
 
         // tells tile that there is no inventory than updates for sprite
         if (t.looseObject == null) return;

@@ -1,6 +1,8 @@
 
 using Pathfinding;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WorkerAI : Character {
@@ -8,20 +10,13 @@ public class WorkerAI : Character {
     private const Job.JobType construction = Job.JobType.Construction;
     private const Job.JobType hauling = Job.JobType.ConstructionSecond;
 
-    Inventory inventoryOnWorker;
 
-    //TODO: For better performance this should be modified to be one central manager type script
-    //TODO: That knows our workers and jobs so it matches the close ones together is what I think?
-  
+    //TODO: For better performance this should be modified to be couroutine or async.
+
     public override Job PrioritizedJob(ArrayList jobsListTotal) { 
-        /*
-         * Check for the following criteria to understand who to prioritize
-         * 
-         * what is closer (closeness score ?)
-         * what is mostImportant (construction, something of chaotic nature, ...)
-         * this also should filter with character job in mind so we don't get another occupants jobs.
-         * 
-         */
+        // get construction jobs first
+        // hauling inventories as second
+
         if (jobsListTotal.Count == 0) return null;
 
         ArrayList jobsList = new ArrayList();
@@ -30,9 +25,10 @@ public class WorkerAI : Character {
 
             if (job.jobOccupation == construction) jobsList.Add(job);
             //TODO: Implement dismantle jobs too and figure which will be priority?
-            if (job.jobOccupation == hauling) jobsList.Add(job);
 
-
+            // Worker isn't carrying anything and it finds a hauling job so it picks up inventory
+            if ( job.jobOccupation == hauling) jobsList.Add(job);
+              
         }
 
         if (jobsList.Count == 0) return null;
@@ -51,8 +47,6 @@ public class WorkerAI : Character {
                     minDist = distanceToJob;
                     minDistJob = job;
                 }
-
-
 
             }
 

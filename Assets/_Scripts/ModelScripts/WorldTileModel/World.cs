@@ -6,13 +6,16 @@ using UnityEngine;
 
 public class World
 {
+
     Tile[,] tiles;
     List<Character> characters;
+    List<WorkerAI> workers;
+
     public List<Room> rooms;
     public List<Designation> designations;
 
     Dictionary<string, Furniture> furniturePrototypes;
-    Dictionary<string, Inventory> inventoryPrototypes;
+    public Dictionary<string, Inventory> inventoryPrototypes { get; protected set; }
 
     public int width { get; }
     public int height { get; }
@@ -27,11 +30,10 @@ public class World
     Action<Tile> cbTileChanged;
     Action<GameObject> cbCharacterCreated;
     Action<Designation> cbDesigChanged;
-    //TODO: 1000 tane callback var aq arasira sil bunlari
+    //TODO: When and if we should unregister these callbacks ?
 
-    // TODO: This should be replaced with a dedicated
-    // class for managing job queues (plural!!!)
-    // might look into making it semi-static or self initializing...
+    // TODO: This should be replaced with a dedicated class for managing job queues (plural!!!)
+    // might look into making it semi-static or self initializing... (don't know what they mean but I saw it online lol :d)
     public JobQueue jobQueue;
     
 
@@ -58,14 +60,16 @@ public class World
             }
         }
 
+        // This loads preset furniture and inventory info into their dictionaries
         CreateFurniturePrototypes();
         CreateInventoryPrototypes();
+
 
         jobQueue = new JobQueue();
 
         // Creates characters for us. 
         characters = new List<Character>();
-
+        workers = new List<WorkerAI>();
         
     }
     public void AddRoom(Room r) {
@@ -83,6 +87,12 @@ public class World
 
         return Designation.DesignationType.None;
     }
+
+    public List<Designation> GetDesignationOfType(Designation.DesignationType typeWanted) {
+      
+        return designations.Any() ? designations.FindAll((type) => type.Type == typeWanted ) : null;
+
+    }
     public Room GetOutsideRoom() {
 
         return rooms[0];
@@ -98,22 +108,6 @@ public class World
         
 
     }
-    //TODO: This is not how we want to create characters
-    public Character CreateCharacter(Tile t) {
-
-        GameObject c = GameObject.Instantiate(characterPrefab);
-        Character cScript =c.GetComponent<Character>();
-
-        characters.Add(cScript);
-        // because we registered this cb as charactercreated this goes and call that
-        // with the given variable.
-
-        if(cbCharacterCreated != null) {
-            cbCharacterCreated(c);
-        }
-        return cScript;
-    }
-
     protected void CreateFurniturePrototypes()
     {
         furniturePrototypes = new Dictionary<string, Furniture>();
@@ -201,43 +195,11 @@ public class World
         // TODO: Make this get read from a data, XML, json or some other file
         inventoryPrototypes.Add("Wall_Scrap",
             Inventory.CreateInventoryProto(
-            "Wall_Scrap", // what the object is
-            12, // how much are there in this stack
-            12 // how much can there be for this tile
+            "Wall_Scrap" // what the object is
             ));
-       
+
 
     }
-
-    public void SetUpExampleStation() {
-
-        //TODO: Debug 
-
-        int l = width / 2 - 5;
-        int b = height / 2 - 5;
-
-        for (int x = l - 10 ; x < l + 15; x++) {
-            for (int y = b - 10; y < b + 15 ; y++) {
-                tiles[x, y].Type = Tile.TileType.Floor;
-
-                if((x == l + 3 ) || (x == (l+4)) || (y == b - 3) || (y == (b + 4))) {
-                    if(x != (l + 3) && y != (b + 9)) {
-                        PlaceFurnitureAt("Wall", tiles[x,y]);
-                    }  
-                }
-                if ((x == l - 10) || (x == (l + 14)) || (y == b - 10) || (y == (b + 14))) {
-                    PlaceFurnitureAt("Wall", tiles[x, y]);
-                    
-                }
-            }
-        }
-        //TODO: Get rid of this while you get rid of the example station.
-        GameObject.Find("A*").GetComponent<AstarPath>().Scan();
-
-        
-
-    }
-
     public Tile GetTileAt(int x, int y)
     {
         if(x < 0 || x > width || y < 0 || y > height)
@@ -250,100 +212,33 @@ public class World
         return tiles[x, y];
     }
 
-    public void PlaceTileAt(Tile.TileType tileType, Tile t) {
-        
-        if(t.Type == Tile.TileType.Floor) {
-            if(tileType == Tile.TileType.Empty) {
+    public bool IsFurniturePlacementValid(string furnitureType, Tile tile) {
+        // return if you could place that furniture on that tile
+        return furniturePrototypes[furnitureType].ValidatePositionOfFurniture(tile);
 
-                PlaceInventory(tileType.ToString(), t);
+    }
+
+    public bool IsTilePlacementValid(Tile.TileType tileType, Tile tile) {
+        // returns if you're changing the tile : true if you send different tile type
+        return tile.ValidateTileChange(tileType);
+
+    }
+
+    public void PlaceTileAt(Tile.TileType tileType, Tile t) {
+
+        if (t.Type == Tile.TileType.Floor) {
+            if (tileType == Tile.TileType.Empty) {
+
+                DropInventoryAfterDeconstruction(tileType.ToString(), t);
             }
         }
-
-
         t.Type = tileType;
         
-        
-
     }
 
-    public void RemoveFurnitureAt(string objectType, Tile t) {
-        //TODO: Remove furniture create inventory type object in its place
+    private void DropInventoryAfterDeconstruction(string objectType, Tile t) {
 
-        if (furniturePrototypes.ContainsKey(objectType) == false) {
-            Debug.LogError("installedObjectPrototypes doesn't contain key: " + objectType);
-            return;
-        }
-
-        // bu tiledaki bu obje furnitureini kaldir.
-        // tile in 4 yanini kontrol et + bu 4 tile icin furniturechange callback at komsularinin gitmesine gore duzelsinler
-        // 4 yanda room u null olanlari discard et
-        // kalan odalardan index numarasi kucuk olani bul 
-        // index numarasi buyuk olan odalardaki butun tile lari da kucuk olanin tilelari arasina kat birlesmis olsunlar
-        // buyuk indexli artik ici bos odalari dunya listesinden sil
-
-        Furniture whatFurnitureWas = furniturePrototypes[objectType];
-        Furniture.DismantleFurniture(furniturePrototypes[objectType], t);
-
-        //TODO: We don't care about it being multiple tile when generating deconstructed inventory also don't think we should tbh ?
-
-
-        PlaceInventory(objectType, t);
-
-
-        List<Room> neighboorRooms = new List<Room>();
-
-        int northIndex = int.MaxValue;
-        int southIndex = int.MaxValue;
-        int eastIndex = int.MaxValue;
-        int westIndex = int.MaxValue;
-
-        // if this is an exterior tile we need to recalculate rooms
-        if (whatFurnitureWas.stationExterior) {
-
-            if (t.North().room != null) {
-                northIndex = rooms.IndexOf(t.North().room);
-                neighboorRooms.Add(rooms[northIndex]);
-            }
-            if (t.South().room != null) {
-                southIndex = rooms.IndexOf(t.South().room);
-                neighboorRooms.Add(rooms[southIndex]);
-            }
-            if (t.East().room != null) {
-                eastIndex = rooms.IndexOf(t.East().room);
-                neighboorRooms.Add(rooms[eastIndex]);
-            }
-            if (t.West().room != null) {
-                westIndex = rooms.IndexOf(t.West().room);
-                neighboorRooms.Add(rooms[westIndex]);
-            }
-
-        }
-
-        List<int> minIndexList = new List<int>();
-        minIndexList.Add(northIndex);
-        minIndexList.Add(southIndex);
-        minIndexList.Add(eastIndex);
-        minIndexList.Add(westIndex);
-
-        //TODO: what should we do if we remove something and a neighbooring furniture is present ?
-        minIndexList.RemoveAll((int i) => i == -1); // This removes nearby furnitures so they don't conflict
-
-        int minIndex = minIndexList.Any() ? minIndexList.Min() : -1; // if there is any ? for true get min else(:) get -1
-
-        Room minIndexedRoom = rooms[minIndex];
-
-        if(neighboorRooms != null) {
-            
-            Room.DoReverseFloodFillRoom(neighboorRooms, minIndexedRoom);
-        }
-
-        minIndexedRoom.AssignTile(t);
-
-
-    }
-
-    private void PlaceInventory(string objectType, Tile t) {
-
+        //TODO: Consider objectType
         string s = "Wall_Scrap";
 
         Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[s], t);
@@ -353,44 +248,85 @@ public class World
         }
 
         if (t.looseObject != null) {
-            // inventory exists.
+            // inventory exists on this tile.
 
+            Job j = new Job(t, true, (theJob) => {
+                GetTheInventory(s, theJob.tile);
+
+                t.pendingHaulJob = null;
+
+            }, Job.JobType.ConstructionSecond );
+
+            t.pendingHaulJob = j;
+            j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingHaulJob = null; });
             
-                Job j = new Job(t, s, (theJob) => {
-                    WorldController.Instance.world.
-                    HaulInventory(s, theJob.tile);
+            WorldController.Instance.world.jobQueue.Enqueue(j);
 
-                    t.pendingHaulJob = null;
-                },
-                Job.JobType.ConstructionSecond
-                );
+        }                 
 
+    }
+    
+    public void DropOffInventoryAtHaulingEnd(string objectType, Tile tile) {
 
-                // TODO: This being this way very easy to clear or forget make it automated in
-                // some other way possible
-                t.pendingHaulJob = j;
-                j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingHaulJob = null; });
+        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[objectType], tile);
 
-                WorldController.Instance.world.jobQueue.Enqueue(j);
-
-
-
-            }                 
-
+        if (cbInventoryCreated != null) {
+            cbInventoryCreated(inv);
         }
 
-    private void HaulInventory(string objectType, Tile tile) {
+        //TODO: Keep track of inventories that exist
+        // .Add(inv);
+    }
+    private void GetTheInventory(string objectType, Tile tile) {
 
         if (inventoryPrototypes.ContainsKey(objectType) == false) {
             Debug.LogError("inventoryPrototypes doesn't contain key: " + objectType);
             return;
         }
 
+        List<Designation> desigs = GetDesignationOfType(Designation.DesignationType.TradeGoods);
 
-        Inventory whatInventoryWas = inventoryPrototypes[objectType];
-        Inventory.DismantleFurniture(inventoryPrototypes[objectType], tile);
+        Tile destination = tile; // at worst we'll put where we found it ?
+
+        Inventory.PickInventoryUp(tile); // removes inventory on given tile
+
+        // now that the inventory is removed from ground
+        // we'll create a job only the worker that took this could complete
+
+        for (int i = 0; i < desigs.Count; i++) {
+            foreach (Tile t in desigs[i].tiles) {
+                if (t.looseObject == null && t.pendingHaulJob == null && IsHaulPlacementValid(t)){
+                    destination = t;
+                    break;
+                }
+            }
+            if (destination != tile) break;
+        }
+
+        if (destination == tile){
+            DropInventoryAfterDeconstruction(objectType, tile);
+            return;
+        }
+
+        Job j = new Job(destination, true, (theJob) => {
+            DropOffInventoryAtHaulingEnd(objectType, theJob.tile);
+
+            destination.pendingHaulJob = null;
+
+        }, Job.JobType.ConstructionSecond);
+
+        destination.pendingHaulJob = j;
+        j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingHaulJob = null; });
+
+        WorldController.Instance.world.jobQueue.Enqueue(j);
+    }
 
 
+    public bool IsHaulPlacementValid(Tile destination) {
+        if (destination.furniture == null) {
+            return true;
+        }
+        else return false;
     }
 
     public void PlaceFurnitureAt(string objectType, Tile t)
@@ -525,20 +461,125 @@ public class World
 
         }
 
-        
+    }
+    public void RemoveFurnitureAt(string objectType, Tile t) {
+
+        if (furniturePrototypes.ContainsKey(objectType) == false) {
+            Debug.LogError("installedObjectPrototypes doesn't contain key: " + objectType);
+            return;
+        }
+
+        // bu tiledaki bu obje furnitureini kaldir.
+        // tile in 4 yanini kontrol et + bu 4 tile icin furniturechange callback at komsularinin gitmesine gore duzelsinler
+        // 4 yanda room u null olanlari discard et
+        // kalan odalardan index numarasi kucuk olani bul 
+        // index numarasi buyuk olan odalardaki butun tile lari da kucuk olanin tilelari arasina kat birlesmis olsunlar
+        // buyuk indexli artik ici bos odalari dunya listesinden sil
+
+        //TODO: Multiple tile deconstruction not supported
+        Furniture whatFurnitureWas = furniturePrototypes[objectType];
+        Furniture.DismantleFurniture(furniturePrototypes[objectType], t);
+
+
+        DropInventoryAfterDeconstruction(objectType, t);
+
+
+        List<Room> neighboorRooms = new List<Room>();
+
+        int northIndex = int.MaxValue;
+        int southIndex = int.MaxValue;
+        int eastIndex = int.MaxValue;
+        int westIndex = int.MaxValue;
+
+        // if this is an exterior tile we need to recalculate rooms
+        if (whatFurnitureWas.stationExterior) {
+
+            if (t.North().room != null) {
+                northIndex = rooms.IndexOf(t.North().room);
+                neighboorRooms.Add(rooms[northIndex]);
+            }
+            if (t.South().room != null) {
+                southIndex = rooms.IndexOf(t.South().room);
+                neighboorRooms.Add(rooms[southIndex]);
+            }
+            if (t.East().room != null) {
+                eastIndex = rooms.IndexOf(t.East().room);
+                neighboorRooms.Add(rooms[eastIndex]);
+            }
+            if (t.West().room != null) {
+                westIndex = rooms.IndexOf(t.West().room);
+                neighboorRooms.Add(rooms[westIndex]);
+            }
+
+        }
+
+        List<int> minIndexList = new List<int>();
+        minIndexList.Add(northIndex);
+        minIndexList.Add(southIndex);
+        minIndexList.Add(eastIndex);
+        minIndexList.Add(westIndex);
+
+        //TODO: what should we do if we remove something and a neighbooring furniture is present ?
+        minIndexList.RemoveAll((int i) => i == -1); // This removes nearby furnitures so they don't conflict
+
+        int minIndex = minIndexList.Any() ? minIndexList.Min() : -1; // if there is any ? for true get min else(:) get -1
+
+        Room minIndexedRoom = rooms[minIndex];
+
+        if (neighboorRooms != null) {
+
+            Room.DoReverseFloodFillRoom(neighboorRooms, minIndexedRoom);
+        }
+
+        minIndexedRoom.AssignTile(t);
+
 
     }
-    public bool IsFurniturePlacementValid(string furnitureType, Tile tile) {
-        
-        return furniturePrototypes[furnitureType].ValidatePositionOfFurniture(tile);
+    
+    //TODO: This is not how we want to create characters
+    public Character CreateCharacter(Tile t) {
 
+        GameObject c = GameObject.Instantiate(characterPrefab);
+        Character cScript = c.GetComponent<Character>();
+
+        characters.Add(cScript);
+
+        if (characterPrefab.GetComponent<WorkerAI>() != null) workers.Add(characterPrefab.GetComponent<WorkerAI>());
+        // because we registered this cb as charactercreated this goes and call that
+        // with the given variable.
+
+        if (cbCharacterCreated != null) {
+            cbCharacterCreated(c);
+        }
+        return cScript;
     }
 
-    public bool IsTilePlacementValid(Tile.TileType tileType, Tile tile) {
-        return tile.ValidateTileChange(tileType);
+    public void SetUpExampleStation() {
+
+        //TODO: Debug get rid of in the final build
+
+        int l = width / 2 - 5;
+        int b = height / 2 - 5;
+
+        for (int x = l - 10; x < l + 15; x++) {
+            for (int y = b - 10; y < b + 15; y++) {
+                tiles[x, y].Type = Tile.TileType.Floor;
+
+                if ((x == l + 3) || (x == (l + 4)) || (y == b - 3) || (y == (b + 4))) {
+                    if (x != (l + 3) && y != (b + 9)) {
+                        PlaceFurnitureAt("Wall", tiles[x, y]);
+                    }
+                }
+                if ((x == l - 10) || (x == (l + 14)) || (y == b - 10) || (y == (b + 14))) {
+                    PlaceFurnitureAt("Wall", tiles[x, y]);
+
+                }
+            }
+        }
+        //TODO: Get rid of this while you get rid of the example station.
+        GameObject.Find("A*").GetComponent<AstarPath>().Scan();
 
     }
-
     public void RegisterDesignationChanged(Action<Designation> callbackFunc) {
         cbDesigChanged += callbackFunc;
     }
@@ -591,16 +632,5 @@ public class World
 
         cbDesigChanged(d);
     }
-
-    public Furniture GetFurniturePrototype(string objectType) {
-
-        if(furniturePrototypes.ContainsKey(objectType) == false) {
-
-            Debug.Log("furniturePrototypes doesn't contain the key");
-            return null;
-        }
-        return furniturePrototypes[objectType];
-    }
-
 
 }

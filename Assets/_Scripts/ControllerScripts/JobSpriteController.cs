@@ -22,6 +22,7 @@ public class JobSpriteController : MonoBehaviour
     
     void OnJobCreated(Job job) {
         // TODO: We only do furniture building jobs expands on this.
+
         GameObject jobGO = new GameObject();
 
         if (jobGameObjectMap.ContainsKey(job)) {
@@ -35,6 +36,18 @@ public class JobSpriteController : MonoBehaviour
         jobGO.name = "Job_" + job.jobObjectType + "_" + job.tile.x + "_" + job.tile.y;
         jobGO.transform.position = new Vector2(job.tile.x, job.tile.y);
         jobGO.transform.SetParent(this.transform, true);
+
+
+        // this is a inventory pickup or haul off job we don't need the sprite side for it
+        if (job.jobOccupation == Job.JobType.ConstructionSecond) {
+
+
+            job.RegisterJobCompleteCallback(OnJobEnded);
+            job.RegisterJobCancelCallback(OnJobEnded);
+            return;
+        }
+
+        
 
         // if what we want to place is furniture
         if (job.jobObjectType != null) {     
@@ -62,6 +75,8 @@ public class JobSpriteController : MonoBehaviour
         job.RegisterJobCancelCallback(OnJobEnded);
 
     }
+
+    
     void OnJobEnded(Job j) {
 
         // TODO: We only do furniture building jobs

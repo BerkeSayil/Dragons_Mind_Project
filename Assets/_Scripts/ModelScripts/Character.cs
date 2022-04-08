@@ -6,7 +6,7 @@ using Pathfinding;
 
 public class Character : MonoBehaviour
 {
-    public Tile currTile;
+    public Tile currTile { get; protected set; }
     Tile destTile; // if not moving this equals to currTile
     Vector3 destTilePos;
     Vector3 currTilePos;
@@ -19,7 +19,7 @@ public class Character : MonoBehaviour
     GraphNode node1;
     GraphNode node2;
 
-    Job myJob;
+    public Job myJob { get; protected set; }
     Action<Character> cbCharacterChanged;
 
 
@@ -145,7 +145,13 @@ public class Character : MonoBehaviour
 
         return PathUtilities.IsPathPossible(node1, node2);
     }
+    public bool IsPathPossible(Vector2 one, Vector2 two) {
 
+        node1 = GetNodeOnTile(one);
+        node2 = GetNodeOnTile(two);
+
+        return PathUtilities.IsPathPossible(node1, node2);
+    }
     private void AbandonJob(Tile t, string furnitureType) {
 
         destTile = currTile;
@@ -199,11 +205,11 @@ public class Character : MonoBehaviour
             Debug.LogError("Character is thinking about a job that isn't theirs. You nforgot to unregister  something.");
             return;
         }
+
         AstarPath.active.Scan();
         currTile = destTile;
         currTilePos = destTilePos = new Vector3(j.tile.x, j.tile.y);
         myJob = null;
-
 
     }
 

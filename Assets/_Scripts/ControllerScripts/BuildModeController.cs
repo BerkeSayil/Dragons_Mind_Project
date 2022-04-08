@@ -5,7 +5,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BuildModeController : MonoBehaviour
-{
+{   
+    //TODO: This method being a async or coroutine would benefit us in fps very generously
+
     Tile.TileType buildModeTile = Tile.TileType.Empty;
     string buildModeObjectType;
     bool buildModeIsFurniture = false;
