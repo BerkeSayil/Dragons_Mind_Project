@@ -63,6 +63,7 @@ public class FurnitureSpriteController : MonoBehaviour
     }
 
     void OnFurnitureRemoved(Furniture furn) {
+        //TODO: DOESN'T CONSIDER MULTI TILE FURNITURES
         // Make sure furniture sprites are correct;
 
         if (furnitureGameObjectMap.ContainsKey(furn) == false) {
@@ -104,7 +105,6 @@ public class FurnitureSpriteController : MonoBehaviour
 
         BoxCollider2D furnGOCollider = furnGO.AddComponent<BoxCollider2D>();
 
-        // TODO: Make this understand how big a furniture is and apply with that in mind.
         furnGOCollider.size = new Vector2 (1f,1f);
 
         // TODO: Implement better layering system for movement cost consideration maybe ?

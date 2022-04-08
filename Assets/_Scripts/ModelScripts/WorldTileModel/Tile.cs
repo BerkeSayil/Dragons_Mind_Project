@@ -11,6 +11,8 @@ public class Tile
 
     public Job pendingFurnitureJob;
 
+    public Job pendingHaulJob;
+
     public Job pendingTileJob;
 
     public Room room;

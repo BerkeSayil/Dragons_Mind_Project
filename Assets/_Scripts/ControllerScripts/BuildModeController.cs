@@ -77,7 +77,8 @@ public class BuildModeController : MonoBehaviour
 
 
             }
-        }else if (buildModeTile == Tile.TileType.Floor) {
+        }
+        if (buildModeTile == Tile.TileType.Floor && buildModeIsFurniture == false) {
             // mid change fix
             Tile.TileType buildModeTile = this.buildModeTile;
 
@@ -104,7 +105,7 @@ public class BuildModeController : MonoBehaviour
 
             }
         }
-        else if (buildModeTile == Tile.TileType.Empty) {
+        if (buildModeTile == Tile.TileType.Empty && buildModeIsFurniture == false) {
 
             // mid change fix
             Tile.TileType buildModeTile = this.buildModeTile;
@@ -116,6 +117,7 @@ public class BuildModeController : MonoBehaviour
 
                 string furnitureType = t.furniture.objectType;
 
+                // are we removing furniture ?
                 if (WorldController.Instance.world.IsFurniturePlacementValid(furnitureType, t) == false
                     && t.pendingFurnitureJob == null
                     ) {
@@ -138,8 +140,9 @@ public class BuildModeController : MonoBehaviour
 
 
 
-                }
-                else if (WorldController.Instance.world.IsTilePlacementValid(buildModeTile, t)
+                }                 // are we removing tile ? 
+                //TODO: Removing Tile doesn't work
+                else if (WorldController.Instance.world.IsTilePlacementValid(buildModeTile, t) == false
                 && t.pendingTileJob == null) {
                     Job j = new Job(t, buildModeTile, (theJob) => {
                         WorldController.Instance.world.
@@ -159,6 +162,8 @@ public class BuildModeController : MonoBehaviour
 
 
                 }
+
+
             }
 
             //t.Type = buildModeTile;

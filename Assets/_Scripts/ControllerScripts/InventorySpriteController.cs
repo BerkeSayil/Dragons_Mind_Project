@@ -21,6 +21,8 @@ public class InventorySpriteController : MonoBehaviour
         inventoryGameObjectMap = new Dictionary<Inventory, GameObject>();
 
         world.RegisterInventoryCreated(OnInventoryCreated);
+
+        
     }
 
     public void OnInventoryCreated(Inventory inv) {
@@ -28,6 +30,7 @@ public class InventorySpriteController : MonoBehaviour
         // Create a visual gameobject 
         GameObject invGO = new GameObject();
 
+        
         inventoryGameObjectMap.Add(inv, invGO);
 
 

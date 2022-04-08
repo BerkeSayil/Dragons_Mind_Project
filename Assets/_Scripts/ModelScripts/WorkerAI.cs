@@ -6,8 +6,12 @@ using UnityEngine;
 public class WorkerAI : Character {
 
     private const Job.JobType construction = Job.JobType.Construction;
+    private const Job.JobType hauling = Job.JobType.ConstructionSecond;
 
+    Inventory inventoryOnWorker;
 
+    //TODO: For better performance this should be modified to be one central manager type script
+    //TODO: That knows our workers and jobs so it matches the close ones together is what I think?
   
     public override Job PrioritizedJob(ArrayList jobsListTotal) { 
         /*
@@ -26,6 +30,8 @@ public class WorkerAI : Character {
 
             if (job.jobOccupation == construction) jobsList.Add(job);
             //TODO: Implement dismantle jobs too and figure which will be priority?
+            if (job.jobOccupation == hauling) jobsList.Add(job);
+
 
         }
 

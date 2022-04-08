@@ -27,7 +27,7 @@ public class World
     Action<Tile> cbTileChanged;
     Action<GameObject> cbCharacterCreated;
     Action<Designation> cbDesigChanged;
-
+    //TODO: 1000 tane callback var aq arasira sil bunlari
 
     // TODO: This should be replaced with a dedicated
     // class for managing job queues (plural!!!)
@@ -234,15 +234,7 @@ public class World
         //TODO: Get rid of this while you get rid of the example station.
         GameObject.Find("A*").GetComponent<AstarPath>().Scan();
 
-        //TODO: This code generates inventory at the tile use this with accordance with spaceship delivery for requested furniture
-
-        /*
-        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes["Wall_Scrap"], GetTileAt(width / 2, height / 2));
-
-        if (cbInventoryCreated != null) {
-            cbInventoryCreated(inv);
-        }
-        */
+        
 
     }
 
@@ -259,8 +251,18 @@ public class World
     }
 
     public void PlaceTileAt(Tile.TileType tileType, Tile t) {
+        
+        if(t.Type == Tile.TileType.Floor) {
+            if(tileType == Tile.TileType.Empty) {
+
+                PlaceInventory(tileType.ToString(), t);
+            }
+        }
+
 
         t.Type = tileType;
+        
+        
 
     }
 
@@ -284,12 +286,9 @@ public class World
 
         //TODO: We don't care about it being multiple tile when generating deconstructed inventory also don't think we should tbh ?
 
-       
-        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes["Wall_Scrap"], t);
 
-        if (cbInventoryCreated != null) {
-            cbInventoryCreated(inv);
-        }
+        PlaceInventory(objectType, t);
+
 
         List<Room> neighboorRooms = new List<Room>();
 
@@ -326,6 +325,9 @@ public class World
         minIndexList.Add(eastIndex);
         minIndexList.Add(westIndex);
 
+        //TODO: what should we do if we remove something and a neighbooring furniture is present ?
+        minIndexList.RemoveAll((int i) => i == -1); // This removes nearby furnitures so they don't conflict
+
         int minIndex = minIndexList.Any() ? minIndexList.Min() : -1; // if there is any ? for true get min else(:) get -1
 
         Room minIndexedRoom = rooms[minIndex];
@@ -339,6 +341,58 @@ public class World
 
 
     }
+
+    private void PlaceInventory(string objectType, Tile t) {
+
+        string s = "Wall_Scrap";
+
+        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[s], t);
+
+        if (cbInventoryCreated != null) {
+            cbInventoryCreated(inv);
+        }
+
+        if (t.looseObject != null) {
+            // inventory exists.
+
+            
+                Job j = new Job(t, s, (theJob) => {
+                    WorldController.Instance.world.
+                    HaulInventory(s, theJob.tile);
+
+                    t.pendingHaulJob = null;
+                },
+                Job.JobType.ConstructionSecond
+                );
+
+
+                // TODO: This being this way very easy to clear or forget make it automated in
+                // some other way possible
+                t.pendingHaulJob = j;
+                j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingHaulJob = null; });
+
+                WorldController.Instance.world.jobQueue.Enqueue(j);
+
+
+
+            }                 
+
+        }
+
+    private void HaulInventory(string objectType, Tile tile) {
+
+        if (inventoryPrototypes.ContainsKey(objectType) == false) {
+            Debug.LogError("inventoryPrototypes doesn't contain key: " + objectType);
+            return;
+        }
+
+
+        Inventory whatInventoryWas = inventoryPrototypes[objectType];
+        Inventory.DismantleFurniture(inventoryPrototypes[objectType], tile);
+
+
+    }
+
     public void PlaceFurnitureAt(string objectType, Tile t)
     {
         // if width or height bigger than 1 on world call PlaceFurnitureAt for those other tiles too
@@ -513,6 +567,7 @@ public class World
     public void UnregisterInventoryCreated(Action<Inventory> callbackFunc) {
         cbInventoryCreated -= callbackFunc;
     }
+
     public void RegisterCharacterCreated(Action<GameObject> callbackFunc) {
         cbCharacterCreated += callbackFunc;
     }

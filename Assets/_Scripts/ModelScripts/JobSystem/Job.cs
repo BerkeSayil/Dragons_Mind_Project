@@ -68,10 +68,13 @@ public class Job
         
     }
 
-    public enum JobType {
-        Construction,
-        Haul,
-        Dismantle,
+    public enum JobType { // These jobs are based on what type of occupant will do it
+        Construction, // build, dismantle furnitures and haul goods 
+        ConstructionSecond,
+        Engineering,
+        Trader,
+        Visitor,
+        Pirate,
         TODO
             //TODO: Add more job types as game evolves.
     }

@@ -54,6 +54,17 @@ public class Inventory {
         return inv;
     }
 
+    public static void DismantleFurniture(Inventory inv, Tile t) {
+
+        Inventory prototypeOfHauled = inv;
+
+        // tells tile that there is no inventory than updates for sprite
+        if (t.looseObject == null) return;
+
+        t.looseObject.cbOnRemoved(t.looseObject);
+
+    }
+
     public void RegisterOnChangedCallback(Action<Inventory> callbackFunc) {
         cbOnChanged += callbackFunc;
     }
