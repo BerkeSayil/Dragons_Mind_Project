@@ -8,9 +8,9 @@ using UnityEngine;
 public class WorkerAI : Character {
 
     private const Job.JobType construction = Job.JobType.Construction;
-    private const Job.JobType hauling = Job.JobType.ConstructionSecond;
+    private const Job.JobType constructionSecond = Job.JobType.ConstructionSecond;
 
-
+    Inventory inventory;
     //TODO: For better performance this should be modified to be couroutine or async.
 
     public override Job PrioritizedJob(ArrayList jobsListTotal) { 
@@ -27,7 +27,17 @@ public class WorkerAI : Character {
             //TODO: Implement dismantle jobs too and figure which will be priority?
 
             // Worker isn't carrying anything and it finds a hauling job so it picks up inventory
-            if ( job.jobOccupation == hauling) jobsList.Add(job);
+            if (job.jobOccupation == constructionSecond) {
+
+                // this job is hauling job but I don't have the inventory at hand already
+                if (job.haulingJob == false && inventory == null) jobsList.Add(job);
+
+                if (inventory == null) continue;
+
+                // this job is hauling job and I have the inventory at hand already
+                if (job.haulingJob == true && job.inventory.objectType == inventory.objectType) jobsList.Add(job);
+                
+            }
               
         }
 
@@ -55,6 +65,24 @@ public class WorkerAI : Character {
 
         WorldController.Instance.world.jobQueue.RemoveMyJob(minDistJob);
 
+        //TODO: make a callback charachter sprite changed to also display a smaller version of inventory at our hand
+
         return minDistJob;
+    }
+
+    public override void OnJobEnded(Job j) {
+        if (j != MyJob) {
+            Debug.LogError("Character is thinking about a job that isn't theirs. You nforgot to unregister  something.");
+            return;
+        }
+
+        if (j.haulingJob == false && j.inventory != null) inventory = j.inventory; // not a hauling job but a picking up job
+        if (j.haulingJob == true) inventory = null; // if this is a hauling job character know it dropped off inventory
+
+        AstarPath.active.Scan();
+        CurrTile = DestTile;
+        CurrTilePos = DestTilePos = new Vector3(j.tile.x, j.tile.y);
+        MyJob = null;
+
     }
 }

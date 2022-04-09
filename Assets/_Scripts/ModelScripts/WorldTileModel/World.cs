@@ -240,8 +240,10 @@ public class World
 
         //TODO: Consider objectType
         string s = "Wall_Scrap";
-
+        
         Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[s], t);
+
+        if (inv == null) return;
 
         if (cbInventoryCreated != null) {
             cbInventoryCreated(inv);
@@ -250,7 +252,7 @@ public class World
         if (t.looseObject != null) {
             // inventory exists on this tile.
 
-            Job j = new Job(t, true, (theJob) => {
+            Job j = new Job(t, false, inv ,(theJob) => {
                 GetTheInventory(s, theJob.tile);
 
                 t.pendingHaulJob = null;
@@ -270,6 +272,8 @@ public class World
 
         Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[objectType], tile);
 
+        if (inv == null) return;
+
         if (cbInventoryCreated != null) {
             cbInventoryCreated(inv);
         }
@@ -287,8 +291,6 @@ public class World
         List<Designation> desigs = GetDesignationOfType(Designation.DesignationType.TradeGoods);
 
         Tile destination = tile; // at worst we'll put where we found it ?
-
-        Inventory.PickInventoryUp(tile); // removes inventory on given tile
 
         // now that the inventory is removed from ground
         // we'll create a job only the worker that took this could complete
@@ -308,7 +310,7 @@ public class World
             return;
         }
 
-        Job j = new Job(destination, true, (theJob) => {
+        Job j = new Job(destination, true, inventoryPrototypes[objectType] , (theJob) => {
             DropOffInventoryAtHaulingEnd(objectType, theJob.tile);
 
             destination.pendingHaulJob = null;
@@ -319,6 +321,9 @@ public class World
         j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingHaulJob = null; });
 
         WorldController.Instance.world.jobQueue.Enqueue(j);
+
+        Inventory.PickInventoryUp(tile); // removes inventory on given tile
+
     }
 
 
@@ -469,20 +474,24 @@ public class World
             return;
         }
 
+        //TODO: Multiple tile deconstruction not supported
+        Furniture whatFurnitureWas = furniturePrototypes[objectType];
+        Furniture.DismantleFurniture(furniturePrototypes[objectType], t);
+
+        DropInventoryAfterDeconstruction(objectType, t);
+        
+
+        // if this is an exterior tile we need to recalculate rooms
+        if (whatFurnitureWas.stationExterior == false) return;
+
+        // if this is not an exterior we don't need to calculate rooms
+
         // bu tiledaki bu obje furnitureini kaldir.
         // tile in 4 yanini kontrol et + bu 4 tile icin furniturechange callback at komsularinin gitmesine gore duzelsinler
         // 4 yanda room u null olanlari discard et
         // kalan odalardan index numarasi kucuk olani bul 
         // index numarasi buyuk olan odalardaki butun tile lari da kucuk olanin tilelari arasina kat birlesmis olsunlar
         // buyuk indexli artik ici bos odalari dunya listesinden sil
-
-        //TODO: Multiple tile deconstruction not supported
-        Furniture whatFurnitureWas = furniturePrototypes[objectType];
-        Furniture.DismantleFurniture(furniturePrototypes[objectType], t);
-
-
-        DropInventoryAfterDeconstruction(objectType, t);
-
 
         List<Room> neighboorRooms = new List<Room>();
 
@@ -491,26 +500,22 @@ public class World
         int eastIndex = int.MaxValue;
         int westIndex = int.MaxValue;
 
-        // if this is an exterior tile we need to recalculate rooms
-        if (whatFurnitureWas.stationExterior) {
 
-            if (t.North().room != null) {
-                northIndex = rooms.IndexOf(t.North().room);
-                neighboorRooms.Add(rooms[northIndex]);
-            }
-            if (t.South().room != null) {
-                southIndex = rooms.IndexOf(t.South().room);
-                neighboorRooms.Add(rooms[southIndex]);
-            }
-            if (t.East().room != null) {
-                eastIndex = rooms.IndexOf(t.East().room);
-                neighboorRooms.Add(rooms[eastIndex]);
-            }
-            if (t.West().room != null) {
-                westIndex = rooms.IndexOf(t.West().room);
-                neighboorRooms.Add(rooms[westIndex]);
-            }
-
+        if (t.North().room != null) {
+            northIndex = rooms.IndexOf(t.North().room);
+            neighboorRooms.Add(rooms[northIndex]);
+        }
+        if (t.South().room != null) {
+            southIndex = rooms.IndexOf(t.South().room);
+            neighboorRooms.Add(rooms[southIndex]);
+        }
+        if (t.East().room != null) {
+            eastIndex = rooms.IndexOf(t.East().room);
+            neighboorRooms.Add(rooms[eastIndex]);
+        }
+        if (t.West().room != null) {
+            westIndex = rooms.IndexOf(t.West().room);
+            neighboorRooms.Add(rooms[westIndex]);
         }
 
         List<int> minIndexList = new List<int>();

@@ -6,37 +6,38 @@ using Pathfinding;
 
 public class Character : MonoBehaviour
 {
-    public Tile currTile { get; protected set; }
-    Tile destTile; // if not moving this equals to currTile
-    Vector3 destTilePos;
-    Vector3 currTilePos;
+    public Tile CurrTile { get; protected set; }
+    public Tile DestTile { get; protected set; } // if not moving this equals to currTile
+    public Vector3 DestTilePos { get; protected set; }
+    public Vector3 CurrTilePos { get; protected set; }
 
-    bool areWeCloseEnough = false;
-    float reachDist = 1f;
+    private bool _AreWeCloseEnough = false;
+    private float _ReachDist = 1.2f;
+    private float _TimeDeltaTime;
 
-    float timeDeltaTime;
-    AIPath path;
-    GraphNode node1;
-    GraphNode node2;
+    private AIPath _Path;
+    private GraphNode _Node1;
+    private GraphNode _Node2;
 
-    public Job myJob { get; protected set; }
+    public Job MyJob { get; protected set; }
+
     Action<Character> cbCharacterChanged;
 
 
     private void Awake() {
-        currTile = destTile = WorldController.Instance.world.GetTileAt
+        CurrTile = DestTile = WorldController.Instance.world.GetTileAt
             (WorldController.Instance.world.width / 2, WorldController.Instance.world.height / 2);
 
-        currTilePos = new Vector3(currTile.x, currTile.y);
+        CurrTilePos = new Vector3(CurrTile.x, CurrTile.y);
 
-        path = gameObject.GetComponent<AIPath>();
+        _Path = gameObject.GetComponent<AIPath>();
 
         AstarPath.active.Scan();
 
         
 
-        node1 = GetNodeOnTile(currTilePos);
-        node2 = GetNodeOnTile(destTilePos);
+        _Node1 = GetNodeOnTile(CurrTilePos);
+        _Node2 = GetNodeOnTile(DestTilePos);
     }
     public GraphNode GetNodeOnTile(Vector3 pos) {
    
@@ -46,57 +47,52 @@ public class Character : MonoBehaviour
     }
     public void Update() {
 
-        timeDeltaTime = Time.deltaTime;
+        _TimeDeltaTime = Time.deltaTime;
         // if don't have job, get a job
-        if (myJob == null) {
+        if (MyJob == null) {
 
             GrabJob();
 
-            if(myJob != null) {
+            if(MyJob != null) {
                  // Check if the job is reachable. If not abandon job.
-                if (IsPathPossible(myJob) == false && myJob != null) {
-                    AbandonJob(myJob.tile, myJob.jobObjectType);
+                if (IsPathPossible(MyJob) == false && MyJob != null) {
+                    AbandonJob(MyJob.tile, MyJob.jobObjectType);
                     return;
                 }
                 // we have a new job.
-                if (myJob.tile != destTile) {
-                    SetDestination(myJob.tile);
+                if (MyJob.tile != DestTile) {
+                    SetDestination(MyJob.tile);
                 }
                 
                 // if a cancel or complete callback occurs we call onjobended
-                myJob.RegisterJobCancelCallback(OnJobEnded);
-                myJob.RegisterJobCompleteCallback(OnJobEnded);
+                MyJob.RegisterJobCancelCallback(OnJobEnded);
+                MyJob.RegisterJobCompleteCallback(OnJobEnded);
             }
         }
 
-
-        if ((transform.position - destTilePos).sqrMagnitude < reachDist * reachDist) {
-            areWeCloseEnough = true;
+        
+        if ((transform.position - DestTilePos).sqrMagnitude < _ReachDist * _ReachDist) {
+            _AreWeCloseEnough = true;
         }
         
-        if (areWeCloseEnough) {
-            if (myJob != null) {
-                myJob.DoWork(timeDeltaTime);
-                areWeCloseEnough = false;
+
+        if (_AreWeCloseEnough) {
+            if (MyJob != null) {
+                MyJob.DoWork(_TimeDeltaTime);
+                _AreWeCloseEnough = false;
             }
             
             return;
         }
-        
-        
-        
-        if(cbCharacterChanged != null) {
-            cbCharacterChanged(this);
-        }
 
-        
+        cbCharacterChanged?.Invoke(this);
 
     }
 
     private void GrabJob() {
         if (WorldController.Instance.world.jobQueue.Dequeue() == null) return;
 
-        myJob = PrioritizedJob(WorldController.Instance.world.jobQueue.Dequeue());
+        MyJob = PrioritizedJob(WorldController.Instance.world.jobQueue.Dequeue());
 
     }
 
@@ -140,22 +136,22 @@ public class Character : MonoBehaviour
 
     public bool IsPathPossible(Job myJob) {
         
-        node1 = GetNodeOnTile(currTilePos);
-        node2 = GetNodeOnTile(new Vector2(myJob.tile.x, myJob.tile.y));
+        _Node1 = GetNodeOnTile(CurrTilePos);
+        _Node2 = GetNodeOnTile(new Vector2(myJob.tile.x, myJob.tile.y));
 
-        return PathUtilities.IsPathPossible(node1, node2);
+        return PathUtilities.IsPathPossible(_Node1, _Node2);
     }
     public bool IsPathPossible(Vector2 one, Vector2 two) {
 
-        node1 = GetNodeOnTile(one);
-        node2 = GetNodeOnTile(two);
+        _Node1 = GetNodeOnTile(one);
+        _Node2 = GetNodeOnTile(two);
 
-        return PathUtilities.IsPathPossible(node1, node2);
+        return PathUtilities.IsPathPossible(_Node1, _Node2);
     }
     private void AbandonJob(Tile t, string furnitureType) {
 
-        destTile = currTile;
-        currTilePos = gameObject.transform.position;
+        DestTile = CurrTile;
+        CurrTilePos = gameObject.transform.position;
 
         //TODO: This doesn't need to be here maybe figure out why it was here in the first place?
 
@@ -169,10 +165,10 @@ public class Character : MonoBehaviour
         });
         */
 
-        myJob = null;
+        MyJob = null;
 
-        node1 = GetNodeOnTile(currTilePos);
-        node2 = GetNodeOnTile(destTilePos);
+        _Node1 = GetNodeOnTile(CurrTilePos);
+        _Node2 = GetNodeOnTile(DestTilePos);
 
     }
 
@@ -180,14 +176,14 @@ public class Character : MonoBehaviour
         if(tile != null) {
 
 
-            destTile = tile;
-            destTilePos = new Vector3(tile.x, tile.y);
+            DestTile = tile;
+            DestTilePos = new Vector3(tile.x, tile.y);
 
-            path.destination = new Vector3(tile.x, tile.y);
+            _Path.destination = new Vector3(tile.x, tile.y);
 
 
-            node1 = GetNodeOnTile(currTilePos);
-            node2 = GetNodeOnTile(destTilePos);
+            _Node1 = GetNodeOnTile(CurrTilePos);
+            _Node2 = GetNodeOnTile(DestTilePos);
         }
 
     }
@@ -200,16 +196,16 @@ public class Character : MonoBehaviour
         cbCharacterChanged -= cb;
     }
 
-    void OnJobEnded(Job j) {
-        if(j != myJob) {
+    public virtual void OnJobEnded(Job j) {
+        if(j != MyJob) {
             Debug.LogError("Character is thinking about a job that isn't theirs. You nforgot to unregister  something.");
             return;
         }
 
         AstarPath.active.Scan();
-        currTile = destTile;
-        currTilePos = destTilePos = new Vector3(j.tile.x, j.tile.y);
-        myJob = null;
+        CurrTile = DestTile;
+        CurrTilePos = DestTilePos = new Vector3(j.tile.x, j.tile.y);
+        MyJob = null;
 
     }
 

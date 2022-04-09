@@ -12,11 +12,14 @@ public class Job
     public bool haulingJob { get; protected set; }
 
     public string jobObjectType { get; protected set; }
+    public Inventory inventory { get; protected set; }
 
     public Tile.TileType jobTileType { get; protected set; }
 
     Action<Job> cbJobComplete;
     Action<Job> cbJobCancel;
+
+    //Constructor for furniture placement / removal
     public Job(Tile tile, string jobObjectType , Action<Job>cbJobComplete, JobType occupationType ,float jobTime = 1f) {
         this.tile = tile;
         this.jobObjectType = jobObjectType;
@@ -28,6 +31,7 @@ public class Job
 
     }
 
+    //Constructor for tile placement / removal
     public Job(Tile tile, Tile.TileType tileType, Action<Job> cbJobComplete, JobType occupationType, float jobTime = 1f) {
         this.tile = tile;
         this.jobTileType = tileType;
@@ -38,9 +42,11 @@ public class Job
 
     }
 
-    public Job(Tile tile, bool haulingJob, Action<Job> cbJobComplete, JobType occupationType, float jobTime = 0.2f) {
+    //Constructor for hauling inventory
+    public Job(Tile tile, bool haulingJob, Inventory inv ,Action<Job> cbJobComplete, JobType occupationType,float jobTime = 0.2f) {
         this.tile = tile;
         this.haulingJob = haulingJob;
+        this.inventory = inv;
         this.jobTime = jobTime;
         this.jobOccupation = occupationType;
 

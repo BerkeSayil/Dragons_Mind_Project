@@ -39,8 +39,8 @@ public class Inventory {
         if (tile.PlaceInventoryObject(inv) == false) {
             // means we can't place here probly something already placed.
 
-            // so we can't return our furniture and give null.
-            // furn will be garbage collected.
+            // so we can't return our inventory and give null.
+            // inv will be garbage collected.
             return null;
         }
 

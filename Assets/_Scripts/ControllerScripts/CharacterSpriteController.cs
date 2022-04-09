@@ -51,7 +51,7 @@ public class CharacterSpriteController : MonoBehaviour
         Character characterScript = character.GetComponent<Character>();
 
         character.name = "Character";
-        character.transform.position = new Vector2(characterScript.currTile.x + 0.5f, characterScript.currTile.y +0.5f);
+        character.transform.position = new Vector2(characterScript.CurrTile.x + 0.5f, characterScript.CurrTile.y +0.5f);
         character.transform.SetParent(this.transform, true);
 
         // TODO: change sprite based on occupation
