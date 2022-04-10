@@ -72,6 +72,35 @@ public class World
         workers = new List<WorkerAI>();
         
     }
+
+    internal void DeliverInventoryOnTile(Tile.TileType jobTileType, Tile destination) {
+
+        //TODO: Consider objectType like bruhhhh
+        string s = "Wall_Scrap";
+
+        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[s], destination);
+
+        if (inv == null) return;
+
+        if (cbInventoryCreated != null) {
+            cbInventoryCreated(inv);
+        }
+    }
+
+    internal void DeliverInventoryOnTile(string jobObjectType, Tile destination) {
+
+        //TODO: Consider objectType
+        string s = "Wall_Scrap";
+
+        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[s], destination);
+
+        if (inv == null) return;
+
+        if (cbInventoryCreated != null) {
+            cbInventoryCreated(inv);
+        }
+    }
+
     public void AddRoom(Room r) {
         rooms.Add(r);
     }
@@ -257,7 +286,7 @@ public class World
 
                 t.pendingHaulJob = null;
 
-            }, Job.JobType.ConstructionSecond );
+            }, Job.JobType.InventoryManagement );
 
             t.pendingHaulJob = j;
             j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingHaulJob = null; });
@@ -295,6 +324,8 @@ public class World
         // now that the inventory is removed from ground
         // we'll create a job only the worker that took this could complete
 
+        if (desigs == null) return;
+
         for (int i = 0; i < desigs.Count; i++) {
             foreach (Tile t in desigs[i].tiles) {
                 if (t.looseObject == null && t.pendingHaulJob == null && IsHaulPlacementValid(t)){
@@ -315,7 +346,7 @@ public class World
 
             destination.pendingHaulJob = null;
 
-        }, Job.JobType.ConstructionSecond);
+        }, Job.JobType.InventoryManagement);
 
         destination.pendingHaulJob = j;
         j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingHaulJob = null; });

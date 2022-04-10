@@ -13,7 +13,7 @@ public class BuildModeController : MonoBehaviour
     bool buildModeIsFurniture = false;
     public bool areWeBuilding = false;
 
-    
+    Action<Job> cbConstructionJobRequested;
     public void SetModeBuildFloor()
     {
         buildModeIsFurniture = false;
@@ -77,6 +77,9 @@ public class BuildModeController : MonoBehaviour
 
                 WorldController.Instance.world.jobQueue.Enqueue(j);
 
+                if (cbConstructionJobRequested != null) {
+                    cbConstructionJobRequested(j);
+                }
 
             }
         }
@@ -104,7 +107,9 @@ public class BuildModeController : MonoBehaviour
 
                 WorldController.Instance.world.jobQueue.Enqueue(j);
 
-
+                if (cbConstructionJobRequested != null) {
+                    cbConstructionJobRequested(j);
+                }
             }
         }
         if (buildModeTile == Tile.TileType.Empty && buildModeIsFurniture == false) {
@@ -129,7 +134,7 @@ public class BuildModeController : MonoBehaviour
 
                         t.pendingFurnitureJob = null;
                     },
-                    Job.JobType.Construction
+                    Job.JobType.Deconstruction
                     );
 
 
@@ -175,4 +180,11 @@ public class BuildModeController : MonoBehaviour
     public void SetBuildingMode(bool isBuilding) {
         areWeBuilding = isBuilding;
     }
+    public void RegisterContructionJobCreated(Action<Job> callbackFunc) {
+        cbConstructionJobRequested += callbackFunc;
+    }
+    public void UnregisterContructionJobCreated(Action<Job> callbackFunc) {
+        cbConstructionJobRequested -= callbackFunc;
+    }
+
 }

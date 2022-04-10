@@ -39,7 +39,7 @@ public class JobSpriteController : MonoBehaviour
 
 
         // this is a inventory pickup or haul off job we don't need the sprite side for it
-        if (job.jobOccupation == Job.JobType.ConstructionSecond) {
+        if (job.jobOccupation == Job.JobType.InventoryManagement) {
 
 
             job.RegisterJobCompleteCallback(OnJobEnded);

@@ -53,7 +53,11 @@ public class Inventory {
         // tells tile that there is no inventory than updates for sprite
         if (t.looseObject == null) return;
 
-        t.looseObject.cbOnRemoved(t.looseObject);
+
+        if(t.looseObject.cbOnRemoved != null) {
+            t.looseObject.cbOnRemoved(t.looseObject);
+        }
+        
 
     }
 

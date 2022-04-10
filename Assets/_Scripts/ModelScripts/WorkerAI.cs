@@ -8,7 +8,8 @@ using UnityEngine;
 public class WorkerAI : Character {
 
     private const Job.JobType construction = Job.JobType.Construction;
-    private const Job.JobType constructionSecond = Job.JobType.ConstructionSecond;
+    private const Job.JobType inventoryManagement = Job.JobType.InventoryManagement;
+    private const Job.JobType deconstruction = Job.JobType.Deconstruction;
 
     Inventory inventory;
     //TODO: For better performance this should be modified to be couroutine or async.
@@ -23,22 +24,55 @@ public class WorkerAI : Character {
 
         foreach (Job job in jobsListTotal) {
 
-            if (job.jobOccupation == construction) jobsList.Add(job);
-            //TODO: Implement dismantle jobs too and figure which will be priority?
+            // Type of jobs there are as priority
+            // PickFrom Haul   => inventory null , job haul true
+            // Carry Haul to BuildJob => this doesn't exist you do this when you build
+            // Build => job jobobjecttype != null, inventory != null, inventory object type == job object type
+            // Deconstruct => job objecttype != null 
+            // Pick inv => inventory null, job haul false
+            // Carry inv to haul => inventory != null, job haul true
 
-            // Worker isn't carrying anything and it finds a hauling job so it picks up inventory
-            if (job.jobOccupation == constructionSecond) {
 
-                // this job is hauling job but I don't have the inventory at hand already
-                if (job.haulingJob == false && inventory == null) jobsList.Add(job);
 
-                if (inventory == null) continue;
+            if (job.jobOccupation == inventoryManagement) {
 
-                // this job is hauling job and I have the inventory at hand already
-                if (job.haulingJob == true && job.inventory.objectType == inventory.objectType) jobsList.Add(job);
-                
+                if(inventory != null && job.haulingJob == true) { // carrying to haul
+                    jobsList.Add(job);
+                    continue;
+                }
+
+                if (inventory == null && job.haulingJob == false) { // picking up from ground
+                    jobsList.Add(job);
+                    continue;
+                }
+
+
             }
-              
+
+            if (job.jobOccupation == construction) {
+                //TODO: Fix so we get and use same objectType of inventory to building jobs
+
+                if (inventory == null && job.haulingJob == true) { //wants to pick up from haul
+                    jobsList.Add(job);
+                    continue;
+                }
+
+                if (job.haulingJob == false) { // want to build something
+                    if (inventory != null) {
+                        jobsList.Add(job);
+                        continue;
+                    }
+                }
+
+            }
+
+            if (job.jobOccupation == deconstruction) {
+
+                jobsList.Add(job);
+                continue;
+                
+
+            }
         }
 
         if (jobsList.Count == 0) return null;
@@ -75,9 +109,19 @@ public class WorkerAI : Character {
             Debug.LogError("Character is thinking about a job that isn't theirs. You nforgot to unregister  something.");
             return;
         }
+        
 
-        if (j.haulingJob == false && j.inventory != null) inventory = j.inventory; // not a hauling job but a picking up job
-        if (j.haulingJob == true) inventory = null; // if this is a hauling job character know it dropped off inventory
+        if(j.jobOccupation == Job.JobType.InventoryManagement) {
+
+            if (j.haulingJob == true) inventory = null;
+            if (j.haulingJob == false) inventory = j.inventory;
+
+        }
+        else if (j.jobOccupation == Job.JobType.Construction) {
+
+            if (j.haulingJob == true) inventory = j.inventory;
+            if (j.haulingJob == false) inventory = null;
+        }
 
         AstarPath.active.Scan();
         CurrTile = DestTile;

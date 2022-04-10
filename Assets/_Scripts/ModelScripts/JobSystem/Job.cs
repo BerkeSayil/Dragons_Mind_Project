@@ -89,7 +89,8 @@ public class Job
 
     public enum JobType { // These jobs are based on what type of occupant will do it
         Construction, // build, dismantle furnitures and haul goods 
-        ConstructionSecond, // this is for picking up inventory and hauling it off
+        InventoryManagement, // this is for picking up inventory and hauling it off
+        Deconstruction,
         Engineering,
         Trader,
         Visitor,
