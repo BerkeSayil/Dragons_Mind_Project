@@ -10,6 +10,8 @@ TagManager:
   - BuildMaterilaResourceTile
   - SpaceShip
   - GasPipe
+  - Worker
+  - Visitor
   layers:
   - Default
   - TransparentFX

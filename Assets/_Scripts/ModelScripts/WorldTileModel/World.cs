@@ -10,6 +10,7 @@ public class World
     Tile[,] tiles;
     List<Character> characters;
     List<WorkerAI> workers;
+    List<VisitorAI> visitors;
 
     public List<Room> rooms;
     public List<Designation> designations;
@@ -20,7 +21,8 @@ public class World
     public int width { get; }
     public int height { get; }
 
-    public GameObject characterPrefab { get; set; }
+    public GameObject workerPrefab { get; set; }
+    public GameObject visitorPrefab { get; set; }
 
     Action<Furniture> cbFurnitureCreated;
     Action<Furniture> cbFurnitureChanged;
@@ -70,7 +72,8 @@ public class World
         // Creates characters for us. 
         characters = new List<Character>();
         workers = new List<WorkerAI>();
-        
+        visitors = new List<VisitorAI>();
+
     }
 
     internal void DeliverInventoryOnTile(Tile.TileType jobTileType, Tile destination) {
@@ -573,16 +576,30 @@ public class World
     }
     
     //TODO: This is not how we want to create characters
-    public Character CreateCharacter(Tile t) {
+    public Character CreateCharacter(int jobType,Tile t) {
+        GameObject c = null;
+        switch (jobType) {
+            case 0: // construction worker
+                c = GameObject.Instantiate(workerPrefab);
+                c.tag = "Worker";
+                break;
 
-        GameObject c = GameObject.Instantiate(characterPrefab);
+            case 1: // visitor
+                c = GameObject.Instantiate(visitorPrefab);
+                c.tag = "Visitor";
+                break;
+
+        }
+
+        if (c == null) return null;
+
         Character cScript = c.GetComponent<Character>();
 
         characters.Add(cScript);
 
-        if (characterPrefab.GetComponent<WorkerAI>() != null) workers.Add(characterPrefab.GetComponent<WorkerAI>());
-        // because we registered this cb as charactercreated this goes and call that
-        // with the given variable.
+        if (workerPrefab.GetComponent<WorkerAI>() != null) workers.Add(workerPrefab.GetComponent<WorkerAI>());
+        
+        if (workerPrefab.GetComponent<VisitorAI>() != null) visitors.Add(workerPrefab.GetComponent<VisitorAI>());
 
         if (cbCharacterCreated != null) {
             cbCharacterCreated(c);

@@ -9,7 +9,9 @@ public class WorldController : MonoBehaviour
 
     public World world { get; protected set; }
 
-    [SerializeField] GameObject characterPrefab;
+    [SerializeField] GameObject workerPrefab;
+    [SerializeField] GameObject visitorPrefab;
+
 
     void OnEnable() {
 
@@ -22,7 +24,8 @@ public class WorldController : MonoBehaviour
         world = new World(); //default empty world
 
         // TODO: Fuckin bad implemantation.
-        world.characterPrefab = characterPrefab;
+        world.workerPrefab = workerPrefab;
+        world.visitorPrefab = visitorPrefab;
 
 
         // Get the camera to middle of the world

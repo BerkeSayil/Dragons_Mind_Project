@@ -105,6 +105,10 @@ public class Character : MonoBehaviour
          * this also should filter with character job in mind so we don't get another occupants jobs.
          * 
          */
+        /*
+         *  Because this should be specialized per occupation
+         *  this is not implemented but in case we want to give people jobs doable by everyone it's a core piece of character class
+         * 
         if (jobsList.Count == 0) return null;
 
         float minDist = Mathf.Infinity;
@@ -132,6 +136,12 @@ public class Character : MonoBehaviour
         WorldController.Instance.world.jobQueue.RemoveMyJob(minDistJob);
 
         return minDistJob;
+
+        */
+
+        return null;
+
+
     }
 
     public bool IsPathPossible(Job myJob) {

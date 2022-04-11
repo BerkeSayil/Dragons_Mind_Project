@@ -27,9 +27,25 @@ public class CharacterSpriteController : MonoBehaviour
 
     }
 
-    public void SpawnCharacter(string jobType) { //TODO: Make this also understand what job a character should be and do so accordingly
+    public void SpawnCharacter(int jobType) { //TODO: Make this also understand what job a character should be and do so accordingly
 
-        Character c = world.CreateCharacter(world.GetTileAt((world.width / 2), (world.height / 2)));
+        Character c = null;
+
+        switch (jobType) {
+            case 0 : // construction worker
+                c = world.CreateCharacter( 0, world.GetTileAt((world.width / 2), (world.height / 2)));
+
+                break;
+            case 1: // visitor
+                c = world.CreateCharacter(1, world.GetTileAt((world.width / 2), (world.height / 2)));
+
+                break;
+           
+        }
+
+        if (c == null) return;
+
+
 
     }
 
@@ -55,7 +71,18 @@ public class CharacterSpriteController : MonoBehaviour
         character.transform.SetParent(this.transform, true);
 
         // TODO: change sprite based on occupation
-        character.AddComponent<SpriteRenderer>().sprite = characterSprites["character_0003"];
+        switch (character.tag) {
+            case "Worker": // construction worker
+                character.AddComponent<SpriteRenderer>().sprite = characterSprites["workerCharacter"];
+
+                break;
+            case "Visitor": // visitor
+                character.AddComponent<SpriteRenderer>().sprite = characterSprites["visitorCharacter"];
+
+                break;
+
+        }
+        
 
         character.GetComponent<SpriteRenderer>().sortingLayerName = "Characters";
 
