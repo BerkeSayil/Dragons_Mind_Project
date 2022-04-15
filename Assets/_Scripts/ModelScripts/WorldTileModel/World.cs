@@ -9,7 +9,7 @@ public class World
 
     Tile[,] tiles;
     List<Character> characters;
-    List<WorkerAI> workers;
+    public List<WorkerAI> workers { get; protected set; }
     List<VisitorAI> visitors;
 
     public List<Room> rooms;
@@ -23,6 +23,8 @@ public class World
 
     public GameObject workerPrefab { get; set; }
     public GameObject visitorPrefab { get; set; }
+    public GameObject shipPrefab { get; set; }
+    public Vector2 shipTilePos;
 
     Action<Furniture> cbFurnitureCreated;
     Action<Furniture> cbFurnitureChanged;
@@ -66,6 +68,8 @@ public class World
         CreateFurniturePrototypes();
         CreateInventoryPrototypes();
 
+        // Get the ship tile center position to spawn crewmates
+        shipTilePos = new Vector2(width / 2 + 9.5f, height / 2);
 
         jobQueue = new JobQueue();
 
@@ -73,6 +77,50 @@ public class World
         characters = new List<Character>();
         workers = new List<WorkerAI>();
         visitors = new List<VisitorAI>();
+
+    }
+
+    public void ReturnToSender(Job job) {
+        
+        //TODO: this deletes given jobs from job queue destroys gameobjects and everything about them and later requeues
+
+
+    }
+
+    public void DeliverShipToWorld() {
+
+        //TODO: This will be needed to expanded upon I think by changing ship prefab from world controller we might achieve upgradeblity 
+
+        //This determines where to place the ship might get modified to be more dynamic in the future?
+        
+
+        GameObject c = GameObject.Instantiate(shipPrefab, shipTilePos, Quaternion.identity);
+        c.tag = "SpaceShip";
+
+        MotherShip shipScript = c.GetComponent<MotherShip>();
+
+        List<Tile> shipCargoBay = new List<Tile>();
+
+        // 71-58, 71-68, 75-68, 75-58
+        for (int x = 71; x <= 75; x++) {
+
+            for (int y = 58; y <= 68; y++) {
+
+                if ((int)shipTilePos.x  == x && (int)shipTilePos.y  == y) continue;
+
+                Tile t = GetTileAt(x, y);
+
+                shipCargoBay.Add(t);
+
+                t.isSpaceShip = true;
+            }
+        }
+
+
+        Designation cargoBay = new Designation(shipCargoBay, Designation.DesignationType.TradeGoods);
+
+        
+
 
     }
 
@@ -578,14 +626,15 @@ public class World
     //TODO: This is not how we want to create characters
     public Character CreateCharacter(int jobType,Tile t) {
         GameObject c = null;
+
         switch (jobType) {
             case 0: // construction worker
-                c = GameObject.Instantiate(workerPrefab);
+                c = GameObject.Instantiate(workerPrefab, shipTilePos, Quaternion.identity);
                 c.tag = "Worker";
                 break;
 
             case 1: // visitor
-                c = GameObject.Instantiate(visitorPrefab);
+                c = GameObject.Instantiate(visitorPrefab, shipTilePos, Quaternion.identity);
                 c.tag = "Visitor";
                 break;
 
@@ -606,7 +655,7 @@ public class World
         }
         return cScript;
     }
-
+    /*
     public void SetUpExampleStation() {
 
         //TODO: Debug get rid of in the final build
@@ -633,6 +682,7 @@ public class World
         GameObject.Find("A*").GetComponent<AstarPath>().Scan();
 
     }
+    */
     public void RegisterDesignationChanged(Action<Designation> callbackFunc) {
         cbDesigChanged += callbackFunc;
     }

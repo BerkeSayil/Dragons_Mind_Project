@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class WorldController : MonoBehaviour
 
     [SerializeField] GameObject workerPrefab;
     [SerializeField] GameObject visitorPrefab;
+    [SerializeField] GameObject currentSpaceship;
 
 
     void OnEnable() {
@@ -26,6 +28,7 @@ public class WorldController : MonoBehaviour
         // TODO: Fuckin bad implemantation.
         world.workerPrefab = workerPrefab;
         world.visitorPrefab = visitorPrefab;
+        world.shipPrefab = currentSpaceship;
 
 
         // Get the camera to middle of the world
@@ -35,7 +38,8 @@ public class WorldController : MonoBehaviour
      
     }
     public void CreateStarterBase() {
-        Instance.world.SetUpExampleStation();
+        //Instance.world.SetUpExampleStation();
+        Instance.world.DeliverShipToWorld();
     }
     public Tile GetTileAtCoord(Vector3 coordinates)
     {
@@ -45,4 +49,6 @@ public class WorldController : MonoBehaviour
         return world.GetTileAt(x, y);
 
     }
+
+    
 }

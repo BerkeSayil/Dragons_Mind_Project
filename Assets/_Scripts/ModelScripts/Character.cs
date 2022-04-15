@@ -25,8 +25,7 @@ public class Character : MonoBehaviour
 
 
     private void Awake() {
-        CurrTile = DestTile = WorldController.Instance.world.GetTileAt
-            (WorldController.Instance.world.width / 2, WorldController.Instance.world.height / 2);
+        CurrTile = DestTile = WorldController.Instance.world.GetTileAt((int) transform.position.x, (int) transform.position.y);
 
         CurrTilePos = new Vector3(CurrTile.x, CurrTile.y);
 

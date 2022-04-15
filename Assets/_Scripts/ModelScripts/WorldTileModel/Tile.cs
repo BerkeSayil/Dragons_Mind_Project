@@ -19,6 +19,8 @@ public class Tile
 
     public Designation.DesignationType designationType;
 
+    public bool isSpaceShip;
+
     // A tile is self aware
     public World World { get; protected set; }
     public int x { get; protected set; }

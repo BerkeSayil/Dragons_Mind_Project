@@ -26,20 +26,29 @@ public class BuildingInventoryRequestController : MonoBehaviour {
 
         Tile destination = null; // we can't deliver if no necessary designation is available
 
-        if (desigs == null) return; // no available designation
+        if (desigs == null) world.ReturnToSender(job); // no available so we requeue
 
         for (int i = 0; i < desigs.Count; i++) {
             foreach (Tile t in desigs[i].tiles) {
+
                 // search for an empty spot in given designation
                 if (t.looseObject == null && t.pendingHaulJob == null && world.IsHaulPlacementValid(t)) {
+
                     destination = t;
                     break;
                 }
+
+
             }
             if (destination != null) break;
         }
 
-        if (destination == null) return; // no available tile in designation
+        if (destination == null) {
+            Debug.LogError("No available tile to place inventory");
+
+            world.ReturnToSender(job);
+            return;
+        }
 
         //TODO: Implement a cool visualization for how we deliver this object (spacehip coming and dropping off ?)
 

@@ -3808,6 +3808,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   workerPrefab: {fileID: 2963948909853957071, guid: fa4483f7e6ff003418c09118cf3f3bb3, type: 3}
   visitorPrefab: {fileID: 2963948909853957071, guid: 05c332f9a4a037c428b4853408ca1328, type: 3}
+  currentSpaceship: {fileID: 2963948909853957071, guid: d8bc519d6187e6843ae44bc1809f132c, type: 3}
 --- !u!1 &1572807975
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,17 +27,20 @@ public class CharacterSpriteController : MonoBehaviour
 
     }
 
-    public void SpawnCharacter(int jobType) { //TODO: Make this also understand what job a character should be and do so accordingly
+    public void SpawnCharacter(int jobType) { 
 
         Character c = null;
 
         switch (jobType) {
             case 0 : // construction worker
-                c = world.CreateCharacter( 0, world.GetTileAt((world.width / 2), (world.height / 2)));
+                if (world.workers.Count < GameManager.instance.numOfWorkersConstruction) {
+                    c = world.CreateCharacter(0, world.GetTileAt((int)(world.shipTilePos.x), (int)(world.shipTilePos.y)));
+                }
+                
 
                 break;
             case 1: // visitor
-                c = world.CreateCharacter(1, world.GetTileAt((world.width / 2), (world.height / 2)));
+                c = world.CreateCharacter(1, world.GetTileAt((int)(world.shipTilePos.x), (int)(world.shipTilePos.y)));
 
                 break;
            

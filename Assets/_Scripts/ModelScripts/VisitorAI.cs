@@ -35,11 +35,7 @@ public class VisitorAI : Character
                     continue;
                 }
 
-                if (true) { // Do this
-                    jobsList.Add(job);
-                    continue;
-                }
-
+                
 
             }
 
