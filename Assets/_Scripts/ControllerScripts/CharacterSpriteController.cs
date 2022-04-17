@@ -5,25 +5,21 @@ using UnityEngine;
 
 public class CharacterSpriteController : MonoBehaviour
 {
-    List<GameObject> characterGameObjectList;
-    Dictionary<string, Sprite> characterSprites;
+    private List<GameObject> _characterGameObjectList;
+    private Dictionary<string, Sprite> _characterSprites;
 
-    Action<GameObject> cbOnCharacterReadyForAI;
-
-    public string jobType { get; protected set; }
-
-    World world {
-        get { return WorldController.Instance.world; }
-    }
+    private Action<GameObject> _cbOnCharacterReadyForAI;
+    
+    private static World World => WorldController.Instance.World;
 
     private void Start() {
         LoadSprites();
 
-        characterGameObjectList = new List<GameObject>();
+        _characterGameObjectList = new List<GameObject>();
 
         // This basically registers a call back so when the
         // callback we gave to register gets called it actually on character created.
-        world.RegisterCharacterCreated(OnCharacterCreated);
+        World.RegisterCharacterCreated(OnCharacterCreated);
 
     }
 
@@ -33,40 +29,36 @@ public class CharacterSpriteController : MonoBehaviour
 
         switch (jobType) {
             case 0 : // construction worker
-                if (world.workers.Count < GameManager.instance.numOfWorkersConstruction) {
-                    c = world.CreateCharacter(0, world.GetTileAt((int)(world.shipTilePos.x), (int)(world.shipTilePos.y)));
+                if (World.Workers.Count < GameManager.Instance.NumOfWorkersConstruction) {
+                    c = World.CreateCharacter(0, World.GetTileAt((int)(World.ShipTilePos.x), (int)(World.ShipTilePos.y)));
                 }
                 
 
                 break;
-            case 1: // visitor
-                c = world.CreateCharacter(1, world.GetTileAt((int)(world.shipTilePos.x), (int)(world.shipTilePos.y)));
+            case 1: // engineer
+                c = World.CreateCharacter(1, World.GetTileAt((int)(World.ShipTilePos.x), (int)(World.ShipTilePos.y)));
 
                 break;
            
         }
-
-        if (c == null) return;
-
-
-
+        
     }
 
     private void LoadSprites() {
         // Getting installed objects from the resources folder
 
-        characterSprites = new Dictionary<string, Sprite>();
+        _characterSprites = new Dictionary<string, Sprite>();
 
         Sprite[] sprites = Resources.LoadAll<Sprite>("Sprite");
         foreach (Sprite s in sprites) {
-            characterSprites[s.name] = s;
+            _characterSprites[s.name] = s;
         }
     }
 
     public void OnCharacterCreated(GameObject character) {
         
 
-        characterGameObjectList.Add(character);
+        _characterGameObjectList.Add(character);
         Character characterScript = character.GetComponent<Character>();
 
         character.name = "Character";
@@ -76,11 +68,11 @@ public class CharacterSpriteController : MonoBehaviour
         // TODO: change sprite based on occupation
         switch (character.tag) {
             case "Worker": // construction worker
-                character.AddComponent<SpriteRenderer>().sprite = characterSprites["workerCharacter"];
+                character.AddComponent<SpriteRenderer>().sprite = _characterSprites["workerCharacter"];
 
                 break;
             case "Visitor": // visitor
-                character.AddComponent<SpriteRenderer>().sprite = characterSprites["visitorCharacter"];
+                character.AddComponent<SpriteRenderer>().sprite = _characterSprites["visitorCharacter"];
 
                 break;
 
@@ -92,22 +84,20 @@ public class CharacterSpriteController : MonoBehaviour
         CircleCollider2D collider = character.AddComponent<CircleCollider2D>();
 
         collider.radius = 0.45f; // to ensure its just enough smaller than a tile.
-                                 // Floor sorting laye ensures our character is on top.
+                                 // Floor sorting layer ensures our character is on top.
+                                 
 
-
-        // This signals to AstarController that character is crated and ready for the AI parts.
-        if (cbOnCharacterReadyForAI != null) {
-            cbOnCharacterReadyForAI(character);
-        }
+        // This signals to A starController that character is crated and ready for the AI parts.
+        _cbOnCharacterReadyForAI?.Invoke(character);
 
     }
     
 
     public void RegisterCharacterReadyForAI(Action<GameObject> callbackFunc) {
-        cbOnCharacterReadyForAI += callbackFunc;
+        _cbOnCharacterReadyForAI += callbackFunc;
     }
     public void UnregisterCharacterReadyForAI(Action<GameObject> callbackFunc) {
-        cbOnCharacterReadyForAI -= callbackFunc;
+        _cbOnCharacterReadyForAI -= callbackFunc;
     }
 
 }

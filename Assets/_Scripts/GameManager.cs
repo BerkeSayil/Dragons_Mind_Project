@@ -6,19 +6,22 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // TODO: This will be a class that doesn't get destroyed in change of scenes
-    // TODO: This will upon complation inspect the build scene to check if min conditions are met with.
+    // TODO: This will upon completion inspect the build scene to check if min conditions are met with.
 
-    public static GameManager instance; //This is the only instance of gamecontroller there ever will be.
+    public static GameManager Instance; //This is the only instance of game controller there ever will be.
 
-    public int numOfWorkersConstruction { get; protected set; }
+    public float Currency { get; protected set; }
+    public int NumOfWorkersConstruction { get; private set; }
 
+    //TODO: Game state machine to run it maybe first look it up ?
 
     private void Awake() {
-        instance = this;
+        Instance = this;
 
         DontDestroyOnLoad(this.gameObject);
 
-        numOfWorkersConstruction = 5;  //DEBUG
+        NumOfWorkersConstruction = 5;  //DEBUG
+        Currency = 10000f;
     }
 
 
@@ -35,5 +38,5 @@ public class GameManager : MonoBehaviour
     //TODO: Amount on employees based on occupations
     //TODO: Types of upgrades we got
     //TODO: Our respect and trust that works with contracts
-    //TODO: Company management menu information... [probly? stats, how we doin ?] [why not display them on main screen]
+    //TODO: Company management menu information... [probably? stats, how we doing ?] [why not display them on main screen]
 }

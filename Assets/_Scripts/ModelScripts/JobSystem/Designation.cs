@@ -4,76 +4,76 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Designation {
-    public const int MAGICNUMBER_ONE = 1;
+    private  const int MagicNumberOne = 1;
 
-    public float width { get; protected set; }
-    public float height { get; protected set; }
+    // readonly makes it so it can't get re-assigned after constructor exits
+    private readonly float _width;
 
+    private readonly float _height;
+    
     // find biggest x and substract min x to get width
-    int minX = int.MaxValue;
-    int maxX = 0;
-    int minY = int.MaxValue;
-    int maxY = 0;
+    private readonly int _minX = int.MaxValue;
+    private readonly int _maxX = 0;
+    private readonly int _minY = int.MaxValue;
+    private readonly int _maxY = 0;
 
-    public int centerX { get; protected set; }
-    public int centerY { get; protected set; }
+    public int CenterX { get; protected set; }
+    public int CenterY { get; protected set; }
 
-    DesignationType type = DesignationType.None;
-    public List<Tile> tiles { get; protected set; } // The tiles that's designated
+    private DesignationType _type;
+    public List<Tile> Tiles { get; protected set; } // The tiles that's designated
 
-    public List<string> furnitures { get; protected set; } // all the furnitures.
-    public List<string> neighbooringFurnitures { get; protected set; } // furnitures that are around a designation zone
+    public List<string> Furnitures { get; protected set; } // all the furniture.
+    public List<string> NeighbooringFurnitures { get; protected set; } // furnitures that are around a designation zone
 
-    Action<Designation> cbDesignationChanged;
+    private Action<Designation> _cbDesignationChanged;
 
-    public bool canInSpace = false; // determines if this designation can be on empty tiles
+    private readonly bool _canInSpace = false; // determines if this designation can be on empty tiles
 
-    World world = WorldController.Instance.world;
+    private static World World = WorldController.Instance.World;
 
     public DesignationType Type {
-        get {
-            return type;
-        }
+        get => _type;
         set {
-            DesignationType oldType = type;
-            type = value;
+            DesignationType oldType = _type;
+            _type = value;
             // call callback to let things know we changed this
-            if (cbDesignationChanged != null && oldType != type)
-                cbDesignationChanged(this);
+            if (_cbDesignationChanged != null && oldType != _type)
+                _cbDesignationChanged(this);
         }
     }
 
     public Designation(List<Tile> tiles, Designation.DesignationType type) {
-        this.tiles = new List<Tile>(tiles);
-        this.type = type;
+        this.Tiles = new List<Tile>(tiles);
+        this._type = type;
  
-        this.furnitures = new List<string>();
-        this.neighbooringFurnitures = new List<string>();
+        this.Furnitures = new List<string>();
+        this.NeighbooringFurnitures = new List<string>();
         // do canInSpace true for designable of space
         if (type == DesignationType.TradeGoods) {
-            canInSpace = true;
+            _canInSpace = true;
         }
 
         foreach (Tile tile in tiles) {
-            if (tile.x <= minX) { minX = tile.x; }
-            if(tile.x >= maxX) { maxX = tile.x; }
-            if(tile.y <= minY) { minY = tile.y; }
-            if(tile.y >= maxY) { maxY = tile.y; }
+            if (tile.x <= _minX) { _minX = tile.x; }
+            if(tile.x >= _maxX) { _maxX = tile.x; }
+            if(tile.y <= _minY) { _minY = tile.y; }
+            if(tile.y >= _maxY) { _maxY = tile.y; }
 
             //Debug.Log( " minx "+minX + " maxx" + maxX + " miny" + minY + " maxy" + maxY + " ");
 
-            if (canInSpace == false) {
+            if (_canInSpace == false) {
                 // if a designation can't be in open space we check if they belong in a valid room
                 // if no valid room then no designation.
-                if (tile.room == WorldController.Instance.world.GetOutsideRoom()) {
+                if (tile.room == WorldController.Instance.World.GetOutsideRoom()) {
                     Debug.Log("Can't designate in a non valid room");
-                    this.type = DesignationType.None;
+                    this._type = DesignationType.None;
                     //TODO: Give some kind of visual feedback for this behaviour.
                     return;
                 }
             }
             if(tile.furniture != null) {
-                furnitures.Add(tile.furniture.objectType);
+                Furnitures.Add(tile.furniture.objectType);
             }
 
         }
@@ -81,14 +81,14 @@ public class Designation {
 
         GetNeighbooringTilesFurnitures();
        
-        this.width = maxX - minX + MAGICNUMBER_ONE;
-        this.height = maxY - minY + MAGICNUMBER_ONE;
+        this._width = _maxX - _minX + MagicNumberOne;
+        this._height = _maxY - _minY + MagicNumberOne;
 
-        centerX = (int) (minX + width / 2);
-        centerY = (int) (minY + height / 2);
+        CenterX = (int) (_minX + _width / 2);
+        CenterY = (int) (_minY + _height / 2);
 
 
-        WorldController.Instance.world.AddDesignation(this);
+        WorldController.Instance.World.AddDesignation(this);
     }
 
     private void GetNeighbooringTilesFurnitures() {
@@ -101,42 +101,42 @@ public class Designation {
          * 
          */
         // top most
-        for (int i = minX; i <= maxX; i++) {
-            Tile t = world.GetTileAt(i, maxY);
+        for (int i = _minX; i <= _maxX; i++) {
+            Tile t = World.GetTileAt(i, _maxY);
            
             Tile t3 = t.North();
             if (t3.furniture != null) {
-                neighbooringFurnitures.Add(t3.furniture.objectType);
+                NeighbooringFurnitures.Add(t3.furniture.objectType);
 
             }
         }
         // bottom
-        for (int i = minX; i <= maxX; i++) {
-            Tile t = world.GetTileAt(i, minY);
+        for (int i = _minX; i <= _maxX; i++) {
+            Tile t = World.GetTileAt(i, _minY);
             
             Tile t3 = t.South();
             if (t3.furniture != null) {
-                neighbooringFurnitures.Add(t3.furniture.objectType);
+                NeighbooringFurnitures.Add(t3.furniture.objectType);
 
             }
         }
         // left 
-        for (int i = minY; i <= maxY; i++) {
-            Tile t = world.GetTileAt(minX, i);
+        for (int i = _minY; i <= _maxY; i++) {
+            Tile t = World.GetTileAt(_minX, i);
             
             Tile t3 = t.West();
             if (t3.furniture != null) {
-                neighbooringFurnitures.Add(t3.furniture.objectType);
+                NeighbooringFurnitures.Add(t3.furniture.objectType);
 
             }
         }
         // right
-        for (int i = minY; i <= maxY; i++) {
-            Tile t = world.GetTileAt(maxX, i);
+        for (int i = _minY; i <= _maxY; i++) {
+            Tile t = World.GetTileAt(_maxX, i);
             
             Tile t3 = t.East();
             if (t3.furniture != null) {
-                neighbooringFurnitures.Add(t3.furniture.objectType);
+                NeighbooringFurnitures.Add(t3.furniture.objectType);
 
             }
         }
@@ -145,10 +145,10 @@ public class Designation {
 
     private bool IsRoomItself() {
         //This function is needed if a designation has to be room by themselves and can't be a common place with an open floor plan.
-        int wallAmount = NumberOfInList(neighbooringFurnitures, "Wall");
-        int doorAmount = NumberOfInList(neighbooringFurnitures, "Door");
+        int wallAmount = NumberOfInList(NeighbooringFurnitures, "Wall");
+        int doorAmount = NumberOfInList(NeighbooringFurnitures, "Door");
 
-        int sorroundingAmount =(int)(2 * width + 2 * height);
+        int sorroundingAmount =(int)(2 * _width + 2 * _height);
 
         if (wallAmount + doorAmount >= sorroundingAmount) return true;
         
@@ -176,7 +176,7 @@ public class Designation {
         if (Type == DesignationType.PersonalCrewRoom) {
 
 
-            if (furnitures.Contains("SleepingPod") && IsRoomItself()) {
+            if (Furnitures.Contains("SleepingPod") && IsRoomItself()) {
                 Debug.Log("Crew Room is functional");
 
                 return true;
@@ -185,7 +185,7 @@ public class Designation {
         }else if(Type == DesignationType.Kitchen) {
 
 
-            if (furnitures.Contains("FoodProcesser") && neighbooringFurnitures.Contains("Door")) {
+            if (Furnitures.Contains("FoodProcesser") && NeighbooringFurnitures.Contains("Door")) {
                 Debug.Log("Kitchen is functional");
 
                 return true;
@@ -195,7 +195,7 @@ public class Designation {
         else if(Type == DesignationType.Cafeteria) {
 
 
-            if (NumberOfInList(furnitures, "Desk") > 2 && neighbooringFurnitures.Contains("Door")) {
+            if (NumberOfInList(Furnitures, "Desk") > 2 && NeighbooringFurnitures.Contains("Door")) {
                 Debug.Log("Cafeteria is functional");
 
                 return true;
@@ -204,7 +204,7 @@ public class Designation {
         }
         else if(Type == DesignationType.Engine) {
             //TODO: MIGHT LOOK INTO ELECTRIC SYSTEM NEXT WE'LL USE TILE NEIGHBOOR NORTHSOUTHEASTWEST METHODS THERE
-            if (furnitures.Contains("Engine")) {
+            if (Furnitures.Contains("Engine")) {
                 Debug.Log("Engine is functional");
 
                 return true;
@@ -214,7 +214,7 @@ public class Designation {
         else if(Type == DesignationType.LifeSupport) {
             //TODO: WHILE YOU MENTION IT ROOMS HAVE ATMOS BUT WE CAN ONLY IMPLEMENT THAT AFTER THIS ATMOSPROVIDER FURNITURE
             //TODO: IS FUNCTIONAL WE MIGHT DO SOME SPECIAL CASE FOR THIS.
-            if (furnitures.Contains("LifeSupportMaintainer") && furnitures.Contains("AtmosProvider")) {
+            if (Furnitures.Contains("LifeSupportMaintainer") && Furnitures.Contains("AtmosProvider")) {
                 Debug.Log("LifeSupport is functional");
 
                 return true;
@@ -245,7 +245,7 @@ public class Designation {
                 Debug.Log("Tile null while trying to designate");
                 areWeValid = false;
             }
-            if (t.Type == Tile.TileType.Empty && canInSpace && t.designationType == Designation.DesignationType.None) {
+            if (t.Type == Tile.TileType.Empty && _canInSpace && t.designationType == Designation.DesignationType.None) {
 
                 //areWeValid = true;
             }
@@ -265,10 +265,10 @@ public class Designation {
     }
     public void RegisterDesignationTypeChangedCallback(Action<Designation> callback) {
         
-        cbDesignationChanged += callback;
+        _cbDesignationChanged += callback;
     }
     public void UnRegisterDesignationTypeChangedCallback(Action<Designation> callback) {
-        cbDesignationChanged -= callback;
+        _cbDesignationChanged -= callback;
     }
 
 
@@ -287,16 +287,16 @@ public class Designation {
 
     public void DestroyDesignation() {
 
-        WorldController.Instance.world.RemoveDesignation(this);
+        WorldController.Instance.World.RemoveDesignation(this);
     }
 
 
     public void UpdateDesignationFurnitures() {
-        foreach (Tile tile in tiles) {
+        foreach (Tile tile in Tiles) {
             
             if(tile.furniture != null) { //TODO: Find out how many of an object is available
-                if (furnitures.Contains(tile.furniture.objectType) == false) {
-                    furnitures.Add(tile.furniture.objectType);
+                if (Furnitures.Contains(tile.furniture.objectType) == false) {
+                    Furnitures.Add(tile.furniture.objectType);
                 }
             }
         }

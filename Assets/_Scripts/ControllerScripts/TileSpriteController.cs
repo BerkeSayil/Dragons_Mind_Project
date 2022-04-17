@@ -6,132 +6,127 @@ using Pathfinding;
 
 public class TileSpriteController : MonoBehaviour
 {
-    [SerializeField] Sprite floorSprite;
-    [SerializeField] Sprite defaultEmptySprite;
+    [SerializeField] private Sprite floorSprite;
+    [SerializeField] private Sprite defaultEmptySprite;
 
-    Dictionary<Tile, GameObject> tileGameObjectMap;
-
-
-    const int EMPTY_LAYER = 6;
-    const int FLOOR_LAYER = 7;
-
-    World world {
-        get { return WorldController.Instance.world; }
-    }
+    private Dictionary<Tile, GameObject> _tileGameObjectMap;
 
 
+    private const int EmptyLayer = 6;
+    private const int FloorLayer = 7;
 
-    void Start() {
+    private static World World => WorldController.Instance.World;
 
-        tileGameObjectMap = new Dictionary<Tile, GameObject>();
 
-        // Create a gameobject for every tile so we have visual representation.
-        for (int x = 0; x < world.width; x++) {
-            for (int y = 0; y < world.height; y++) {
-                Tile tileData = world.GetTileAt(x, y);
+    private void Start() {
 
-                GameObject tileGO = new GameObject();
-                tileGO.name = "Tile_" + x + "_" + y;
-                tileGO.transform.position = new Vector2(tileData.x, tileData.y);
-                tileGO.transform.SetParent(this.transform, true);
+        _tileGameObjectMap = new Dictionary<Tile, GameObject>();
+
+        // Create a game-object for every tile so we have visual representation.
+        for (var x = 0; x < World.Width; x++) {
+            for (var y = 0; y < World.Height; y++) {
+                Tile tileData = World.GetTileAt(x, y);
+
+                GameObject tileGo = new GameObject();
+                tileGo.name = "Tile_" + x + "_" + y;
+                tileGo.transform.position = new Vector2(tileData.x, tileData.y);
+                tileGo.transform.SetParent(this.transform, true);
 
                 // adding a sprite renderer and giving it the defaultyEmpty sprite.
-                tileGO.AddComponent<SpriteRenderer>();
-                SpriteRenderer renderer = tileGO.GetComponent<SpriteRenderer>();
+                tileGo.AddComponent<SpriteRenderer>();
+                SpriteRenderer renderer = tileGo.GetComponent<SpriteRenderer>();
                 renderer.sprite = defaultEmptySprite;
                 renderer.sortingLayerName = "Tiles";
 
                 // setting collisionBox layer for pathfinding.
-                tileGO.layer = EMPTY_LAYER;
-                BoxCollider2D collider =  tileGO.AddComponent<BoxCollider2D>();
+                tileGo.layer = EmptyLayer;
+                BoxCollider2D collider =  tileGo.AddComponent<BoxCollider2D>();
                 collider.size = new Vector2(1f, 1f);
                 
 
-                tileGameObjectMap.Add(tileData, tileGO);
+                _tileGameObjectMap.Add(tileData, tileGo);
 
             }
         }
 
-        world.RegisterTileChanged(OnTileChanged);
+        World.RegisterTileChanged(OnTileChanged);
         GameObject.Find("DesignationController").
             GetComponent<DesignationController>().
             RegisterTileDesignationChangedCallback(OnTileChanged);
     }
 
-    public Sprite GetSpriteForTile(Tile.TileType jobTileType) {
+    public Sprite GetSpriteForTile(Tile.TileType jobTileType)
+    {
         //TODO: When you fix serialize field sprite things you will need to fix these too!
 
-        if(jobTileType == Tile.TileType.Empty) {
-            return defaultEmptySprite;
-        }
-        
-        if(jobTileType == Tile.TileType.Floor) {
-            return floorSprite;
-        }
-
-        return null; // This shouldn't come up
-
+        return jobTileType switch
+        {
+            Tile.TileType.Empty => defaultEmptySprite,
+            Tile.TileType.Floor => floorSprite,
+            _ => null
+            
+        };
     }
 
-    void OnTileChanged(Tile tileData)
+    private void OnTileChanged(Tile tileData)
     {
 
-        if (tileGameObjectMap.ContainsKey(tileData) == false) {
+        if (_tileGameObjectMap.ContainsKey(tileData) == false) {
             Debug.Log("tileGameObjectMap doesn't contain key");
             return;
         }
 
-        GameObject tileGO = tileGameObjectMap[tileData];
+        GameObject tileGo = _tileGameObjectMap[tileData];
 
-        if(tileData.Type == Tile.TileType.Floor)
+        switch (tileData.Type)
         {
-            // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
-            tileGO.GetComponent<SpriteRenderer>().sprite = floorSprite;
-            tileGO.layer = FLOOR_LAYER;
-
-
-        }
-        else if(tileData.Type == Tile.TileType.Empty)
-        {
-            tileGO.GetComponent<SpriteRenderer>().sprite = defaultEmptySprite;
-            tileGO.layer = EMPTY_LAYER;
-
-        }
-        else
-        {
-            Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
+            case Tile.TileType.Floor:
+                // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
+                tileGo.GetComponent<SpriteRenderer>().sprite = floorSprite;
+                tileGo.layer = FloorLayer;
+                break;
+            case Tile.TileType.Empty:
+                tileGo.GetComponent<SpriteRenderer>().sprite = defaultEmptySprite;
+                tileGo.layer = EmptyLayer;
+                break;
+            default:
+                Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
+                break;
         }
 
-        if(tileData.designationType != Designation.DesignationType.None) {
-            if (tileData.designationType == Designation.DesignationType.Cafeteria) {
-                tileGO.GetComponent<SpriteRenderer>().color = Color.cyan;
-            }
-            if (tileData.designationType == Designation.DesignationType.Engine) {
-                tileGO.GetComponent<SpriteRenderer>().color = Color.yellow;
-            }
-            if (tileData.designationType == Designation.DesignationType.Kitchen) {
-                tileGO.GetComponent<SpriteRenderer>().color = Color.magenta;
-            }
-            if (tileData.designationType == Designation.DesignationType.LifeSupport) {
-                tileGO.GetComponent<SpriteRenderer>().color = Color.red;
-            }
-            if (tileData.designationType == Designation.DesignationType.PersonalCrewRoom) {
-                tileGO.GetComponent<SpriteRenderer>().color = Color.green;
-            }
-            if (tileData.designationType == Designation.DesignationType.TradeGoods) {
-                tileGO.GetComponent<SpriteRenderer>().color = Color.blue;
-            }
-            
-
+        switch (tileData.designationType)
+        {
+            case Designation.DesignationType.None:
+                return;
+            case Designation.DesignationType.Cafeteria:
+                tileGo.GetComponent<SpriteRenderer>().color = Color.cyan;
+                break;
+            case Designation.DesignationType.Engine:
+                tileGo.GetComponent<SpriteRenderer>().color = Color.yellow;
+                break;
+            case Designation.DesignationType.Kitchen:
+                tileGo.GetComponent<SpriteRenderer>().color = Color.magenta;
+                break;
+            case Designation.DesignationType.LifeSupport:
+                tileGo.GetComponent<SpriteRenderer>().color = Color.red;
+                break;
+            case Designation.DesignationType.PersonalCrewRoom:
+                tileGo.GetComponent<SpriteRenderer>().color = Color.green;
+                break;
+            case Designation.DesignationType.TradeGoods:
+                tileGo.GetComponent<SpriteRenderer>().color = Color.blue;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
     public Tile GetTileAtCoord(Vector3 coordinates)
     {
-        int x = Mathf.FloorToInt(coordinates.x);
-        int y = Mathf.FloorToInt(coordinates.y);
+        var x = Mathf.FloorToInt(coordinates.x);
+        var y = Mathf.FloorToInt(coordinates.y);
 
-        return world.GetTileAt(x, y);
+        return World.GetTileAt(x, y);
 
     }
 }

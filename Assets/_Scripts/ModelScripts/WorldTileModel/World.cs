@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,60 +6,57 @@ using UnityEngine;
 public class World
 {
 
-    Tile[,] tiles;
-    List<Character> characters;
-    public List<WorkerAI> workers { get; protected set; }
-    List<VisitorAI> visitors;
+    Tile[,] Tiles;
+    List<Character> Characters;
+    public List<WorkerAI> Workers { get; protected set; }
+    List<VisitorAI> Engineers;
 
-    public List<Room> rooms;
-    public List<Designation> designations;
+    public List<Room> Rooms;
+    public List<Designation> Designations;
 
-    Dictionary<string, Furniture> furniturePrototypes;
-    public Dictionary<string, Inventory> inventoryPrototypes { get; protected set; }
+    public Dictionary<string, Furniture> FurniturePrototypes { get; private set; }
+    public Dictionary<string, Inventory> InventoryPrototypes { get; private set; }
 
-    public int width { get; }
-    public int height { get; }
+    public int Width { get; }
+    public int Height { get; }
 
-    public GameObject workerPrefab { get; set; }
-    public GameObject visitorPrefab { get; set; }
-    public GameObject shipPrefab { get; set; }
-    public Vector2 shipTilePos;
+    public GameObject WorkerPrefab { get; set; }
+    public GameObject EngineerPrefab { get; set; }
+    public GameObject ShipPrefab { get; set; }
+    public Vector2 ShipTilePos;
 
-    Action<Furniture> cbFurnitureCreated;
-    Action<Furniture> cbFurnitureChanged;
-
-    Action<Inventory> cbInventoryCreated;
-
-    Action<Tile> cbTileChanged;
-    Action<GameObject> cbCharacterCreated;
-    Action<Designation> cbDesigChanged;
+    private Action<Tile> _cbTileChanged;
+    private Action<Furniture> _cbFurnitureCreated;
+    private Action<Inventory> _cbInventoryCreated;
+    private Action<GameObject> _cbCharacterCreated;
+    private Action<Designation> _cbDesigChanged;
     //TODO: When and if we should unregister these callbacks ?
 
     // TODO: This should be replaced with a dedicated class for managing job queues (plural!!!)
     // might look into making it semi-static or self initializing... (don't know what they mean but I saw it online lol :d)
-    public JobQueue jobQueue;
+    public JobQueue JobQueue;
     
 
     public World(int width = 128, int height = 128)
     {
-        this.width = width;
-        this.height = height;
+        this.Width = width;
+        this.Height = height;
 
         // room system list and first room as outside
-        rooms = new List<Room>();
-        rooms.Add(new Room()); // Creates the outside?
+        Rooms = new List<Room>();
+        Rooms.Add(new Room()); // Creates the outside?
 
-        designations = new List<Designation>();
+        Designations = new List<Designation>();
 
-        tiles = new Tile[width, height];
-        for (int x = 0; x < width; x++)
+        Tiles = new Tile[width, height];
+        for (var x = 0; x < width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (var y = 0; y < height; y++)
             {
-                tiles[x, y] = new Tile(this, x, y);
-                tiles[x, y].RegisterTileTypeChangedCallback(OnTileChanged);
-                tiles[x, y].room = GetOutsideRoom(); // they all belong to outside at start
-                tiles[x, y].designationType = GetDefaultDesignation(); // all tiles are designated as empty at first
+                Tiles[x, y] = new Tile(this, x, y);
+                Tiles[x, y].RegisterTileTypeChangedCallback(OnTileChanged);
+                Tiles[x, y].room = GetOutsideRoom(); // they all belong to outside at start
+                Tiles[x, y].designationType = GetDefaultDesignation(); // all tiles are designated as empty at first
             }
         }
 
@@ -69,32 +65,30 @@ public class World
         CreateInventoryPrototypes();
 
         // Get the ship tile center position to spawn crewmates
-        shipTilePos = new Vector2(width / 2 + 9.5f, height / 2);
+        ShipTilePos = new Vector2(width / 2 + 9.5f, height / 2);
 
-        jobQueue = new JobQueue();
+        JobQueue = new JobQueue();
 
         // Creates characters for us. 
-        characters = new List<Character>();
-        workers = new List<WorkerAI>();
-        visitors = new List<VisitorAI>();
+        Characters = new List<Character>();
+        Workers = new List<WorkerAI>();
+        Engineers = new List<VisitorAI>();
 
     }
 
     public void ReturnToSender(Job job) {
         
-        //TODO: this deletes given jobs from job queue destroys gameobjects and everything about them and later requeues
+        //TODO: this deletes given jobs from job queue destroys game-objects and everything about them and later requeue
 
 
     }
 
     public void DeliverShipToWorld() {
 
-        //TODO: This will be needed to expanded upon I think by changing ship prefab from world controller we might achieve upgradeblity 
-
-        //This determines where to place the ship might get modified to be more dynamic in the future?
+        //TODO: Make our ship get cooler as our reputation increases.
         
 
-        GameObject c = GameObject.Instantiate(shipPrefab, shipTilePos, Quaternion.identity);
+        GameObject c = GameObject.Instantiate(ShipPrefab, ShipTilePos, Quaternion.identity);
         c.tag = "SpaceShip";
 
         MotherShip shipScript = c.GetComponent<MotherShip>();
@@ -102,11 +96,11 @@ public class World
         List<Tile> shipCargoBay = new List<Tile>();
 
         // 71-58, 71-68, 75-68, 75-58
-        for (int x = 71; x <= 75; x++) {
+        for (var x = 71; x <= 75; x++) {
 
-            for (int y = 58; y <= 68; y++) {
+            for (var y = 58; y <= 68; y++) {
 
-                if ((int)shipTilePos.x  == x && (int)shipTilePos.y  == y) continue;
+                if ((int)ShipTilePos.x  == x && (int)ShipTilePos.y  == y) continue;
 
                 Tile t = GetTileAt(x, y);
 
@@ -119,23 +113,18 @@ public class World
 
         Designation cargoBay = new Designation(shipCargoBay, Designation.DesignationType.TradeGoods);
 
-        
-
-
     }
 
     internal void DeliverInventoryOnTile(Tile.TileType jobTileType, Tile destination) {
 
-        //TODO: Consider objectType like bruhhhh
+        //TODO: Consider objectType for this string
         string s = "Wall_Scrap";
 
-        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[s], destination);
+        Inventory inv = Inventory.PlaceInstance(InventoryPrototypes[s], destination);
 
         if (inv == null) return;
 
-        if (cbInventoryCreated != null) {
-            cbInventoryCreated(inv);
-        }
+        _cbInventoryCreated?.Invoke(inv);
     }
 
     internal void DeliverInventoryOnTile(string jobObjectType, Tile destination) {
@@ -143,137 +132,135 @@ public class World
         //TODO: Consider objectType
         string s = "Wall_Scrap";
 
-        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[s], destination);
+        Inventory inv = Inventory.PlaceInstance(InventoryPrototypes[s], destination);
 
         if (inv == null) return;
 
-        if (cbInventoryCreated != null) {
-            cbInventoryCreated(inv);
-        }
+        _cbInventoryCreated?.Invoke(inv);
     }
 
     public void AddRoom(Room r) {
-        rooms.Add(r);
+        Rooms.Add(r);
     }
     public void AddDesignation(Designation d) {
-        designations.Add(d);
+        Designations.Add(d);
         d.RegisterDesignationTypeChangedCallback(OnDesignationChanged);
     }
 
     public void RemoveDesignation(Designation d) { //TODO: Designation removing should exist in a capacity
-        designations.Remove(d);
+        Designations.Remove(d);
     }
-    public Designation.DesignationType GetDefaultDesignation() {
+    private static Designation.DesignationType GetDefaultDesignation() {
 
         return Designation.DesignationType.None;
     }
 
     public List<Designation> GetDesignationOfType(Designation.DesignationType typeWanted) {
       
-        return designations.Any() ? designations.FindAll((type) => type.Type == typeWanted ) : null;
+        return Designations.Any() ? Designations.FindAll((type) => type.Type == typeWanted ) : null;
 
     }
     public Room GetOutsideRoom() {
 
-        return rooms[0];
+        return Rooms[0];
     }
     public void DeleteRooms(Room r) {
         if(r == GetOutsideRoom()) {
             return;
         }
 
-        rooms.Remove(r);
+        Rooms.Remove(r);
 
         r.UnassignAllTiles();
         
 
     }
-    protected void CreateFurniturePrototypes()
+    private void CreateFurniturePrototypes()
     {
-        furniturePrototypes = new Dictionary<string, Furniture>();
+        FurniturePrototypes = new Dictionary<string, Furniture>();
 
         // TODO: Make this get read from a data, XML, json or some other file
-        furniturePrototypes.Add("Wall",
+        FurniturePrototypes.Add("Wall",
             Furniture.CreatePrototype( 
             "Wall", 
             0, // impassible
             1, //width
             1, //height
-            true, // links to neighboors to look like linked.
-            true // can this be used as exterior blockadge ?
+            true, // links to neighbours to look like linked.
+            true // can this be used as exterior blockage ?
             ));
-        furniturePrototypes.Add("Door",
+        FurniturePrototypes.Add("Door",
             Furniture.CreatePrototype(
             "Door",
-            1, // passible
+            1, // passable
             1, //width
             1, //height
-            false, // links to neighboors to look like linked.
+            false, // links to neighbours to look like linked.
             true //TODO: it actually need to check if closed ?)
             ));
-        furniturePrototypes.Add("SleepingPod",
+        FurniturePrototypes.Add("SleepingPod",
             Furniture.CreatePrototype(
             "SleepingPod",
             0, // impassible
             1, //width
             1, //height
-            false, // links to neighboors to look like linked.
-            false // can this be used as exterior blockadge ?
+            false, // links to neighbours to look like linked.
+            false // can this be used as exterior blockage ?
             ));
-        furniturePrototypes.Add("FoodProcesser",
+        FurniturePrototypes.Add("FoodProcessor",
             Furniture.CreatePrototype(
-            "FoodProcesser",
+            "FoodProcessor",
             0, // impassible
             1, //width
             1, //height
-            false, // links to neighboors to look like linked.
-            false // can this be used as exterior blockadge ?
+            false, // links to neighbours to look like linked.
+            false // can this be used as exterior blockage ?
             ));
-        furniturePrototypes.Add("Desk",
+        FurniturePrototypes.Add("Desk",
             Furniture.CreatePrototype(
             "Desk",
             0, // impassible
             2, //width
             1, //height
             false, //TODO: This could look like linked depending on the sprites we use
-            false // can this be used as exterior blockadge ?
+            false // can this be used as exterior blockage ?
             ));
-        furniturePrototypes.Add("Engine",
+        FurniturePrototypes.Add("Engine",
             Furniture.CreatePrototype(
             "Engine",
             0, // impassible
             2, //width
             2, //height
-            false, // links to neighboors to look like linked.
-            false // can this be used as exterior blockadge ?
+            false, // links to neighbours to look like linked.
+            false // can this be used as exterior blockage ?
             ));
-        furniturePrototypes.Add("LifeSupportMaintainer",
+        FurniturePrototypes.Add("LifeSupportMaintainer",
             Furniture.CreatePrototype(
             "LifeSupportMaintainer",
             0, // impassible
             1, //width
             1, //height
-            false, // links to neighboors to look like linked.
-            false // can this be used as exterior blockadge ?
+            false, // links to neighbours to look like linked.
+            false // can this be used as exterior blockage ?
             ));
-        furniturePrototypes.Add("AtmosProvider",
+        FurniturePrototypes.Add("AtmosProvider",
             Furniture.CreatePrototype(
             "AtmosProvider",
             0, // impassible
             1, //width
             1, //height
-            false, // links to neighboors to look like linked.
-            false // can this be used as exterior blockadge ?
+            false, // links to neighbours to look like linked.
+            false // can this be used as exterior blockage ?
             ));
 
 
     }
 
-    protected void CreateInventoryPrototypes() {
-        inventoryPrototypes = new Dictionary<string, Inventory>();
+    private void CreateInventoryPrototypes() {
+        InventoryPrototypes = new Dictionary<string, Inventory>();
 
         // TODO: Make this get read from a data, XML, json or some other file
-        inventoryPrototypes.Add("Wall_Scrap",
+        InventoryPrototypes.Add("Wall_Scrap",
             Inventory.CreateInventoryProto(
             "Wall_Scrap" // what the object is
             ));
@@ -282,19 +269,17 @@ public class World
     }
     public Tile GetTileAt(int x, int y)
     {
-        if(x < 0 || x > width || y < 0 || y > height)
-        {
-            // clean this later
-            Debug.LogError("Tile (" + x + " , " + y + ") is out of range for this world.");
-            return null;
-        }
+        if (x >= 0 && x <= Width && y >= 0 && y <= Height) return Tiles[x, y];
+        
+        // TODO: clean this later
+        Debug.LogError("Tile (" + x + " , " + y + ") is out of range for this world.");
+        return null;
 
-        return tiles[x, y];
     }
 
     public bool IsFurniturePlacementValid(string furnitureType, Tile tile) {
         // return if you could place that furniture on that tile
-        return furniturePrototypes[furnitureType].ValidatePositionOfFurniture(tile);
+        return FurniturePrototypes[furnitureType].ValidatePositionOfFurniture(tile);
 
     }
 
@@ -321,49 +306,43 @@ public class World
         //TODO: Consider objectType
         string s = "Wall_Scrap";
         
-        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[s], t);
+        Inventory inv = Inventory.PlaceInstance(InventoryPrototypes[s], t);
 
         if (inv == null) return;
 
-        if (cbInventoryCreated != null) {
-            cbInventoryCreated(inv);
-        }
+        _cbInventoryCreated?.Invoke(inv);
 
-        if (t.looseObject != null) {
-            // inventory exists on this tile.
+        if (t.looseObject == null) return;
+        // inventory exists on this tile.
 
-            Job j = new Job(t, false, inv ,(theJob) => {
-                GetTheInventory(s, theJob.tile);
+        Job j = new Job(t, false, inv ,(theJob) => {
+            GetTheInventory(s, theJob.Tile);
 
-                t.pendingHaulJob = null;
+            t.pendingHaulJob = null;
 
-            }, Job.JobType.InventoryManagement );
+        }, Job.JobType.InventoryManagement );
 
-            t.pendingHaulJob = j;
-            j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingHaulJob = null; });
+        t.pendingHaulJob = j;
+        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.pendingHaulJob = null; });
             
-            WorldController.Instance.world.jobQueue.Enqueue(j);
-
-        }                 
+        WorldController.Instance.World.JobQueue.Enqueue(j);
 
     }
     
-    public void DropOffInventoryAtHaulingEnd(string objectType, Tile tile) {
+    private void DropOffInventoryAtHaulingEnd(string objectType, Tile tile) {
 
-        Inventory inv = Inventory.PlaceInstance(inventoryPrototypes[objectType], tile);
+        Inventory inv = Inventory.PlaceInstance(InventoryPrototypes[objectType], tile);
 
         if (inv == null) return;
 
-        if (cbInventoryCreated != null) {
-            cbInventoryCreated(inv);
-        }
+        _cbInventoryCreated?.Invoke(inv);
 
-        //TODO: Keep track of inventories that exist
+        //TODO: Keep track of inventories that exist in current word so we only create if no exists
         // .Add(inv);
     }
     private void GetTheInventory(string objectType, Tile tile) {
 
-        if (inventoryPrototypes.ContainsKey(objectType) == false) {
+        if (InventoryPrototypes.ContainsKey(objectType) == false) {
             Debug.LogError("inventoryPrototypes doesn't contain key: " + objectType);
             return;
         }
@@ -377,13 +356,15 @@ public class World
 
         if (desigs == null) return;
 
-        for (int i = 0; i < desigs.Count; i++) {
-            foreach (Tile t in desigs[i].tiles) {
-                if (t.looseObject == null && t.pendingHaulJob == null && IsHaulPlacementValid(t)){
-                    destination = t;
-                    break;
-                }
+        foreach (var t1 in desigs)
+        {
+            foreach (var t in t1.Tiles.Where
+                         (t => t.looseObject == null && t.pendingHaulJob == null && IsHaulPlacementValid(t)))
+            {
+                destination = t;
+                break;
             }
+
             if (destination != tile) break;
         }
 
@@ -392,17 +373,17 @@ public class World
             return;
         }
 
-        Job j = new Job(destination, true, inventoryPrototypes[objectType] , (theJob) => {
-            DropOffInventoryAtHaulingEnd(objectType, theJob.tile);
+        Job j = new Job(destination, true, InventoryPrototypes[objectType] , (theJob) => {
+            DropOffInventoryAtHaulingEnd(objectType, theJob.Tile);
 
             destination.pendingHaulJob = null;
 
         }, Job.JobType.InventoryManagement);
 
         destination.pendingHaulJob = j;
-        j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingHaulJob = null; });
+        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.pendingHaulJob = null; });
 
-        WorldController.Instance.world.jobQueue.Enqueue(j);
+        WorldController.Instance.World.JobQueue.Enqueue(j);
 
         Inventory.PickInventoryUp(tile); // removes inventory on given tile
 
@@ -420,12 +401,12 @@ public class World
     {
         // if width or height bigger than 1 on world call PlaceFurnitureAt for those other tiles too
 
-        if (furniturePrototypes.ContainsKey(objectType) == false)
+        if (FurniturePrototypes.ContainsKey(objectType) == false)
         {
             Debug.LogError("installedObjectPrototypes doesn't contain key: " + objectType);
             return;
         }
-        Furniture furniture = Furniture.PlaceInstance(furniturePrototypes[objectType], t);
+        Furniture furniture = Furniture.PlaceInstance(FurniturePrototypes[objectType], t);
 
         // should this type of furniture create furniture instances on multiple tiles ?
         List<Furniture> furnitures = new List<Furniture> {
@@ -435,45 +416,45 @@ public class World
         // not my produest hard code but it works ?
         // fuck yeah it works :D
 
-        switch (furniturePrototypes[objectType].width) {
+        switch (FurniturePrototypes[objectType].width) {
             case 1:
-                switch (furniturePrototypes[objectType].height) {
+                switch (FurniturePrototypes[objectType].height) {
                     case 1:
                         // already handling as default
                         break;
                     case 2:
-                        Furniture f2x1c1c2 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North());
+                        Furniture f2x1c1c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
                         furnitures.Add(f2x1c1c2);
                         break;
                     case 3:
-                        Furniture f2x1c1c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North());
-                        Furniture f3x1c1c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North().North());
+                        Furniture f2x1c1c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
+                        Furniture f3x1c1c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North());
                         furnitures.Add(f2x1c1c3);
                         furnitures.Add(f3x1c1c3);
                         break;
                 }
                 break;
             case 2:
-                switch (furniturePrototypes[objectType].height) {
+                switch (FurniturePrototypes[objectType].height) {
                     case 1:
-                        Furniture f1x2c2c1 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East());
+                        Furniture f1x2c2c1 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
                         furnitures.Add(f1x2c2c1);
                         break;
                     case 2:
-                        Furniture f1x2c2c2 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East());
-                        Furniture f2x1c2c2 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North());
-                        Furniture f2x2c2c2 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North().East());
+                        Furniture f1x2c2c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
+                        Furniture f2x1c2c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
+                        Furniture f2x2c2c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().East());
 
                         furnitures.Add(f1x2c2c2);
                         furnitures.Add(f2x1c2c2);
                         furnitures.Add(f2x2c2c2);
                         break;
                     case 3:
-                        Furniture f1x2c2c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East());
-                        Furniture f2x1c2c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North());
-                        Furniture f2x2c2c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North().East());
-                        Furniture f3x1c2c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North().North());
-                        Furniture f3x2c2c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North().North().East());
+                        Furniture f1x2c2c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
+                        Furniture f2x1c2c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
+                        Furniture f2x2c2c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().East());
+                        Furniture f3x1c2c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North());
+                        Furniture f3x2c2c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North().East());
 
                         furnitures.Add(f1x2c2c3);
                         furnitures.Add(f2x1c2c3);
@@ -485,20 +466,20 @@ public class World
                 }
                 break;
             case 3:
-                switch (furniturePrototypes[objectType].height) {
+                switch (FurniturePrototypes[objectType].height) {
                     case 1:
-                        Furniture f1x2c3c1 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East());
-                        Furniture f1x3c3c1 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East().East());
+                        Furniture f1x2c3c1 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
+                        Furniture f1x3c3c1 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East());
                         furnitures.Add(f1x2c3c1);
                         furnitures.Add(f1x3c3c1);
 
                         break;
                     case 2:
-                        Furniture f1x2c3c2 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East());
-                        Furniture f2x1c3c2 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North());
-                        Furniture f2x2c3c2 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North().East());
-                        Furniture f1x3c3c2 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East().East());
-                        Furniture f2x3c3c2 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East().East().North());
+                        Furniture f1x2c3c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
+                        Furniture f2x1c3c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
+                        Furniture f2x2c3c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().East());
+                        Furniture f1x3c3c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East());
+                        Furniture f2x3c3c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East().North());
 
                         furnitures.Add(f1x2c3c2);
                         furnitures.Add(f2x1c3c2);
@@ -507,14 +488,14 @@ public class World
                         furnitures.Add(f2x3c3c2);
                         break;
                     case 3:
-                        Furniture f1x2c3c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East());
-                        Furniture f2x1c3c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North());
-                        Furniture f2x2c3c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North().East());
-                        Furniture f1x3c3c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East().East());
-                        Furniture f2x3c3c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.East().East().North());
-                        Furniture f3x1c3c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North().North());
-                        Furniture f3x2c3c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North().North().East());
-                        Furniture f3x3c3c3 = Furniture.PlaceInstance(furniturePrototypes[objectType], t.North().North().East().East());
+                        Furniture f1x2c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
+                        Furniture f2x1c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
+                        Furniture f2x2c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().East());
+                        Furniture f1x3c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East());
+                        Furniture f2x3c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East().North());
+                        Furniture f3x1c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North());
+                        Furniture f3x2c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North().East());
+                        Furniture f3x3c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North().East().East());
 
                         furnitures.Add(f1x2c3c3);
                         furnitures.Add(f2x1c3c3);
@@ -542,8 +523,8 @@ public class World
                 Room.DoFloodFillRoom(furn);
             }
 
-            if (cbFurnitureCreated != null) {
-                cbFurnitureCreated(furn);
+            if (_cbFurnitureCreated != null) {
+                _cbFurnitureCreated(furn);
             }
 
         }
@@ -551,14 +532,14 @@ public class World
     }
     public void RemoveFurnitureAt(string objectType, Tile t) {
 
-        if (furniturePrototypes.ContainsKey(objectType) == false) {
+        if (FurniturePrototypes.ContainsKey(objectType) == false) {
             Debug.LogError("installedObjectPrototypes doesn't contain key: " + objectType);
             return;
         }
 
         //TODO: Multiple tile deconstruction not supported
-        Furniture whatFurnitureWas = furniturePrototypes[objectType];
-        Furniture.DismantleFurniture(furniturePrototypes[objectType], t);
+        Furniture whatFurnitureWas = FurniturePrototypes[objectType];
+        Furniture.DismantleFurniture(FurniturePrototypes[objectType], t);
 
         DropInventoryAfterDeconstruction(objectType, t);
         
@@ -584,20 +565,20 @@ public class World
 
 
         if (t.North().room != null) {
-            northIndex = rooms.IndexOf(t.North().room);
-            neighboorRooms.Add(rooms[northIndex]);
+            northIndex = Rooms.IndexOf(t.North().room);
+            neighboorRooms.Add(Rooms[northIndex]);
         }
         if (t.South().room != null) {
-            southIndex = rooms.IndexOf(t.South().room);
-            neighboorRooms.Add(rooms[southIndex]);
+            southIndex = Rooms.IndexOf(t.South().room);
+            neighboorRooms.Add(Rooms[southIndex]);
         }
         if (t.East().room != null) {
-            eastIndex = rooms.IndexOf(t.East().room);
-            neighboorRooms.Add(rooms[eastIndex]);
+            eastIndex = Rooms.IndexOf(t.East().room);
+            neighboorRooms.Add(Rooms[eastIndex]);
         }
         if (t.West().room != null) {
-            westIndex = rooms.IndexOf(t.West().room);
-            neighboorRooms.Add(rooms[westIndex]);
+            westIndex = Rooms.IndexOf(t.West().room);
+            neighboorRooms.Add(Rooms[westIndex]);
         }
 
         List<int> minIndexList = new List<int>();
@@ -607,16 +588,13 @@ public class World
         minIndexList.Add(westIndex);
 
         //TODO: what should we do if we remove something and a neighbooring furniture is present ?
-        minIndexList.RemoveAll((int i) => i == -1); // This removes nearby furnitures so they don't conflict
+        minIndexList.RemoveAll((i) => i == -1); // This removes nearby furnitures so they don't conflict
 
         int minIndex = minIndexList.Any() ? minIndexList.Min() : -1; // if there is any ? for true get min else(:) get -1
 
-        Room minIndexedRoom = rooms[minIndex];
+        Room minIndexedRoom = Rooms[minIndex];
 
-        if (neighboorRooms != null) {
-
-            Room.DoReverseFloodFillRoom(neighboorRooms, minIndexedRoom);
-        }
+        Room.DoReverseFloodFillRoom(neighboorRooms, minIndexedRoom);
 
         minIndexedRoom.AssignTile(t);
 
@@ -629,12 +607,12 @@ public class World
 
         switch (jobType) {
             case 0: // construction worker
-                c = GameObject.Instantiate(workerPrefab, shipTilePos, Quaternion.identity);
+                c = GameObject.Instantiate(WorkerPrefab, ShipTilePos, Quaternion.identity);
                 c.tag = "Worker";
                 break;
 
             case 1: // visitor
-                c = GameObject.Instantiate(visitorPrefab, shipTilePos, Quaternion.identity);
+                c = GameObject.Instantiate(EngineerPrefab, ShipTilePos, Quaternion.identity);
                 c.tag = "Visitor";
                 break;
 
@@ -644,14 +622,14 @@ public class World
 
         Character cScript = c.GetComponent<Character>();
 
-        characters.Add(cScript);
+        Characters.Add(cScript);
 
-        if (workerPrefab.GetComponent<WorkerAI>() != null) workers.Add(workerPrefab.GetComponent<WorkerAI>());
+        if (WorkerPrefab.GetComponent<WorkerAI>() != null) Workers.Add(WorkerPrefab.GetComponent<WorkerAI>());
         
-        if (workerPrefab.GetComponent<VisitorAI>() != null) visitors.Add(workerPrefab.GetComponent<VisitorAI>());
+        if (WorkerPrefab.GetComponent<VisitorAI>() != null) Engineers.Add(WorkerPrefab.GetComponent<VisitorAI>());
 
-        if (cbCharacterCreated != null) {
-            cbCharacterCreated(c);
+        if (_cbCharacterCreated != null) {
+            _cbCharacterCreated(c);
         }
         return cScript;
     }
@@ -684,56 +662,56 @@ public class World
     }
     */
     public void RegisterDesignationChanged(Action<Designation> callbackFunc) {
-        cbDesigChanged += callbackFunc;
+        _cbDesigChanged += callbackFunc;
     }
     public void UnregisterDesignationChanged(Action<Designation> callbackFunc) {
-        cbDesigChanged -= callbackFunc;
+        _cbDesigChanged -= callbackFunc;
     }
 
     public void RegisterTileChanged(Action<Tile> callbackFunc) {
-        cbTileChanged += callbackFunc;
+        _cbTileChanged += callbackFunc;
     }
     public void UnregisterTileChanged(Action<Tile> callbackFunc) {
-        cbTileChanged -= callbackFunc;
+        _cbTileChanged -= callbackFunc;
     }
 
     public void RegisterFurnitureCreated(Action<Furniture> callbackFunc)
     {
-        cbFurnitureCreated += callbackFunc;
+        _cbFurnitureCreated += callbackFunc;
     }
     public void UnregisterFurnitureCreated(Action<Furniture> callbackFunc)
     {
-        cbFurnitureCreated -= callbackFunc;
+        _cbFurnitureCreated -= callbackFunc;
     }
     public void RegisterInventoryCreated(Action<Inventory> callbackFunc) {
-        cbInventoryCreated += callbackFunc;
+        _cbInventoryCreated += callbackFunc;
     }
     public void UnregisterInventoryCreated(Action<Inventory> callbackFunc) {
-        cbInventoryCreated -= callbackFunc;
+        _cbInventoryCreated -= callbackFunc;
     }
 
     public void RegisterCharacterCreated(Action<GameObject> callbackFunc) {
-        cbCharacterCreated += callbackFunc;
+        _cbCharacterCreated += callbackFunc;
     }
     public void UnregisterCharacterCreated(Action<GameObject> callbackFunc) {
-        cbCharacterCreated -= callbackFunc;
+        _cbCharacterCreated -= callbackFunc;
     }
 
     void OnTileChanged(Tile t) {
-        if(cbTileChanged == null) {
+        if(_cbTileChanged == null) {
             return;
         }
 
-        cbTileChanged(t);
+        _cbTileChanged(t);
     }
 
     private void OnDesignationChanged(Designation d) {
         
-        if(cbDesigChanged == null) {
+        if(_cbDesigChanged == null) {
             return;
         }
 
-        cbDesigChanged(d);
+        _cbDesigChanged(d);
     }
 
 }

@@ -6,28 +6,28 @@ using UnityEngine.UI;
 
 public class DesignationController : MonoBehaviour
 {
-    Designation.DesignationType designationModeType = Designation.DesignationType.None;
+    private Designation.DesignationType _designationModeType = Designation.DesignationType.None;
     public bool areWeDesignating = false;
 
-    Dictionary<string, Designation.DesignationType> designationTypes;
-    Action<Tile> cbTileChangedDesignation;
+    private Dictionary<string, Designation.DesignationType> _designationTypes;
+    private Action<Tile> _cbTileChangedDesignation;
     
-    World world;
-    Dictionary<Designation, GameObject> designationGameObjectMap = new Dictionary<Designation, GameObject>();
+    private World _world;
+    private Dictionary<Designation, GameObject> _designationGameObjectMap = new Dictionary<Designation, GameObject>();
 
-    List<Tile> tiles;
+    private List<Tile> _tiles;
     private void Start() {
         LoadDesignations();
-        tiles = new List<Tile>();
+        _tiles = new List<Tile>();
 
-        world = WorldController.Instance.world;
-        world.RegisterFurnitureCreated(UpdateDesignationFurns);
-        world.RegisterDesignationChanged(UpdateDesignation);
+        _world = WorldController.Instance.World;
+        _world.RegisterFurnitureCreated(UpdateDesignationFurns);
+        _world.RegisterDesignationChanged(UpdateDesignation);
     }
 
     public void UpdateDesignationFurns(Furniture furn) {
 
-        foreach (Designation designation in world.designations) {
+        foreach (Designation designation in _world.Designations) {
 
             designation.UpdateDesignationFurnitures();
             if (designation.IsFunctional()) {
@@ -37,24 +37,23 @@ public class DesignationController : MonoBehaviour
     }
     private void MakeDesignationObject(Designation designation) {
 
-        GameObject designationGO = new GameObject(" " + designation.Type);
-        designationGO.transform.parent = gameObject.transform;
+        GameObject designationGo = new GameObject(" " + designation.Type);
+        designationGo.transform.parent = gameObject.transform;
 
-        designationGO.transform.position = new Vector2(designation.centerX, designation.centerY);
+        designationGo.transform.position = new Vector2(designation.CenterX, designation.CenterY);
         
         
-        foreach(Tile t in tiles) {
+        foreach(Tile t in _tiles) {
             t.designationType = designation.Type;
 
-            if (cbTileChangedDesignation != null)
-                cbTileChangedDesignation(t);
+            _cbTileChangedDesignation?.Invoke(t);
         }
 
-        designationGameObjectMap.Add(designation, designationGO);
+        _designationGameObjectMap.Add(designation, designationGo);
 
         if (designation.IsFunctional()) return;
 
-        designationGO.SetActive(false);
+        designationGo.SetActive(false);
 
 
 
@@ -62,13 +61,13 @@ public class DesignationController : MonoBehaviour
 
     private void UpdateDesignation(Designation d) {
 
-        if(designationGameObjectMap.ContainsKey(d) == false) {
+        if(_designationGameObjectMap.ContainsKey(d) == false) {
             Debug.Log("You are searching for a non existing designation but it wasn't removed from this dictionary probably ?");
             return;
         }
-        if (designationGameObjectMap[d].activeInHierarchy == false) {
+        if (_designationGameObjectMap[d].activeInHierarchy == false) {
             if (d.IsFunctional()) {
-                designationGameObjectMap[d].SetActive(true);
+                _designationGameObjectMap[d].SetActive(true);
             }
         }
        
@@ -76,30 +75,30 @@ public class DesignationController : MonoBehaviour
 
     public void SetDesignationMode(string designationType) {
 
-        if(designationTypes.ContainsKey(designationType) == false) {
+        if(_designationTypes.ContainsKey(designationType) == false) {
             Debug.Log("You are searching for a non existing designation type! ~ did you make a mistake on buttons? ");
             return;
         }
-        designationModeType = designationTypes[designationType];
+        _designationModeType = _designationTypes[designationType];
 
-        tiles.Clear();
+        _tiles.Clear();
     }
 
     private void LoadDesignations() {
         // Getting installed objects from the resources folder
 
-        designationTypes = new Dictionary<string, Designation.DesignationType>();
+        _designationTypes = new Dictionary<string, Designation.DesignationType>();
 
         foreach (Designation.DesignationType dt in (Designation.DesignationType[])Enum.GetValues(typeof(Designation.DesignationType))) {
-            designationTypes[dt.ToString()] = dt;
+            _designationTypes[dt.ToString()] = dt;
         }
     }
 
     public void DoDesignate() {
 
-        Designation designation = new Designation(tiles, designationModeType) ;
+        Designation designation = new Designation(_tiles, _designationModeType) ;
 
-        bool isDesignationValid = designation.IsValidDesignation(tiles);
+        bool isDesignationValid = designation.IsValidDesignation(_tiles);
 
         if (isDesignationValid && designation.Type != Designation.DesignationType.None) {
             MakeDesignationObject(designation);
@@ -108,7 +107,7 @@ public class DesignationController : MonoBehaviour
             designation.DestroyDesignation();
         }
 
-        tiles.Clear(); // clear the list so designations don't get mixed up
+        _tiles.Clear(); // clear the list so designations don't get mixed up
 
     }
     public void RemoveDesignation() {
@@ -119,10 +118,10 @@ public class DesignationController : MonoBehaviour
         // the place where this gets called is subscribed to the cbTileDesignationChanged
         // so when cbTileDesignationChanged Action gets called in return this function callsback to
         // original script where its called.
-        cbTileChangedDesignation += callback;
+        _cbTileChangedDesignation += callback;
     }
     public void UnRegisterTileTypeChangedCallback(Action<Tile> callback) {
-        cbTileChangedDesignation -= callback;
+        _cbTileChangedDesignation -= callback;
     }
 
 
@@ -132,7 +131,7 @@ public class DesignationController : MonoBehaviour
     }
 
     internal void AddToDesignation(Tile t) {
-        tiles.Add(t);
+        _tiles.Add(t);
        
     }
 }

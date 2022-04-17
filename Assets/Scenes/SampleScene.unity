@@ -589,7 +589,7 @@ GameObject:
   - component: {fileID: 94848181}
   - component: {fileID: 94848180}
   m_Layer: 5
-  m_Name: GeneralShipEngineer
+  m_Name: PolisherEmployee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -871,7 +871,7 @@ GameObject:
   - component: {fileID: 302770553}
   - component: {fileID: 302770552}
   m_Layer: 5
-  m_Name: SecurityJob
+  m_Name: MilitaryEmployee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -953,7 +953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2980392, g: 0.82899344, b: 0.85882354, a: 1}
+  m_Color: {r: 0.035481166, g: 0.4339623, b: 0.070610136, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1372,7 +1372,7 @@ GameObject:
   - component: {fileID: 463107186}
   - component: {fileID: 463107185}
   m_Layer: 5
-  m_Name: TraderHaulerJob
+  m_Name: ScientistEmployee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1968,7 +1968,7 @@ GameObject:
   - component: {fileID: 579770063}
   - component: {fileID: 579770062}
   m_Layer: 5
-  m_Name: KitchenChefJob
+  m_Name: SpecialEnergyEmployee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3201,7 +3201,7 @@ GameObject:
   - component: {fileID: 1155959628}
   - component: {fileID: 1155959627}
   m_Layer: 5
-  m_Name: ConstructorEngineerJob
+  m_Name: ConstructorEmployee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4054,7 +4054,7 @@ GameObject:
   - component: {fileID: 1652628251}
   - component: {fileID: 1652628250}
   m_Layer: 5
-  m_Name: FoodProcesser
+  m_Name: FoodProcessor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4133,7 +4133,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: FoodProcesser
+          m_StringArgument: FoodProcessor
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1652628251
@@ -4187,7 +4187,7 @@ GameObject:
   - component: {fileID: 1678416063}
   - component: {fileID: 1678416062}
   m_Layer: 5
-  m_Name: VisitorJob[DebugOnly]
+  m_Name: EngineerEmployee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

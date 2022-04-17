@@ -74,7 +74,7 @@ public class Room
     public static void DoReverseFloodFillRoom(List<Room> neighboorRoomsList, Room minIndexedRoom) {
 
         
-        World world = WorldController.Instance.world;
+        World world = WorldController.Instance.World;
 
         foreach (Room room in neighboorRoomsList) {
 

@@ -4,41 +4,40 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingInventoryRequestController : MonoBehaviour {
-    private BuildModeController _BmController;
-    World world;
+    
+    private BuildModeController _bmController;
+    private World _world;
 
     private void Start() {
-        _BmController = FindObjectOfType<BuildModeController>();
+        _bmController = FindObjectOfType<BuildModeController>();
 
-        _BmController.RegisterContructionJobCreated(OnRequestCreated);
+        _bmController.RegisterContructionJobCreated(OnRequestCreated);
 
-        world = WorldController.Instance.world;
+        _world = WorldController.Instance.World;
     }
 
     private void OnRequestCreated(Job job) {
 
-        if (job.jobObjectType == null && job.jobTileType == Tile.TileType.Empty) return;
+        if (job.JobObjectType == null && job.JobTileType == Tile.TileType.Empty) return;
 
         // this means there was a job created in witch we want to build a thing using
         // job.object type so find a trade goods designation and deliver an inventory for this
 
-        List<Designation> desigs = world.GetDesignationOfType(Designation.DesignationType.TradeGoods);
+        List<Designation> desigs = _world.GetDesignationOfType(Designation.DesignationType.TradeGoods);
 
         Tile destination = null; // we can't deliver if no necessary designation is available
 
-        if (desigs == null) world.ReturnToSender(job); // no available so we requeue
+        if (desigs == null) _world.ReturnToSender(job); // no available so we requeue
 
         for (int i = 0; i < desigs.Count; i++) {
-            foreach (Tile t in desigs[i].tiles) {
-
+            foreach (Tile t in desigs[i].Tiles)
+            {
                 // search for an empty spot in given designation
-                if (t.looseObject == null && t.pendingHaulJob == null && world.IsHaulPlacementValid(t)) {
-
-                    destination = t;
-                    break;
-                }
-
-
+                if (t.looseObject != null || t.pendingHaulJob != null || !_world.IsHaulPlacementValid(t)) continue;
+                
+                // it's empty 
+                destination = t;
+                break;
             }
             if (destination != null) break;
         }
@@ -46,7 +45,7 @@ public class BuildingInventoryRequestController : MonoBehaviour {
         if (destination == null) {
             Debug.LogError("No available tile to place inventory");
 
-            world.ReturnToSender(job);
+            _world.ReturnToSender(job);
             return;
         }
 
@@ -57,17 +56,17 @@ public class BuildingInventoryRequestController : MonoBehaviour {
         // now we have a destination tile
         // I'll now place inventory we wanted to there
 
-        if (job.jobOccupation == Job.JobType.Construction && job.haulingJob == false) {
-            world.DeliverInventoryOnTile(job.jobObjectType, destination);
+        if (job.JobOccupation == Job.JobType.Construction && job.HaulingJob == false) {
+            _world.DeliverInventoryOnTile(job.JobObjectType, destination);
         }else
 
-        if (job.jobTileType != Tile.TileType.Empty) {
-            world.DeliverInventoryOnTile(job.jobTileType, destination);
+        if (job.JobTileType != Tile.TileType.Empty) {
+            _world.DeliverInventoryOnTile(job.JobTileType, destination);
         }
         // after this we'll create a haul job from this inventory to build job tile (as destination)
 
         //TODO: Fix this to represent invPrototype we want
-        Job j = new Job(destination, true, world.inventoryPrototypes["Wall_Scrap"], (theJob) => {
+        Job j = new Job(destination, true, _world.InventoryPrototypes["Wall_Scrap"], (theJob) => {
             //call a what we want to run when this job gets finished
 
             Inventory.PickInventoryUp(destination); // removes inventory on given tile
@@ -77,9 +76,9 @@ public class BuildingInventoryRequestController : MonoBehaviour {
         }, Job.JobType.Construction);
 
         destination.pendingHaulJob = j;
-        j.RegisterJobCancelCallback((theJob) => { theJob.tile.pendingHaulJob = null; });
+        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.pendingHaulJob = null; });
 
-        WorldController.Instance.world.jobQueue.Enqueue(j);
+        WorldController.Instance.World.JobQueue.Enqueue(j);
 
         
 

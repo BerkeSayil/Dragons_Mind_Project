@@ -34,14 +34,14 @@ public class WorkerAI : Character {
 
 
 
-            if (job.jobOccupation == inventoryManagement) {
+            if (job.JobOccupation == inventoryManagement) {
 
-                if(inventory != null && job.haulingJob == true) { // carrying to haul
+                if(inventory != null && job.HaulingJob == true) { // carrying to haul
                     jobsList.Add(job);
                     continue;
                 }
 
-                if (inventory == null && job.haulingJob == false) { // picking up from ground
+                if (inventory == null && job.HaulingJob == false) { // picking up from ground
                     jobsList.Add(job);
                     continue;
                 }
@@ -49,15 +49,15 @@ public class WorkerAI : Character {
 
             }
 
-            if (job.jobOccupation == construction) {
+            if (job.JobOccupation == construction) {
                 //TODO: Fix so we get and use same objectType of inventory to building jobs
 
-                if (inventory == null && job.haulingJob == true) { //wants to pick up from haul
+                if (inventory == null && job.HaulingJob == true) { //wants to pick up from haul
                     jobsList.Add(job);
                     continue;
                 }
 
-                if (job.haulingJob == false) { // want to build something
+                if (job.HaulingJob == false) { // want to build something
                     if (inventory != null) {
                         jobsList.Add(job);
                         continue;
@@ -66,7 +66,7 @@ public class WorkerAI : Character {
 
             }
 
-            if (job.jobOccupation == deconstruction) {
+            if (job.JobOccupation == deconstruction) {
 
                 jobsList.Add(job);
                 continue;
@@ -85,7 +85,7 @@ public class WorkerAI : Character {
             if (IsPathPossible(job)) {
 
                 float distanceToJob = Vector2.Distance
-                            (new Vector2(transform.position.x, transform.position.y), new Vector2(job.tile.x, job.tile.y));
+                            (new Vector2(transform.position.x, transform.position.y), new Vector2(job.Tile.x, job.Tile.y));
 
                 if (distanceToJob < minDist) {
                     minDist = distanceToJob;
@@ -97,7 +97,7 @@ public class WorkerAI : Character {
         }
         if (minDistJob == null) return null;
 
-        WorldController.Instance.world.jobQueue.RemoveMyJob(minDistJob);
+        WorldController.Instance.World.JobQueue.RemoveMyJob(minDistJob);
 
         //TODO: make a callback charachter sprite changed to also display a smaller version of inventory at our hand
 
@@ -111,21 +111,21 @@ public class WorkerAI : Character {
         }
         
 
-        if(j.jobOccupation == Job.JobType.InventoryManagement) {
+        if(j.JobOccupation == Job.JobType.InventoryManagement) {
 
-            if (j.haulingJob == true) inventory = null;
-            if (j.haulingJob == false) inventory = j.inventory;
+            if (j.HaulingJob == true) inventory = null;
+            if (j.HaulingJob == false) inventory = j.Inventory;
 
         }
-        else if (j.jobOccupation == Job.JobType.Construction) {
+        else if (j.JobOccupation == Job.JobType.Construction) {
 
-            if (j.haulingJob == true) inventory = j.inventory;
-            if (j.haulingJob == false) inventory = null;
+            if (j.HaulingJob == true) inventory = j.Inventory;
+            if (j.HaulingJob == false) inventory = null;
         }
 
         AstarPath.active.Scan();
         CurrTile = DestTile;
-        CurrTilePos = DestTilePos = new Vector3(j.tile.x, j.tile.y);
+        CurrTilePos = DestTilePos = new Vector3(j.Tile.x, j.Tile.y);
         MyJob = null;
 
     }

@@ -7,30 +7,31 @@ using UnityEngine.EventSystems;
 public class MouseController : MonoBehaviour
 {
     
-    [SerializeField] GameObject mouseCursorPrefab;
-    Vector2 lastFrameMousePos;
-    Vector2 dragStartPos;
-    Vector2 currentFrameMousePos;
+    [SerializeField] private GameObject mouseCursorPrefab;
+    private Vector2 _lastFrameMousePos;
+    private Vector2 _dragStartPos;
+    private Vector2 _currentFrameMousePos;
 
-    List<GameObject> buildingHintList;
+    private List<GameObject> _buildingHintList;
+    private Camera _mainCamera;
 
-
-    private void Start()
+    private void Awake()
     {
-        buildingHintList = new List<GameObject>();
+        _buildingHintList = new List<GameObject>();
+        _mainCamera = Camera.main;
     }
 
 
     public Vector3 GetMousePosition() {
-        return currentFrameMousePos;
+        return _currentFrameMousePos;
     }
 
     public Tile GetTileUnderMouse() {
-        return WorldController.Instance.world.GetTileAt((int)currentFrameMousePos.x, (int)currentFrameMousePos.y);
+        return WorldController.Instance.World.GetTileAt((int)_currentFrameMousePos.x, (int)_currentFrameMousePos.y);
     }
     private void Update()
     {
-        currentFrameMousePos = Camera.main.ScreenToWorldPoint((Input.mousePosition));
+        _currentFrameMousePos = _mainCamera.ScreenToWorldPoint((Input.mousePosition));
 
         //MouseSnapToGrid();
 
@@ -38,7 +39,7 @@ public class MouseController : MonoBehaviour
 
         HandleMouseMovement();
         // Save it so we may use it if we moved the camera.
-        lastFrameMousePos = Camera.main.ScreenToWorldPoint((Input.mousePosition));
+        _lastFrameMousePos = _mainCamera.ScreenToWorldPoint((Input.mousePosition));
     }
 
     private void HandleMouseSelection()
@@ -50,50 +51,45 @@ public class MouseController : MonoBehaviour
         // Start dragging left
         if (Input.GetMouseButtonDown(0))
         {
-            dragStartPos = currentFrameMousePos;
+            _dragStartPos = _currentFrameMousePos;
 
         }
 
-        int startX = Mathf.FloorToInt(dragStartPos.x);
-        int endX = Mathf.FloorToInt(currentFrameMousePos.x);
+        var startX = Mathf.FloorToInt(_dragStartPos.x);
+        var endX = Mathf.FloorToInt(_currentFrameMousePos.x);
         if (endX < startX) // swaps end and start if dragged the other way
         {
-            int temp = endX;
-            endX = startX;
-            startX = temp;
+            (endX, startX) = (startX, endX);
         }
-        int startY = Mathf.FloorToInt(dragStartPos.y);
-        int endY = Mathf.FloorToInt(currentFrameMousePos.y);
+        var startY = Mathf.FloorToInt(_dragStartPos.y);
+        var endY = Mathf.FloorToInt(_currentFrameMousePos.y);
         if (endY < startY)
         {
-            int temp = endY;
-            endY = startY;
-            startY = temp;
+            (endY, startY) = (startY, endY);
         }
 
         // This makes it so our building hints resize as we move mouse
-        while (buildingHintList.Count > 0)
+        while (_buildingHintList.Count > 0)
         {
-            GameObject go = buildingHintList[0];
-            buildingHintList.RemoveAt(0);
+            GameObject go = _buildingHintList[0];
+            _buildingHintList.RemoveAt(0);
             EasyPooling.Despawn(go);
         }
 
         if (Input.GetMouseButton(0))
         {
-            for (int x = startX; x <= endX; x++)
+            for (var x = startX; x <= endX; x++)
             {
-                for (int y = startY; y <= endY; y++)
+                for (var y = startY; y <= endY; y++)
                 {
-                    Tile t = WorldController.Instance.world.GetTileAt(x, y);
-                    if (t != null)
-                    {
-                        // Display the building hint on top of tile.
-                        GameObject go = (GameObject)EasyPooling.Spawn(mouseCursorPrefab,
-                            new Vector2(x, y), Quaternion.identity);
-                        go.transform.SetParent(this.transform, true);
-                        buildingHintList.Add(go);
-                    }
+                    Tile t = WorldController.Instance.World.GetTileAt(x, y);
+                    if (t == null) continue;
+                    
+                    // Display the building hint on top of tile.
+                    GameObject go = (GameObject)EasyPooling.Spawn(mouseCursorPrefab,
+                        new Vector2(x, y), Quaternion.identity);
+                    go.transform.SetParent(this.transform, true);
+                    _buildingHintList.Add(go);
                 }
             }
         }
@@ -108,7 +104,7 @@ public class MouseController : MonoBehaviour
             {
                 for (int y = startY; y <= endY; y++)
                 {
-                    Tile t = WorldController.Instance.world.GetTileAt(x, y);
+                    Tile t = WorldController.Instance.World.GetTileAt(x, y);
 
                     if (t != null)
                     {
@@ -136,13 +132,16 @@ public class MouseController : MonoBehaviour
         // Handle the mouse movement.
         if (Input.GetMouseButton(2) || Input.GetMouseButton(1)) // right or middle mouse button
         {
-            Vector2 diff = lastFrameMousePos - currentFrameMousePos;
-            Camera.main.transform.Translate(diff);
+            Vector2 diff = _lastFrameMousePos - _currentFrameMousePos;
+            _mainCamera.transform.Translate(diff);
         }
 
         // Handle mouse zoom and pan ( multiplying with itself so it gives a way better feel)
-        Camera.main.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * Camera.main.orthographicSize;
-        Mathf.Clamp(Camera.main.orthographicSize, 3f, 20f);
+
+        //TODO: These are expensive calls.
+        
+        _mainCamera.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * _mainCamera.orthographicSize;
+        Mathf.Clamp(_mainCamera.orthographicSize, 3f, 20f);
 
     }
 

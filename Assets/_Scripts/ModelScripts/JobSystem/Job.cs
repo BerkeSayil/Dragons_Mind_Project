@@ -6,96 +6,95 @@ public class Job
     // Which can include placing furniture, moving stored inventory (from trading dock to construction), 
     // working at a bar or kitchen, constructing tiles or walls...
 
-    public Tile tile { get; protected set; }
-    float jobTime;
-    public JobType jobOccupation { get; protected set; }
-    public bool haulingJob { get; protected set; }
+    public Tile Tile { get; protected set; }
+    
+    private float _jobTime;
+    public JobType JobOccupation { get; protected set; }
+    public bool HaulingJob { get; protected set; }
 
-    public string jobObjectType { get; protected set; }
-    public Inventory inventory { get; protected set; }
+    public string JobObjectType { get; protected set; }
+    public Inventory Inventory { get; protected set; }
 
-    public Tile.TileType jobTileType { get; protected set; }
+    public Tile.TileType JobTileType { get; protected set; }
 
-    Action<Job> cbJobComplete;
-    Action<Job> cbJobCancel;
+    private Action<Job> _cbJobComplete;
+    private Action<Job> _cbJobCancel;
 
     //Constructor for furniture placement / removal
     public Job(Tile tile, string jobObjectType , Action<Job>cbJobComplete, JobType occupationType ,float jobTime = 1f) {
-        this.tile = tile;
-        this.jobObjectType = jobObjectType;
-        this.jobTime = jobTime;
-        this.jobOccupation = occupationType;
+        Tile = tile;
+        JobObjectType = jobObjectType;
+        _jobTime = jobTime;
+        JobOccupation = occupationType;
        
 
-        this.cbJobComplete += cbJobComplete;
+        _cbJobComplete += cbJobComplete;
 
     }
 
     //Constructor for tile placement / removal
     public Job(Tile tile, Tile.TileType tileType, Action<Job> cbJobComplete, JobType occupationType, float jobTime = 1f) {
-        this.tile = tile;
-        this.jobTileType = tileType;
-        this.jobTime = jobTime;
-        this.jobOccupation = occupationType;
+        Tile = tile;
+        JobTileType = tileType;
+        _jobTime = jobTime;
+        JobOccupation = occupationType;
 
-        this.cbJobComplete += cbJobComplete;
+        _cbJobComplete += cbJobComplete;
 
     }
 
     //Constructor for hauling inventory
     public Job(Tile tile, bool haulingJob, Inventory inv ,Action<Job> cbJobComplete, JobType occupationType,float jobTime = 0.2f) {
-        this.tile = tile;
-        this.haulingJob = haulingJob;
-        this.inventory = inv;
-        this.jobTime = jobTime;
-        this.jobOccupation = occupationType;
+        Tile = tile;
+        HaulingJob = haulingJob;
+        Inventory = inv;
+        _jobTime = jobTime;
+        JobOccupation = occupationType;
 
 
-        this.cbJobComplete += cbJobComplete;
+        _cbJobComplete += cbJobComplete;
 
     }
 
 
     public void RegisterJobCompleteCallback(Action<Job> cb) {
-        cbJobComplete += cb;
+        _cbJobComplete += cb;
     }
     public void RegisterJobCancelCallback(Action<Job> cb) {
-        cbJobCancel += cb;
+        _cbJobCancel += cb;
 
     }
     public void UnregisterJobCompleteCallback(Action<Job> cb) {
-        cbJobComplete -= cb;
+        _cbJobComplete -= cb;
     }
     public void UnregisterJobCancelCallback(Action<Job> cb) {
-        cbJobCancel -= cb;
+        _cbJobCancel -= cb;
 
     }
 
     public void DoWork(float workTime) {
-        jobTime -= workTime;
+        _jobTime -= workTime;
+
+        if (!(_jobTime <= 0)) return;
+
+        _cbJobComplete?.Invoke(this);
         
-        if(jobTime <= 0) {
-            if(cbJobComplete != null) {
-                cbJobComplete(this);
-            }
-        }
     }
-    public void CancelWork() {
-        if (cbJobCancel != null) {
-            cbJobCancel(this);
-        }
-        
+    public void CancelWork()
+    {
+        _cbJobCancel?.Invoke(this);
+
     }
 
     public enum JobType { // These jobs are based on what type of occupant will do it
-        Construction, // build, dismantle furnitures and haul goods 
+        Construction, // build, dismantle furniture and haul goods 
         InventoryManagement, // this is for picking up inventory and hauling it off
         Deconstruction,
         Engineering,
         Trader,
         Visitor,
         Pirate,
-        TODO
+        NotImplemented
             //TODO: Add more job types as game evolves.
     }
 }

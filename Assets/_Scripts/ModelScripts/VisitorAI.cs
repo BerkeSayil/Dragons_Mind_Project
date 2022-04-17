@@ -28,7 +28,7 @@ public class VisitorAI : Character
             * 
             */
 
-            if (job.jobOccupation == visitor) {
+            if (job.JobOccupation == visitor) {
 
                 if (true) { // Do that
                     jobsList.Add(job);
@@ -52,7 +52,7 @@ public class VisitorAI : Character
             if (IsPathPossible(job)) {
 
                 float distanceToJob = Vector2.Distance
-                            (new Vector2(transform.position.x, transform.position.y), new Vector2(job.tile.x, job.tile.y));
+                            (new Vector2(transform.position.x, transform.position.y), new Vector2(job.Tile.x, job.Tile.y));
 
                 if (distanceToJob < minDist) {
                     minDist = distanceToJob;
@@ -64,7 +64,7 @@ public class VisitorAI : Character
         }
         if (minDistJob == null) return null;
 
-        WorldController.Instance.world.jobQueue.RemoveMyJob(minDistJob);
+        WorldController.Instance.World.JobQueue.RemoveMyJob(minDistJob);
 
         return minDistJob;
     }
@@ -76,7 +76,7 @@ public class VisitorAI : Character
         }
 
 
-        if (j.jobOccupation == Job.JobType.Visitor) {
+        if (j.JobOccupation == Job.JobType.Visitor) {
 
             // Do any visitor specific job end changed applied
 
@@ -84,7 +84,7 @@ public class VisitorAI : Character
         
         AstarPath.active.Scan();
         CurrTile = DestTile;
-        CurrTilePos = DestTilePos = new Vector3(j.tile.x, j.tile.y);
+        CurrTilePos = DestTilePos = new Vector3(j.Tile.x, j.Tile.y);
         MyJob = null;
 
     }

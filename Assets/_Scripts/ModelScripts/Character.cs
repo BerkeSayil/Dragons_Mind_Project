@@ -25,7 +25,7 @@ public class Character : MonoBehaviour
 
 
     private void Awake() {
-        CurrTile = DestTile = WorldController.Instance.world.GetTileAt((int) transform.position.x, (int) transform.position.y);
+        CurrTile = DestTile = WorldController.Instance.World.GetTileAt((int) transform.position.x, (int) transform.position.y);
 
         CurrTilePos = new Vector3(CurrTile.x, CurrTile.y);
 
@@ -55,12 +55,12 @@ public class Character : MonoBehaviour
             if(MyJob != null) {
                  // Check if the job is reachable. If not abandon job.
                 if (IsPathPossible(MyJob) == false && MyJob != null) {
-                    AbandonJob(MyJob.tile, MyJob.jobObjectType);
+                    AbandonJob(MyJob.Tile, MyJob.JobObjectType);
                     return;
                 }
                 // we have a new job.
-                if (MyJob.tile != DestTile) {
-                    SetDestination(MyJob.tile);
+                if (MyJob.Tile != DestTile) {
+                    SetDestination(MyJob.Tile);
                 }
                 
                 // if a cancel or complete callback occurs we call onjobended
@@ -89,9 +89,9 @@ public class Character : MonoBehaviour
     }
 
     private void GrabJob() {
-        if (WorldController.Instance.world.jobQueue.Dequeue() == null) return;
+        if (WorldController.Instance.World.JobQueue.Dequeue() == null) return;
 
-        MyJob = PrioritizedJob(WorldController.Instance.world.jobQueue.Dequeue());
+        MyJob = PrioritizedJob(WorldController.Instance.World.JobQueue.Dequeue());
 
     }
 
@@ -146,7 +146,7 @@ public class Character : MonoBehaviour
     public bool IsPathPossible(Job myJob) {
         
         _Node1 = GetNodeOnTile(CurrTilePos);
-        _Node2 = GetNodeOnTile(new Vector2(myJob.tile.x, myJob.tile.y));
+        _Node2 = GetNodeOnTile(new Vector2(myJob.Tile.x, myJob.Tile.y));
 
         return PathUtilities.IsPathPossible(_Node1, _Node2);
     }
@@ -213,7 +213,7 @@ public class Character : MonoBehaviour
 
         AstarPath.active.Scan();
         CurrTile = DestTile;
-        CurrTilePos = DestTilePos = new Vector3(j.tile.x, j.tile.y);
+        CurrTilePos = DestTilePos = new Vector3(j.Tile.x, j.Tile.y);
         MyJob = null;
 
     }

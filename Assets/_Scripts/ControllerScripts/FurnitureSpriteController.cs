@@ -1,27 +1,25 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FurnitureSpriteController : MonoBehaviour
 {
  
-    Dictionary<Furniture, GameObject> furnitureGameObjectMap;
-    Dictionary<string, Sprite> furnitureSprites;
+    private Dictionary<Furniture, GameObject> furnitureGameObjectMap;
+    private Dictionary<string, Sprite> furnitureSprites;
 
-    const int FURNITURE_LAYER = 8;
-    const int IMPASSIBE_LAYER = 9;
+    private const int FurnitureLayer = 8;
+    private const int ImpassibleLayer = 9;
 
-    World world {
-        get { return WorldController.Instance.world; }
-    }
-    void Start() {
+    private static World World => WorldController.Instance.World;
+
+    private void Start() {
 
         LoadSprites();
 
         furnitureGameObjectMap = new Dictionary<Furniture, GameObject>();
 
-        world.RegisterFurnitureCreated(OnFurnitureCreated);
+        World.RegisterFurnitureCreated(OnFurnitureCreated);
     }
 
     private void LoadSprites() {
@@ -40,10 +38,10 @@ public class FurnitureSpriteController : MonoBehaviour
         int x = Mathf.FloorToInt(coordinates.x);
         int y = Mathf.FloorToInt(coordinates.y);
 
-        return world.GetTileAt(x, y);
+        return World.GetTileAt(x, y);
 
     }
-    void OnFurnitureChanged(Furniture furn) {
+    private void OnFurnitureChanged(Furniture furn) {
         // Make sure furniture sprites are correct;
         
         if(furnitureGameObjectMap.ContainsKey(furn) == false) {
@@ -52,9 +50,9 @@ public class FurnitureSpriteController : MonoBehaviour
         }
 
         // Updates sprites on a change function
-        GameObject furnGO = furnitureGameObjectMap[furn];
+        GameObject furnGo = furnitureGameObjectMap[furn];
 
-        SpriteRenderer furnSprite = furnGO.GetComponent<SpriteRenderer>();
+        SpriteRenderer furnSprite = furnGo.GetComponent<SpriteRenderer>();
         
         
 
@@ -62,7 +60,7 @@ public class FurnitureSpriteController : MonoBehaviour
         furnSprite.sortingLayerName = "Furniture";
     }
 
-    void OnFurnitureRemoved(Furniture furn) {
+    private void OnFurnitureRemoved(Furniture furn) {
         //TODO: DOESN'T CONSIDER MULTI TILE FURNITURES
         // Make sure furniture sprites are correct;
 
@@ -72,7 +70,7 @@ public class FurnitureSpriteController : MonoBehaviour
         }
 
         // Updates sprites on a change function
-        GameObject furnGO = furnitureGameObjectMap[furn];
+        GameObject furnGo = furnitureGameObjectMap[furn];
 
 
         // gets rid of the furniture while at it and for it to work we get tile before getting rid of it
@@ -85,39 +83,39 @@ public class FurnitureSpriteController : MonoBehaviour
         if (tileFurnGotRemoved.East().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.East().furniture);
         if (tileFurnGotRemoved.West().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.West().furniture);
 
-        furnGO.SetActive(false);
+        furnGo.SetActive(false);
     }
-    public void OnFurnitureCreated(Furniture furn) {
+    private void OnFurnitureCreated(Furniture furn) {
         //FIXME: DOES NOT consider multi tiles objects
 
         // Create a visual gameobject 
-        GameObject furnGO = new GameObject();
+        GameObject furnGo = new GameObject();
 
-        furnitureGameObjectMap.Add(furn, furnGO);
+        furnitureGameObjectMap.Add(furn, furnGo);
 
 
-        furnGO.name = furn.objectType + "_" + furn.tile.x + "_" + furn.tile.y;
-        furnGO.transform.position = new Vector2(furn.tile.x, furn.tile.y);
-        furnGO.transform.SetParent(this.transform, true);
+        furnGo.name = furn.objectType + "_" + furn.tile.x + "_" + furn.tile.y;
+        furnGo.transform.position = new Vector2(furn.tile.x, furn.tile.y);
+        furnGo.transform.SetParent(this.transform, true);
 
-        furnGO.AddComponent<SpriteRenderer>().sprite = 
+        furnGo.AddComponent<SpriteRenderer>().sprite = 
             GetSpriteForFurniture(furn);
 
-        BoxCollider2D furnGOCollider = furnGO.AddComponent<BoxCollider2D>();
+        BoxCollider2D furnGoCollider = furnGo.AddComponent<BoxCollider2D>();
 
-        furnGOCollider.size = new Vector2 (1f,1f);
+        furnGoCollider.size = new Vector2 (1f,1f);
 
         // TODO: Implement better layering system for movement cost consideration maybe ?
          // This layer is designed to be furniture layer and A* sees this as blockadge
         if(furn.movementCost == 0) {
-            furnGO.layer = IMPASSIBE_LAYER;
+            furnGo.layer = ImpassibleLayer;
         }
         else {
-            furnGO.layer = FURNITURE_LAYER;
+            furnGo.layer = FurnitureLayer;
         }
 
         // Floor sort order is 1 and furn order is 2 to ensure it comes on top.
-        furnGO.GetComponent<SpriteRenderer>().sortingLayerName = "Furniture";
+        furnGo.GetComponent<SpriteRenderer>().sortingLayerName = "Furniture";
 
 
         // Whenever objects anything changes (door animatons n stuff.)
@@ -140,22 +138,22 @@ public class FurnitureSpriteController : MonoBehaviour
             int x = furn.tile.x;
             int y = furn.tile.y;
 
-            t = world.GetTileAt(x, y + 1);
+            t = World.GetTileAt(x, y + 1);
             if(t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
                 objectNameConvention += "N";
             }
 
-            t = world.GetTileAt(x, y - 1);
+            t = World.GetTileAt(x, y - 1);
             if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
                 objectNameConvention += "S";
             }
 
-            t = world.GetTileAt(x + 1, y); 
+            t = World.GetTileAt(x + 1, y); 
             if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
                 objectNameConvention += "E";
             }
 
-            t = world.GetTileAt(x - 1, y);
+            t = World.GetTileAt(x - 1, y);
             if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
                 objectNameConvention += "W";
             }

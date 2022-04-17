@@ -5,42 +5,40 @@ using UnityEngine;
 
 public class InventorySpriteController : MonoBehaviour
 {
-    Dictionary<Inventory, GameObject> inventoryGameObjectMap;
-    Dictionary<string, Sprite> inventorySprites;
+    private Dictionary<Inventory, GameObject> _inventoryGameObjectMap;
+    private Dictionary<string, Sprite> _inventorySprites;
 
-    const int INVENTORY_LAYER = 8;
+    private const int InventoryLayer = 8;
 
-    World world {
-        get { return WorldController.Instance.world; }
-    }
+    private static World World => WorldController.Instance.World;
 
-    void Start() {
+    private void Start() {
 
         LoadSprites();
 
-        inventoryGameObjectMap = new Dictionary<Inventory, GameObject>();
+        _inventoryGameObjectMap = new Dictionary<Inventory, GameObject>();
 
-        world.RegisterInventoryCreated(OnInventoryCreated);
+        World.RegisterInventoryCreated(OnInventoryCreated);
 
         
     }
 
-    public void OnInventoryCreated(Inventory inv) {
+    private  void OnInventoryCreated(Inventory inv) {
         
-        // Create a visual gameobject 
-        GameObject invGO = new GameObject();
+        // Create a visual game-object 
+        GameObject invGo = new GameObject();
 
         
-        inventoryGameObjectMap.Add(inv, invGO);
+        _inventoryGameObjectMap.Add(inv, invGo);
 
 
-        invGO.name = inv.objectType + "_" + inv.tile.x + "_" + inv.tile.y;
-        invGO.transform.position = new Vector2(inv.tile.x, inv.tile.y);
-        invGO.transform.SetParent(this.transform, true);
+        invGo.name = inv.objectType + "_" + inv.tile.x + "_" + inv.tile.y;
+        invGo.transform.position = new Vector2(inv.tile.x, inv.tile.y);
+        invGo.transform.SetParent(this.transform, true);
 
-        invGO.AddComponent<SpriteRenderer>().sprite = inventorySprites[inv.objectType];
+        invGo.AddComponent<SpriteRenderer>().sprite = _inventorySprites[inv.objectType];
 
-        invGO.layer = INVENTORY_LAYER;
+        invGo.layer = InventoryLayer;
         
         //TODO: Make us also display the amount in the bottom maybe but not neccasry tbh ??!
 
@@ -52,30 +50,30 @@ public class InventorySpriteController : MonoBehaviour
     private void LoadSprites() {
         // Getting installed objects from the resources folder
 
-        inventorySprites = new Dictionary<string, Sprite>();
+        _inventorySprites = new Dictionary<string, Sprite>();
 
         Sprite[] sprites = Resources.LoadAll<Sprite>("Sprite");
         foreach (Sprite s in sprites) {
-            inventorySprites[s.name] = s;
+            _inventorySprites[s.name] = s;
         }
     }
 
-    void OnInventoryRemoved(Inventory inv) {
+    private void OnInventoryRemoved(Inventory inv) {
         // Make sure furniture sprites are correct;
 
-        if (inventoryGameObjectMap.ContainsKey(inv) == false) {
+        if (_inventoryGameObjectMap.ContainsKey(inv) == false) {
             Debug.Log("OnFurnitureChanged ~ something funky.");
             return;
         }
 
         // Updates sprites on a change function
-        GameObject invGO = inventoryGameObjectMap[inv];
+        GameObject invGo = _inventoryGameObjectMap[inv];
 
 
         // gets rid of the furniture while at it and for it to work we get tile before getting rid of it
         inv.tile.PlaceInventoryObject(null);
 
-        invGO.SetActive(false);
+        invGo.SetActive(false);
     }
 
 }
