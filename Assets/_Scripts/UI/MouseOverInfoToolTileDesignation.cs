@@ -28,7 +28,7 @@ public class MouseOverInfoToolTileDesignation : MonoBehaviour
     }
     private void Update() {
         Tile t = mouseController.GetTileUnderMouse();
-        myText.text = "Tile Desig: " + t.designationType.ToString();
+        myText.text = "Tile Desig: " + t.DesignationType.ToString();
 
 
     }

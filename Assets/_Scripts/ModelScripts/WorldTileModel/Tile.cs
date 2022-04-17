@@ -6,20 +6,20 @@ using UnityEngine;
 public class Tile
 {
     // Tile can have 1 of these
-    public Inventory looseObject { get; protected set; }
-    public Furniture furniture { get; protected set; }
+    public Inventory LooseObject { get; protected set; }
+    public Furniture Furniture { get; protected set; }
 
-    public Job pendingFurnitureJob;
+    public Job PendingFurnitureJob;
 
-    public Job pendingHaulJob;
+    public Job PendingHaulJob;
 
-    public Job pendingTileJob;
+    public Job PendingTileJob;
 
-    public Room room;
+    public Room Room;
 
-    public Designation.DesignationType designationType;
+    public Designation.DesignationType DesignationType;
 
-    public bool isSpaceShip;
+    public bool IsSpaceShip;
 
     // A tile is self aware
     public World World { get; protected set; }
@@ -27,7 +27,7 @@ public class Tile
     public int y { get; protected set; }
 
     // callback
-    Action<Tile> cbTileChanged;
+    private Action<Tile> _cbTileChanged;
 
     public Tile(World world, int x, int y) {
         this.World = world;
@@ -40,35 +40,35 @@ public class Tile
         Floor
     }
 
-    TileType type = TileType.Empty;
+    TileType _type = TileType.Empty;
     
     public TileType Type {
         get {
-            return type;
+            return _type;
         }
         set {
-            TileType oldType = type;
-            type = value;
+            TileType oldType = _type;
+            _type = value;
             // call callback to let things know we changed this
-            if (cbTileChanged != null && oldType != type)
-                cbTileChanged(this);
+            if (_cbTileChanged != null && oldType != _type)
+                _cbTileChanged(this);
         }
     }
     public bool PlaceInventoryObject(Inventory looseObjectInstance) {
         if (looseObjectInstance == null) {
             // sending null removes from tile
-            looseObject = null;
+            LooseObject = null;
             return true;
         }
 
-        if (looseObject != null) {
+        if (LooseObject != null) {
             Debug.LogError("Trying to place inventory on Tile but there already is one.");
             return false;
         }
 
         // If it didn't fall into those traps than we are good to go.
 
-        looseObject = looseObjectInstance;
+        LooseObject = looseObjectInstance;
         return true;
 
     }
@@ -77,11 +77,11 @@ public class Tile
     {
         if(objInstance == null)
         {
-            furniture = null;
+            Furniture = null;
             return true;
         }
         
-        if(furniture != null)
+        if(Furniture != null)
         {
             Debug.LogError("Trying to install object but there already is one.");
             return false;
@@ -89,7 +89,7 @@ public class Tile
 
         // If it didn't fall into those traps than we are good to go.
 
-        furniture = objInstance;
+        Furniture = objInstance;
         return true;
 
     }
@@ -120,10 +120,10 @@ public class Tile
         // the place where this gets called is subscribed to the cbTileTypeChanged
         // so when cbTileTypeChanged Action gets called in return this function callsback to
         // original script where its called.
-        cbTileChanged += callback;
+        _cbTileChanged += callback;
     }
     public void UnRegisterTileTypeChangedCallback(Action<Tile> callback) {
-        cbTileChanged -= callback;
+        _cbTileChanged -= callback;
     }
 
     public Tile North() {
@@ -140,7 +140,7 @@ public class Tile
     }
 
     public bool ValidateTileChange(TileType tileType) {
-        if (tileType != type) return true;
+        if (tileType != _type) return true;
 
         return false;
     }

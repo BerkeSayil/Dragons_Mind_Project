@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
 
-        NumOfWorkersConstruction = 5;  //DEBUG
+        NumOfWorkersConstruction = 25;  //DEBUG
         Currency = 10000f;
     }
 

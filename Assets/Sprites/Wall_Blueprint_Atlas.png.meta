@@ -72,6 +72,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -520,6 +521,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Wall_Blueprint_Atlas_4: -4140777913684035975
+      Wall_Blueprint_Atlas_1: -6768876108246561132
+      Wall_Blueprint_Atlas_8: 142359423857239293
+      Wall_Blueprint_Atlas_3: -3205123429056840784
+      Wall_Blueprint_Atlas_10: 6116708204784682868
+      Wall_Blueprint_Atlas_2: -6138817657397863633
+      Wall_Blueprint_Atlas_12: 8153773263815436778
+      Wall_Blueprint_Atlas_6: -8958616534622309641
+      Wall_Blueprint_Atlas_9: 8303570749645345578
+      Wall_Blueprint_Atlas_13: -7328181118110803304
+      Wall_Blueprint_Atlas_5: -8789843030380174862
+      Wall_Blueprint_Atlas_15: -5673917096148997923
+      Wall_Blueprint_Atlas_0: -5464395346808889758
+      Wall_Blueprint_Atlas_7: -5215593720663062465
+      Wall_Blueprint_Atlas_11: -2035775621195463734
+      Wall_Blueprint_Atlas_14: 5336705868414904416
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

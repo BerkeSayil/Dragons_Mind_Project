@@ -74,14 +74,14 @@ public class FurnitureSpriteController : MonoBehaviour
 
 
         // gets rid of the furniture while at it and for it to work we get tile before getting rid of it
-        Tile tileFurnGotRemoved = furn.tile;
-        furn.tile.PlaceInstalledObject(null);
+        Tile tileFurnGotRemoved = furn.Tile;
+        furn.Tile.PlaceInstalledObject(null);
 
         // updates 4 direction furnitures to update
-        if (tileFurnGotRemoved.North().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.North().furniture);
-        if (tileFurnGotRemoved.South().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.South().furniture);
-        if (tileFurnGotRemoved.East().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.East().furniture);
-        if (tileFurnGotRemoved.West().furniture != null) OnFurnitureChanged(tileFurnGotRemoved.West().furniture);
+        if (tileFurnGotRemoved.North().Furniture != null) OnFurnitureChanged(tileFurnGotRemoved.North().Furniture);
+        if (tileFurnGotRemoved.South().Furniture != null) OnFurnitureChanged(tileFurnGotRemoved.South().Furniture);
+        if (tileFurnGotRemoved.East().Furniture != null) OnFurnitureChanged(tileFurnGotRemoved.East().Furniture);
+        if (tileFurnGotRemoved.West().Furniture != null) OnFurnitureChanged(tileFurnGotRemoved.West().Furniture);
 
         furnGo.SetActive(false);
     }
@@ -94,8 +94,8 @@ public class FurnitureSpriteController : MonoBehaviour
         furnitureGameObjectMap.Add(furn, furnGo);
 
 
-        furnGo.name = furn.objectType + "_" + furn.tile.x + "_" + furn.tile.y;
-        furnGo.transform.position = new Vector2(furn.tile.x, furn.tile.y);
+        furnGo.name = furn.ObjectType + "_" + furn.Tile.x + "_" + furn.Tile.y;
+        furnGo.transform.position = new Vector2(furn.Tile.x, furn.Tile.y);
         furnGo.transform.SetParent(this.transform, true);
 
         furnGo.AddComponent<SpriteRenderer>().sprite = 
@@ -107,7 +107,7 @@ public class FurnitureSpriteController : MonoBehaviour
 
         // TODO: Implement better layering system for movement cost consideration maybe ?
          // This layer is designed to be furniture layer and A* sees this as blockadge
-        if(furn.movementCost == 0) {
+        if(furn.MovementCost == 0) {
             furnGo.layer = ImpassibleLayer;
         }
         else {
@@ -126,35 +126,35 @@ public class FurnitureSpriteController : MonoBehaviour
     }
 
     public Sprite GetSpriteForFurniture(Furniture furn) {
-        if(furn.linksToNeighboor == false) {
-            return furnitureSprites[furn.objectType];
+        if(furn.LinksToNeighboor == false) {
+            return furnitureSprites[furn.ObjectType];
         }
         else {
             // it changes with neighboors so check that.
-            string objectNameConvention = furn.objectType + "_";
+            string objectNameConvention = furn.ObjectType + "_";
 
             // Check N S E W neighboors
             Tile t;
-            int x = furn.tile.x;
-            int y = furn.tile.y;
+            int x = furn.Tile.x;
+            int y = furn.Tile.y;
 
             t = World.GetTileAt(x, y + 1);
-            if(t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
+            if(t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
                 objectNameConvention += "N";
             }
 
             t = World.GetTileAt(x, y - 1);
-            if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
+            if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
                 objectNameConvention += "S";
             }
 
             t = World.GetTileAt(x + 1, y); 
-            if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
+            if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
                 objectNameConvention += "E";
             }
 
             t = World.GetTileAt(x - 1, y);
-            if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
+            if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
                 objectNameConvention += "W";
             }
 

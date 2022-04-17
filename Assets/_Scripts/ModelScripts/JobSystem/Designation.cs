@@ -65,15 +65,15 @@ public class Designation {
             if (_canInSpace == false) {
                 // if a designation can't be in open space we check if they belong in a valid room
                 // if no valid room then no designation.
-                if (tile.room == WorldController.Instance.World.GetOutsideRoom()) {
+                if (tile.Room == WorldController.Instance.World.GetOutsideRoom()) {
                     Debug.Log("Can't designate in a non valid room");
                     this._type = DesignationType.None;
                     //TODO: Give some kind of visual feedback for this behaviour.
                     return;
                 }
             }
-            if(tile.furniture != null) {
-                Furnitures.Add(tile.furniture.objectType);
+            if(tile.Furniture != null) {
+                Furnitures.Add(tile.Furniture.ObjectType);
             }
 
         }
@@ -105,8 +105,8 @@ public class Designation {
             Tile t = World.GetTileAt(i, _maxY);
            
             Tile t3 = t.North();
-            if (t3.furniture != null) {
-                NeighbooringFurnitures.Add(t3.furniture.objectType);
+            if (t3.Furniture != null) {
+                NeighbooringFurnitures.Add(t3.Furniture.ObjectType);
 
             }
         }
@@ -115,8 +115,8 @@ public class Designation {
             Tile t = World.GetTileAt(i, _minY);
             
             Tile t3 = t.South();
-            if (t3.furniture != null) {
-                NeighbooringFurnitures.Add(t3.furniture.objectType);
+            if (t3.Furniture != null) {
+                NeighbooringFurnitures.Add(t3.Furniture.ObjectType);
 
             }
         }
@@ -125,8 +125,8 @@ public class Designation {
             Tile t = World.GetTileAt(_minX, i);
             
             Tile t3 = t.West();
-            if (t3.furniture != null) {
-                NeighbooringFurnitures.Add(t3.furniture.objectType);
+            if (t3.Furniture != null) {
+                NeighbooringFurnitures.Add(t3.Furniture.ObjectType);
 
             }
         }
@@ -135,8 +135,8 @@ public class Designation {
             Tile t = World.GetTileAt(_maxX, i);
             
             Tile t3 = t.East();
-            if (t3.furniture != null) {
-                NeighbooringFurnitures.Add(t3.furniture.objectType);
+            if (t3.Furniture != null) {
+                NeighbooringFurnitures.Add(t3.Furniture.ObjectType);
 
             }
         }
@@ -245,17 +245,17 @@ public class Designation {
                 Debug.Log("Tile null while trying to designate");
                 areWeValid = false;
             }
-            if (t.Type == Tile.TileType.Empty && _canInSpace && t.designationType == Designation.DesignationType.None) {
+            if (t.Type == Tile.TileType.Empty && _canInSpace && t.DesignationType == Designation.DesignationType.None) {
 
                 //areWeValid = true;
             }
-            if (t.Type == Tile.TileType.Floor && t.furniture == null) {
-                if (t.designationType == Designation.DesignationType.None) {
+            if (t.Type == Tile.TileType.Floor && t.Furniture == null) {
+                if (t.DesignationType == Designation.DesignationType.None) {
                     //areWeValid = true;
                 }
                 else { areWeValid = false; }
             }
-            else if (t.Type == Tile.TileType.Floor && t.furniture.stationExterior == false && t.designationType == Designation.DesignationType.None) {
+            else if (t.Type == Tile.TileType.Floor && t.Furniture.StationExterior == false && t.DesignationType == Designation.DesignationType.None) {
                 //areWeValid =  true;
             }
             
@@ -294,9 +294,9 @@ public class Designation {
     public void UpdateDesignationFurnitures() {
         foreach (Tile tile in Tiles) {
             
-            if(tile.furniture != null) { //TODO: Find out how many of an object is available
-                if (Furnitures.Contains(tile.furniture.objectType) == false) {
-                    Furnitures.Add(tile.furniture.objectType);
+            if(tile.Furniture != null) { //TODO: Find out how many of an object is available
+                if (Furnitures.Contains(tile.Furniture.ObjectType) == false) {
+                    Furnitures.Add(tile.Furniture.ObjectType);
                 }
             }
         }

@@ -10,7 +10,7 @@ public class VisitorAI : Character
     float Anonymity;
 
     //TODO: For better performance this should be modified to be couroutine or async.
-    public override Job PrioritizedJob(ArrayList jobsListTotal) {
+    protected override Job PrioritizedJob(ArrayList jobsListTotal) {
         
 
         if (jobsListTotal.Count == 0) return null;
@@ -69,7 +69,7 @@ public class VisitorAI : Character
         return minDistJob;
     }
 
-    public override void OnJobEnded(Job j) {
+    protected override void OnJobEnded(Job j) {
         if (j != MyJob) {
             Debug.LogError("Character is thinking about a job that isn't theirs. You nforgot to unregister  something.");
             return;

@@ -29,8 +29,8 @@ public class MouseOverInfoToolInventory : MonoBehaviour
         Tile t = mouseController.GetTileUnderMouse();
 
         string s = "NULL";
-        if(t.looseObject != null) {
-            s = t.looseObject.objectType;
+        if(t.LooseObject != null) {
+            s = t.LooseObject.ObjectType;
         }
         myText.text = "Inv Object: " + s;
 

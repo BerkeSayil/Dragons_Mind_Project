@@ -30,8 +30,8 @@ public class MouseOverInfoToolFurniture : MonoBehaviour
         Tile t = mouseController.GetTileUnderMouse();
 
         string s = "NULL";
-        if(t.furniture != null) {
-            s = t.furniture.objectType;
+        if(t.Furniture != null) {
+            s = t.Furniture.ObjectType;
         }
         myText.text = "Furniture: " + s;
 

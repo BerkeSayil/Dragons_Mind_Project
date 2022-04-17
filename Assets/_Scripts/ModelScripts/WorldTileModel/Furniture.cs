@@ -7,32 +7,32 @@ using UnityEngine;
 public class Furniture
 {
     
-    public Tile tile{ get; protected set; } // base tile but objects could be multiple tiles
-    public string objectType { get; protected set; } // Tells what sprite to render.
+    public Tile Tile{ get; protected set; } // base tile but objects could be multiple tiles
+    public string ObjectType { get; protected set; } // Tells what sprite to render.
 
-    // Multipler of cost ( value of 2 is twice as slow)
-    // Tile types and other enviromental effects can further increase the cost 
+    // Multiple of cost ( value of 2 is twice as slow)
+    // Tile types and other environmental effects can further increase the cost 
     // For example a metal floor (cost 1) with a table on it ( cost 2) that's on fire (cost 3)
     // would result in (1+2+3) (6 cost) so 1/6 th of movement speed.
     // 0 cost means it's impassible like a wall.
-    public float movementCost { get; protected set; }
+    public float MovementCost { get; protected set; }
 
-    public bool stationExterior { get; protected set; } // determines if this protects from void so will it create a new room? 
+    public bool StationExterior { get; protected set; } // determines if this protects from void so will it create a new room? 
 
     // a couch could be 3x2 so it has empty space before it too.
-    public int width { get; protected set; }
-    public int height { get; protected set; }
+    public int Width { get; protected set; }
+    public int Height { get; protected set; }
 
-    public bool linksToNeighboor { get; protected set; } // if we want a sprite to change with regard to surrounding tiles.
+    public bool LinksToNeighboor { get; protected set; } // if we want a sprite to change with regard to surrounding tiles.
 
-    Action<Furniture> cbOnChanged;
-    Action<Furniture> cbOnRemoved;
+    private Action<Furniture> _cbOnChanged;
+    private Action<Furniture> _cbOnRemoved;
 
-    Func<Tile, bool> FuncToPositionValidate;
+    private Func<Tile, bool> _funcToPositionValidate;
 
     //TODO: Implement object rotation
-    
-    protected Furniture(){
+
+    private Furniture(){
 
     }
 
@@ -42,14 +42,14 @@ public class Furniture
     {
         Furniture obj = new Furniture();
 
-        obj.objectType = objectType;
-        obj.movementCost = movementCost;
-        obj.width = width;
-        obj.height = height;
-        obj.linksToNeighboor = linksToNeighboor;
-        obj.stationExterior = stationExterior;
+        obj.ObjectType = objectType;
+        obj.MovementCost = movementCost;
+        obj.Width = width;
+        obj.Height = height;
+        obj.LinksToNeighboor = linksToNeighboor;
+        obj.StationExterior = stationExterior;
 
-        obj.FuncToPositionValidate = obj.IsValidPosition;
+        obj._funcToPositionValidate = obj.IsValidPosition;
 
 
         return obj;
@@ -58,22 +58,22 @@ public class Furniture
     {
 
 
-        if(proto.FuncToPositionValidate(tile) == false) {
+        if(proto._funcToPositionValidate(tile) == false) {
             // Cannot place here.
             return null;
         }
 
         Furniture furn = new Furniture();
 
-        furn.objectType = proto.objectType;
-        furn.movementCost = proto.movementCost;
-        furn.width = proto.width;
-        furn.height = proto.height;
-        furn.linksToNeighboor = proto.linksToNeighboor;
-        furn.stationExterior = proto.stationExterior;
+        furn.ObjectType = proto.ObjectType;
+        furn.MovementCost = proto.MovementCost;
+        furn.Width = proto.Width;
+        furn.Height = proto.Height;
+        furn.LinksToNeighboor = proto.LinksToNeighboor;
+        furn.StationExterior = proto.StationExterior;
 
 
-        furn.tile = tile;
+        furn.Tile = tile;
 
         if(tile.PlaceInstalledObject(furn) == false){
             // means we can't place here probly something already placed.
@@ -83,36 +83,34 @@ public class Furniture
             return null;
         }
 
-        if (furn.linksToNeighboor) {
-            //this type might have some neighboors that need to update so callback them
+        if (!furn.LinksToNeighboor) return furn;
+        //this type might have some neighboors that need to update so callback them
 
           
-            // Check N S E W neighboors
-            Tile t;
-            int x = furn.tile.x;
-            int y = furn.tile.y;
+        // Check N S E W neighboors
+        Tile t;
+        int x = furn.Tile.x;
+        int y = furn.Tile.y;
 
-            t = tile.World.GetTileAt(x, y + 1);
-            if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
-                // We have a neighboor with same object type so we callback and change it.
-                t.furniture.cbOnChanged(t.furniture);
-            }
+        t = tile.World.GetTileAt(x, y + 1);
+        if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
+            // We have a neighboor with same object type so we callback and change it.
+            t.Furniture._cbOnChanged(t.Furniture);
+        }
 
-            t = tile.World.GetTileAt(x, y - 1);
-            if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
-                t.furniture.cbOnChanged(t.furniture);
-            }
+        t = tile.World.GetTileAt(x, y - 1);
+        if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
+            t.Furniture._cbOnChanged(t.Furniture);
+        }
 
-            t = tile.World.GetTileAt(x + 1, y);
-            if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
-                t.furniture.cbOnChanged(t.furniture);
-            }
+        t = tile.World.GetTileAt(x + 1, y);
+        if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
+            t.Furniture._cbOnChanged(t.Furniture);
+        }
 
-            t = tile.World.GetTileAt(x - 1, y);
-            if (t != null && t.furniture != null && t.furniture.objectType == furn.objectType) {
-                t.furniture.cbOnChanged(t.furniture);
-            }
-
+        t = tile.World.GetTileAt(x - 1, y);
+        if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
+            t.Furniture._cbOnChanged(t.Furniture);
         }
 
         return furn;
@@ -123,9 +121,9 @@ public class Furniture
         Furniture prototypeOfDismantled = furniture;
 
         // tells tile that there is no furniture than updates neighboors for sprites
-        if (t.furniture == null) return;
+        if (t.Furniture == null) return;
 
-        t.furniture.cbOnRemoved(t.furniture);
+        t.Furniture._cbOnRemoved(t.Furniture);
 
     }
 
@@ -139,43 +137,57 @@ public class Furniture
          *      1 X X X 
          */
 
-        switch (width) {
+        switch (Width) {
             case 1: // X: 1 Y : 1,2,3
 
-                if (height == 1) return (FuncToPositionValidate(t));
+                switch (Height)
+                {
+                    case 1:
+                        return (_funcToPositionValidate(t));
+                    case 2:
+                        return (_funcToPositionValidate(t)
+                                && _funcToPositionValidate(t.North()));
+                    case 3:
+                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.North()) &&
+                                _funcToPositionValidate(t.North().North()) 
+                            );
+                }
 
-                if (height == 2) return (FuncToPositionValidate(t)
-                        && FuncToPositionValidate(t.North()));
-
-                if (height == 3) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.North()) &&
-                        FuncToPositionValidate(t.North().North()) 
-                        );
                 break;
             case 2: // X: 2 Y : 1,2,3
                 
-                if (height == 1) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East()));
+                switch (Height)
+                {
+                    case 1:
+                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East()));
+                    case 2:
+                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East()) 
+                                                           && _funcToPositionValidate(t.North()) && _funcToPositionValidate(t.North().East()));
+                    case 3:
+                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East())
+                                                           && _funcToPositionValidate(t.North()) && _funcToPositionValidate(t.North().East()) &&
+                                                           _funcToPositionValidate(t.North().North()) && _funcToPositionValidate(t.North().North().East()) 
+                            );
+                }
 
-                if (height == 2) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East()) 
-                        && FuncToPositionValidate(t.North()) && FuncToPositionValidate(t.North().East()));
-
-                if (height == 3) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East())
-                        && FuncToPositionValidate(t.North()) && FuncToPositionValidate(t.North().East()) &&
-                        FuncToPositionValidate(t.North().North()) && FuncToPositionValidate(t.North().North().East()) 
-                        );
                 break;
             case 3: // X: 3 Y : 1,2,3
-                if (height == 1) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East()) && 
-                        FuncToPositionValidate(t.East().East()));
-
-                if (height == 2) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East()) && FuncToPositionValidate(t.East().East())
-                        && FuncToPositionValidate(t.North()) && FuncToPositionValidate(t.North().East()) 
-                        && FuncToPositionValidate(t.North().East().East()));
-
-                if (height == 3) return (FuncToPositionValidate(t) && FuncToPositionValidate(t.East()) && FuncToPositionValidate(t.East().East())
-                        && FuncToPositionValidate(t.North()) && FuncToPositionValidate(t.North().East()) && FuncToPositionValidate(t.North().East().East()) 
-                        && FuncToPositionValidate(t.North().North()) && FuncToPositionValidate(t.North().North().East())
-                        && FuncToPositionValidate(t.East().East().North()) && FuncToPositionValidate(t.East().East().North().North())
-                        );
+                switch (Height)
+                {
+                    case 1:
+                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East()) && 
+                                _funcToPositionValidate(t.East().East()));
+                    case 2:
+                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East()) && _funcToPositionValidate(t.East().East())
+                                && _funcToPositionValidate(t.North()) && _funcToPositionValidate(t.North().East()) 
+                                && _funcToPositionValidate(t.North().East().East()));
+                    case 3:
+                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East()) && _funcToPositionValidate(t.East().East())
+                                && _funcToPositionValidate(t.North()) && _funcToPositionValidate(t.North().East()) && _funcToPositionValidate(t.North().East().East()) 
+                                && _funcToPositionValidate(t.North().North()) && _funcToPositionValidate(t.North().North().East())
+                                && _funcToPositionValidate(t.East().East().North()) && _funcToPositionValidate(t.East().East().North().North())
+                            );
+                }
 
                 break;
             default:
@@ -188,17 +200,16 @@ public class Furniture
 
 
     // TODO: Shouldn't call this directly fix it being public
-    public bool IsValidPosition(Tile t) {
+    private bool IsValidPosition(Tile t) {
         // check if is there a base tile there ?
         if(t.Type != Tile.TileType.Floor) {
             return false;
         }
         // check if is there is another furniture already occupying that tile ?
-        if(t.furniture != null) {
+        if(t.Furniture != null) {
             return false;
         }
         
-
         return true;
 
     }
@@ -215,18 +226,18 @@ public class Furniture
 
     public void RegisterOnChangedCallback(Action<Furniture> callbackFunc)
     {
-        cbOnChanged += callbackFunc;
+        _cbOnChanged += callbackFunc;
     }
 
     public void UnregisterOnChangedCallback(Action<Furniture> callbackFunc)
     {
-        cbOnChanged -= callbackFunc;
+        _cbOnChanged -= callbackFunc;
     }
     public void RegisterOnRemovedCallback(Action<Furniture> callbackFunc) {
-        cbOnRemoved += callbackFunc;
+        _cbOnRemoved += callbackFunc;
     }
 
     public void UnregisterOnRemovedCallback(Action<Furniture> callbackFunc) {
-        cbOnRemoved -= callbackFunc;
+        _cbOnRemoved -= callbackFunc;
     }
 }

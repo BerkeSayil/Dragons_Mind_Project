@@ -44,7 +44,7 @@ public class DesignationController : MonoBehaviour
         
         
         foreach(Tile t in _tiles) {
-            t.designationType = designation.Type;
+            t.DesignationType = designation.Type;
 
             _cbTileChangedDesignation?.Invoke(t);
         }

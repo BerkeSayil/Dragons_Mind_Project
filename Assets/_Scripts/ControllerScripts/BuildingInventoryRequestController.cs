@@ -33,7 +33,7 @@ public class BuildingInventoryRequestController : MonoBehaviour {
             foreach (Tile t in desigs[i].Tiles)
             {
                 // search for an empty spot in given designation
-                if (t.looseObject != null || t.pendingHaulJob != null || !_world.IsHaulPlacementValid(t)) continue;
+                if (t.LooseObject != null || t.PendingHaulJob != null || !_world.IsHaulPlacementValid(t)) continue;
                 
                 // it's empty 
                 destination = t;
@@ -71,12 +71,12 @@ public class BuildingInventoryRequestController : MonoBehaviour {
 
             Inventory.PickInventoryUp(destination); // removes inventory on given tile
 
-            destination.pendingHaulJob = null;
+            destination.PendingHaulJob = null;
 
         }, Job.JobType.Construction);
 
-        destination.pendingHaulJob = j;
-        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.pendingHaulJob = null; });
+        destination.PendingHaulJob = j;
+        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.PendingHaulJob = null; });
 
         WorldController.Instance.World.JobQueue.Enqueue(j);
 

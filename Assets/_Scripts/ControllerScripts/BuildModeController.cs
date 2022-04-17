@@ -54,14 +54,14 @@ public class BuildModeController : MonoBehaviour
             // We check if it's a valid position and if so
             // create a job and queue it for something else to come and do.
             if (WorldController.Instance.World.IsFurniturePlacementValid(furnitureType, t)
-                && t.pendingFurnitureJob == null
+                && t.PendingFurnitureJob == null
 
                 ) {
                 Job j = new Job(t, furnitureType, (theJob) => {
                     WorldController.Instance.World.
                     PlaceFurnitureAt(furnitureType, theJob.Tile);
 
-                    t.pendingFurnitureJob = null;
+                    t.PendingFurnitureJob = null;
                 },
                 Job.JobType.Construction
                 );
@@ -69,8 +69,8 @@ public class BuildModeController : MonoBehaviour
 
                 // TODO: This being this way very easy to clear or forget make it automated in
                 // some other way possible
-                t.pendingFurnitureJob = j;
-                j.RegisterJobCancelCallback((theJob) => { theJob.Tile.pendingFurnitureJob = null; });
+                t.PendingFurnitureJob = j;
+                j.RegisterJobCancelCallback((theJob) => { theJob.Tile.PendingFurnitureJob = null; });
 
                 WorldController.Instance.World.JobQueue.Enqueue(j);
 
@@ -87,20 +87,20 @@ public class BuildModeController : MonoBehaviour
             // We check if it's a valid position and if so
             // create a job and queue it for something else to come and do.
             if (WorldController.Instance.World.IsTilePlacementValid(buildModeTile, t)
-                && t.pendingTileJob == null) {
+                && t.PendingTileJob == null) {
                 Job j = new Job(t, buildModeTile, (theJob) => {
                     WorldController.Instance.World.
                     PlaceTileAt(buildModeTile, theJob.Tile);
 
-                    t.pendingTileJob = null;
+                    t.PendingTileJob = null;
                 },
                 Job.JobType.Construction
                 );
 
 
                 // TODO: This being this way very easy to clear or forget make it automated in some other way possible
-                t.pendingTileJob = j;
-                j.RegisterJobCancelCallback((theJob) => { theJob.Tile.pendingTileJob = null; });
+                t.PendingTileJob = j;
+                j.RegisterJobCancelCallback((theJob) => { theJob.Tile.PendingTileJob = null; });
 
                 WorldController.Instance.World.JobQueue.Enqueue(j);
 
@@ -116,20 +116,20 @@ public class BuildModeController : MonoBehaviour
 
             // We check if it's a valid position and if so
             // create a job and queue it for something else to come and do.
-            if (t.furniture != null) {
+            if (t.Furniture != null) {
                 // dismantle furniture and create an inventory in its place.
 
-                string furnitureType = t.furniture.objectType;
+                string furnitureType = t.Furniture.ObjectType;
 
                 // are we removing furniture ?
                 if (WorldController.Instance.World.IsFurniturePlacementValid(furnitureType, t) == false
-                    && t.pendingFurnitureJob == null
+                    && t.PendingFurnitureJob == null
                     ) {
                     Job j = new Job(t, furnitureType, (theJob) => {
                         WorldController.Instance.World.
                         RemoveFurnitureAt(furnitureType, theJob.Tile);
 
-                        t.pendingFurnitureJob = null;
+                        t.PendingFurnitureJob = null;
                     },
                     Job.JobType.Deconstruction
                     );
@@ -137,8 +137,8 @@ public class BuildModeController : MonoBehaviour
 
                     // TODO: This being this way very easy to clear or forget make it automated in
                     // some other way possible
-                    t.pendingFurnitureJob = j;
-                    j.RegisterJobCancelCallback((theJob) => { theJob.Tile.pendingFurnitureJob = null; });
+                    t.PendingFurnitureJob = j;
+                    j.RegisterJobCancelCallback((theJob) => { theJob.Tile.PendingFurnitureJob = null; });
 
                     WorldController.Instance.World.JobQueue.Enqueue(j);
 
@@ -147,20 +147,20 @@ public class BuildModeController : MonoBehaviour
                 }                 // are we removing tile ? 
                 //TODO: Removing Tile doesn't work
                 else if (WorldController.Instance.World.IsTilePlacementValid(buildModeTile, t) == false
-                && t.pendingTileJob == null) {
+                && t.PendingTileJob == null) {
                     Job j = new Job(t, buildModeTile, (theJob) => {
                         WorldController.Instance.World.
                         PlaceTileAt(buildModeTile, theJob.Tile);
 
-                        t.pendingTileJob = null;
+                        t.PendingTileJob = null;
                     },
                     Job.JobType.Construction
                     );
 
 
                     // TODO: This being this way very easy to clear or forget make it automated in some other way possible
-                    t.pendingTileJob = j;
-                    j.RegisterJobCancelCallback((theJob) => { theJob.Tile.pendingTileJob = null; });
+                    t.PendingTileJob = j;
+                    j.RegisterJobCancelCallback((theJob) => { theJob.Tile.PendingTileJob = null; });
 
                     WorldController.Instance.World.JobQueue.Enqueue(j);
 

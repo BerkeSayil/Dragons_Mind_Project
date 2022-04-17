@@ -32,11 +32,11 @@ public class InventorySpriteController : MonoBehaviour
         _inventoryGameObjectMap.Add(inv, invGo);
 
 
-        invGo.name = inv.objectType + "_" + inv.tile.x + "_" + inv.tile.y;
-        invGo.transform.position = new Vector2(inv.tile.x, inv.tile.y);
+        invGo.name = inv.ObjectType + "_" + inv.Tile.x + "_" + inv.Tile.y;
+        invGo.transform.position = new Vector2(inv.Tile.x, inv.Tile.y);
         invGo.transform.SetParent(this.transform, true);
 
-        invGo.AddComponent<SpriteRenderer>().sprite = _inventorySprites[inv.objectType];
+        invGo.AddComponent<SpriteRenderer>().sprite = _inventorySprites[inv.ObjectType];
 
         invGo.layer = InventoryLayer;
         
@@ -71,7 +71,7 @@ public class InventorySpriteController : MonoBehaviour
 
 
         // gets rid of the furniture while at it and for it to work we get tile before getting rid of it
-        inv.tile.PlaceInventoryObject(null);
+        inv.Tile.PlaceInventoryObject(null);
 
         invGo.SetActive(false);
     }

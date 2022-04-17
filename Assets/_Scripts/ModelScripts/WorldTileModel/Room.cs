@@ -4,68 +4,69 @@ using UnityEngine;
 
 public class Room 
 {
-    public float atmosO2 = 0;
-    public float atmosN2 = 0;
-    public float atmosCO2 = 0;
+    public float AtmosO2 = 0;
+    public float AtmosN2 = 0;
+    public float AtmosCo2 = 0;
 
-    List<Tile> tiles;
+    private List<Tile> _tiles;
     
 
     public Room() {
-        tiles = new List<Tile>();
+        _tiles = new List<Tile>();
        
     }
 
     public void AssignTile(Tile t) {
-        if (tiles.Contains(t)) {
+        if (_tiles.Contains(t)) {
             return;
         }
-        if(t.room != null) { 
-            // belongs to another room.
-            t.room.tiles.Remove(t);
-        }
 
-        t.room = this;
-        tiles.Add(t);
+        // belongs to another room.
+        // ? is a check for null... you learn something everyday
+        t.Room?._tiles.Remove(t);
+
+        t.Room = this;
+        _tiles.Add(t);
 
     }
 
-    public void UnassignAllTiles() {
-        for (int i = 0; i < tiles.Count; i++) {
-            tiles[i].room = tiles[i].World.GetOutsideRoom(); // Assigns outside
+    public void UnassignAllTiles()
+    {
+        foreach (var t in _tiles)
+        {
+            t.Room = t.World.GetOutsideRoom(); // Assigns outside
         }
 
-        tiles = new List<Tile>(); // cleared
-
+        _tiles = new List<Tile>(); // cleared
     }
 
     public static void DoFloodFillRoom(Furniture sourceFurniture) {
-        // source furniture is the hypoteticall furniture that creates / seperates the rooms.
+        // source furniture is the hypothetical furniture that creates / separates the rooms.
 
-        World world = sourceFurniture.tile.World;
+        World world = sourceFurniture.Tile.World;
 
-        Room oldRoom = sourceFurniture.tile.room;
+        Room oldRoom = sourceFurniture.Tile.Room;
 
         // try to build a new room starting from north
-            ActualFloodFill(sourceFurniture.tile.North(), oldRoom);
-            ActualFloodFill(sourceFurniture.tile.South(), oldRoom);
-            ActualFloodFill(sourceFurniture.tile.East(), oldRoom);
-            ActualFloodFill(sourceFurniture.tile.West(), oldRoom);
+            ActualFloodFill(sourceFurniture.Tile.North(), oldRoom);
+            ActualFloodFill(sourceFurniture.Tile.South(), oldRoom);
+            ActualFloodFill(sourceFurniture.Tile.East(), oldRoom);
+            ActualFloodFill(sourceFurniture.Tile.West(), oldRoom);
 
 
-        sourceFurniture.tile.room = null; // wall is not in any room ?
-        oldRoom.tiles.Remove(sourceFurniture.tile);
+        sourceFurniture.Tile.Room = null; // wall is not in any room ?
+        oldRoom._tiles.Remove(sourceFurniture.Tile);
 
-        // Check adjecent furns 
+        // Check adjacent furns 
         // outside is one big room called room 0 so always assume we have at least 1
         // (might be null room is outside but having 0 th room might be good too)
-        // delete the room assigned to the furn then check floodfill discover any new rooms.
+        // delete the room assigned to the furn then check flood-fill discover any new rooms.
 
         // we know this rooms tiles .
         
 
-        if(sourceFurniture.tile.room != world.GetOutsideRoom()) {
-            // unassignes to become an outside room and then removes this room
+        if(sourceFurniture.Tile.Room != world.GetOutsideRoom()) {
+            // unassigned to become an outside room and then removes this room
             
             world.DeleteRooms(oldRoom);
         }
@@ -76,30 +77,28 @@ public class Room
         
         World world = WorldController.Instance.World;
 
-        foreach (Room room in neighboorRoomsList) {
-
-            if(room.Equals(minIndexedRoom) == false) {
-
-                // this room is not the min index room so all of these tiles should become minindexroom's
-                // also delete this room if it's not outsideRoom 
-                if(room.Equals(world.GetOutsideRoom()) == false) {
+        foreach (Room room in neighboorRoomsList)
+        {
+            if (room.Equals(minIndexedRoom)) continue;
+            
+            // this room is not the min index room so all of these tiles should become minindexroom's
+            // also delete this room if it's not outsideRoom 
+            if(room.Equals(world.GetOutsideRoom()) == false) {
                     
-                    List<Tile> tilesToReassign = new List<Tile>(room.tiles);
+                List<Tile> tilesToReassign = new List<Tile>(room._tiles);
 
-                    foreach (Tile tile in tilesToReassign) {
-                        minIndexedRoom.AssignTile(tile);
-                    }
-
-                    world.DeleteRooms(room);
-                }
-                else {
-                    // this is not min index but outside room
-
-                    foreach (Tile tile in room.tiles) {
-                        minIndexedRoom.AssignTile(tile);
-                    }
+                foreach (Tile tile in tilesToReassign) {
+                    minIndexedRoom.AssignTile(tile);
                 }
 
+                world.DeleteRooms(room);
+            }
+            else {
+                // this is not min index but outside room
+
+                foreach (Tile tile in room._tiles) {
+                    minIndexedRoom.AssignTile(tile);
+                }
             }
 
         }
@@ -108,17 +107,17 @@ public class Room
     }
 
 
-    protected static void ActualFloodFill(Tile tile, Room oldRoom) {
+    private static void ActualFloodFill(Tile tile, Room oldRoom) {
         if (tile == null) {
             return; // we try to flood fill off the map.
         }
         //TODO: This kinda be not working when we break walls.
-        if (tile.room != oldRoom) {
+        if (tile.Room != oldRoom) {
             // means we already identified that "new" room 
             return;
         }
 
-        if (tile.furniture != null && tile.furniture.stationExterior) {
+        if (tile.Furniture != null && tile.Furniture.StationExterior) {
             // this is an exterior piece next to our tile probably continuation of wall or door or whatever.
             return;
         }
@@ -139,69 +138,67 @@ public class Room
             Tile t = tilesToCheck.Dequeue();
 
 
-            if (t.room == oldRoom) {
-                newRoom.AssignTile(t);
+            if (t.Room != oldRoom) continue;
+            
+            newRoom.AssignTile(t);
 
-                Tile t2;
+            Tile t2;
 
-                // we hit open space by edge of map or empty tile
-                // this room is actually part of outside so bail out early
-                // it takes a lot of unneccasry time otherwise
-                // delete the new room and re assign all tiles to outside
-                // repeated for every immediate neighboor
+            // we hit open space by edge of map or empty tile
+            // this room is actually part of outside so bail out early
+            // it takes a lot of unnecessary time otherwise
+            // delete the new room and re assign all tiles to outside
+            // repeated for every immediate neighbor
 
-                t2 = t.North();
+            t2 = t.North();
 
-                    if (t2 == null || t2.Type == Tile.TileType.Empty) {
+            if (t2 == null || t2.Type == Tile.TileType.Empty) {
                     
-                        newRoom.UnassignAllTiles();
-                        return;
-                    }
+                newRoom.UnassignAllTiles();
+                return;
+            }
 
-                    if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
-                        tilesToCheck.Enqueue(t2);
-                    }
+            if (t2.Room == oldRoom && (t2.Furniture == null || t2.Furniture.StationExterior == false)) {
+                tilesToCheck.Enqueue(t2);
+            }
 
-                t2 = t.South();
+            t2 = t.South();
 
-                    if (t2 == null || t2.Type == Tile.TileType.Empty) {
+            if (t2 == null || t2.Type == Tile.TileType.Empty) {
                     
-                        newRoom.UnassignAllTiles();
-                        return;
-                    }
-                    if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
-                        tilesToCheck.Enqueue(t2);
-                    }
+                newRoom.UnassignAllTiles();
+                return;
+            }
+            if (t2.Room == oldRoom && (t2.Furniture == null || t2.Furniture.StationExterior == false)) {
+                tilesToCheck.Enqueue(t2);
+            }
 
-                t2 = t.East();
+            t2 = t.East();
 
-                    if (t2 == null || t2.Type == Tile.TileType.Empty) {
+            if (t2 == null || t2.Type == Tile.TileType.Empty) {
                     
-                        newRoom.UnassignAllTiles();
-                        return;
-                    }
-                    if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
-                        tilesToCheck.Enqueue(t2);
-                    }
+                newRoom.UnassignAllTiles();
+                return;
+            }
+            if (t2.Room == oldRoom && (t2.Furniture == null || t2.Furniture.StationExterior == false)) {
+                tilesToCheck.Enqueue(t2);
+            }
 
-                t2 = t.West();
+            t2 = t.West();
 
-                    if (t2 == null || t2.Type == Tile.TileType.Empty) {
+            if (t2 == null || t2.Type == Tile.TileType.Empty) {
                     
-                        newRoom.UnassignAllTiles();
-                        return;
-                    }
+                newRoom.UnassignAllTiles();
+                return;
+            }
 
-                    if (t2 != null && t2.room == oldRoom && (t2.furniture == null || t2.furniture.stationExterior == false)) {
-                        tilesToCheck.Enqueue(t2);
-                    }
-
-
+            if (t2.Room == oldRoom && (t2.Furniture == null || t2.Furniture.StationExterior == false)) {
+                tilesToCheck.Enqueue(t2);
             }
         }
-        newRoom.atmosO2 = oldRoom.atmosO2;
-        newRoom.atmosCO2 = oldRoom.atmosCO2;
-        newRoom.atmosN2 = oldRoom.atmosN2;
+        newRoom.AtmosO2 = oldRoom.AtmosO2;
+        newRoom.AtmosCo2 = oldRoom.AtmosCo2;
+        newRoom.AtmosN2 = oldRoom.AtmosN2;
 
 
         // Tell the world a new room has been created.
@@ -212,7 +209,7 @@ public class Room
     
     public bool Equals(Room obj) {
         
-        return tiles.Equals(obj.tiles);
+        return _tiles.Equals(obj._tiles);
     }
 
 

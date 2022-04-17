@@ -55,8 +55,8 @@ public class World
             {
                 Tiles[x, y] = new Tile(this, x, y);
                 Tiles[x, y].RegisterTileTypeChangedCallback(OnTileChanged);
-                Tiles[x, y].room = GetOutsideRoom(); // they all belong to outside at start
-                Tiles[x, y].designationType = GetDefaultDesignation(); // all tiles are designated as empty at first
+                Tiles[x, y].Room = GetOutsideRoom(); // they all belong to outside at start
+                Tiles[x, y].DesignationType = GetDefaultDesignation(); // all tiles are designated as empty at first
             }
         }
 
@@ -106,7 +106,7 @@ public class World
 
                 shipCargoBay.Add(t);
 
-                t.isSpaceShip = true;
+                t.IsSpaceShip = true;
             }
         }
 
@@ -312,18 +312,18 @@ public class World
 
         _cbInventoryCreated?.Invoke(inv);
 
-        if (t.looseObject == null) return;
+        if (t.LooseObject == null) return;
         // inventory exists on this tile.
 
         Job j = new Job(t, false, inv ,(theJob) => {
             GetTheInventory(s, theJob.Tile);
 
-            t.pendingHaulJob = null;
+            t.PendingHaulJob = null;
 
         }, Job.JobType.InventoryManagement );
 
-        t.pendingHaulJob = j;
-        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.pendingHaulJob = null; });
+        t.PendingHaulJob = j;
+        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.PendingHaulJob = null; });
             
         WorldController.Instance.World.JobQueue.Enqueue(j);
 
@@ -359,7 +359,7 @@ public class World
         foreach (var t1 in desigs)
         {
             foreach (var t in t1.Tiles.Where
-                         (t => t.looseObject == null && t.pendingHaulJob == null && IsHaulPlacementValid(t)))
+                         (t => t.LooseObject == null && t.PendingHaulJob == null && IsHaulPlacementValid(t)))
             {
                 destination = t;
                 break;
@@ -376,12 +376,12 @@ public class World
         Job j = new Job(destination, true, InventoryPrototypes[objectType] , (theJob) => {
             DropOffInventoryAtHaulingEnd(objectType, theJob.Tile);
 
-            destination.pendingHaulJob = null;
+            destination.PendingHaulJob = null;
 
         }, Job.JobType.InventoryManagement);
 
-        destination.pendingHaulJob = j;
-        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.pendingHaulJob = null; });
+        destination.PendingHaulJob = j;
+        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.PendingHaulJob = null; });
 
         WorldController.Instance.World.JobQueue.Enqueue(j);
 
@@ -391,7 +391,7 @@ public class World
 
 
     public bool IsHaulPlacementValid(Tile destination) {
-        if (destination.furniture == null) {
+        if (destination.Furniture == null) {
             return true;
         }
         else return false;
@@ -416,9 +416,9 @@ public class World
         // not my produest hard code but it works ?
         // fuck yeah it works :D
 
-        switch (FurniturePrototypes[objectType].width) {
+        switch (FurniturePrototypes[objectType].Width) {
             case 1:
-                switch (FurniturePrototypes[objectType].height) {
+                switch (FurniturePrototypes[objectType].Height) {
                     case 1:
                         // already handling as default
                         break;
@@ -435,7 +435,7 @@ public class World
                 }
                 break;
             case 2:
-                switch (FurniturePrototypes[objectType].height) {
+                switch (FurniturePrototypes[objectType].Height) {
                     case 1:
                         Furniture f1x2c2c1 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
                         furnitures.Add(f1x2c2c1);
@@ -466,7 +466,7 @@ public class World
                 }
                 break;
             case 3:
-                switch (FurniturePrototypes[objectType].height) {
+                switch (FurniturePrototypes[objectType].Height) {
                     case 1:
                         Furniture f1x2c3c1 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
                         Furniture f1x3c3c1 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East());
@@ -519,7 +519,7 @@ public class World
             }
 
             // Should we recalculate our rooms ?
-            if (furn.stationExterior) {
+            if (furn.StationExterior) {
                 Room.DoFloodFillRoom(furn);
             }
 
@@ -545,7 +545,7 @@ public class World
         
 
         // if this is an exterior tile we need to recalculate rooms
-        if (whatFurnitureWas.stationExterior == false) return;
+        if (whatFurnitureWas.StationExterior == false) return;
 
         // if this is not an exterior we don't need to calculate rooms
 
@@ -564,20 +564,20 @@ public class World
         int westIndex = int.MaxValue;
 
 
-        if (t.North().room != null) {
-            northIndex = Rooms.IndexOf(t.North().room);
+        if (t.North().Room != null) {
+            northIndex = Rooms.IndexOf(t.North().Room);
             neighboorRooms.Add(Rooms[northIndex]);
         }
-        if (t.South().room != null) {
-            southIndex = Rooms.IndexOf(t.South().room);
+        if (t.South().Room != null) {
+            southIndex = Rooms.IndexOf(t.South().Room);
             neighboorRooms.Add(Rooms[southIndex]);
         }
-        if (t.East().room != null) {
-            eastIndex = Rooms.IndexOf(t.East().room);
+        if (t.East().Room != null) {
+            eastIndex = Rooms.IndexOf(t.East().Room);
             neighboorRooms.Add(Rooms[eastIndex]);
         }
-        if (t.West().room != null) {
-            westIndex = Rooms.IndexOf(t.West().room);
+        if (t.West().Room != null) {
+            westIndex = Rooms.IndexOf(t.West().Room);
             neighboorRooms.Add(Rooms[westIndex]);
         }
 

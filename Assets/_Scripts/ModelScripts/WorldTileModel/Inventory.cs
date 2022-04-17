@@ -6,14 +6,13 @@ using UnityEngine;
 
 public class Inventory {
 
-    public string objectType { get; protected set; } // like "Steel Plate"
-    public Tile tile { get; protected set; }
+    public string ObjectType { get; protected set; } // like "Steel Plate"
+    public Tile Tile { get; protected set; }
 
-    Action<Inventory> cbOnChanged;
-    Action<Inventory> cbOnRemoved;
+    private Action<Inventory> _cbOnChanged;
+    private Action<Inventory> _cbOnRemoved;
 
-
-    protected Inventory() {
+    private Inventory() {
 
     }
 
@@ -21,7 +20,7 @@ public class Inventory {
 
         Inventory inventory = new Inventory();
 
-        inventory.objectType = objectType;
+        inventory.ObjectType = objectType;
         
    
         return inventory;
@@ -31,10 +30,10 @@ public class Inventory {
 
         Inventory inv = new Inventory();
 
-        inv.objectType = proto.objectType;
+        inv.ObjectType = proto.ObjectType;
         
 
-        inv.tile = tile;
+        inv.Tile = tile;
 
         if (tile.PlaceInventoryObject(inv) == false) {
             // means we can't place here probly something already placed.
@@ -51,29 +50,27 @@ public class Inventory {
     public static void PickInventoryUp(Tile t) {
 
         // tells tile that there is no inventory than updates for sprite
-        if (t.looseObject == null) return;
+        if (t.LooseObject == null) return;
 
 
-        if(t.looseObject.cbOnRemoved != null) {
-            t.looseObject.cbOnRemoved(t.looseObject);
-        }
-        
+        t.LooseObject._cbOnRemoved?.Invoke(t.LooseObject);
+
 
     }
 
     public void RegisterOnChangedCallback(Action<Inventory> callbackFunc) {
-        cbOnChanged += callbackFunc;
+        _cbOnChanged += callbackFunc;
     }
 
     public void UnregisterOnChangedCallback(Action<Inventory> callbackFunc) {
-        cbOnChanged -= callbackFunc;
+        _cbOnChanged -= callbackFunc;
     }
     public void RegisterOnRemovedCallback(Action<Inventory> callbackFunc) {
-        cbOnRemoved += callbackFunc;
+        _cbOnRemoved += callbackFunc;
     }
 
     public void UnregisterOnRemovedCallback(Action<Inventory> callbackFunc) {
-        cbOnRemoved -= callbackFunc;
+        _cbOnRemoved -= callbackFunc;
     }
 
 }

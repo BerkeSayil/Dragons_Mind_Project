@@ -94,7 +94,7 @@ public class TileSpriteController : MonoBehaviour
                 break;
         }
 
-        switch (tileData.designationType)
+        switch (tileData.DesignationType)
         {
             case Designation.DesignationType.None:
                 return;

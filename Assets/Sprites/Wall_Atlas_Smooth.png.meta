@@ -72,6 +72,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -520,6 +521,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Wall_Atlas_Smooth_1: -1241954905309199463
+      Wall_Atlas_Smooth_8: 2820210385661513867
+      Wall_Atlas_Smooth_9: 8854060597361730339
+      Wall_Atlas_Smooth_4: -2070312606263268786
+      Wall_Atlas_Smooth_7: -4910654028408699487
+      Wall_Atlas_Smooth_13: 4685230634278553191
+      Wall_Atlas_Smooth_5: 4470405985209425531
+      Wall_Atlas_Smooth_12: 1571270711978000229
+      Wall_Atlas_Smooth_14: 2609317690189643764
+      Wall_Atlas_Smooth_2: -6960399543081976937
+      Wall_Atlas_Smooth_3: -2878018753566350309
+      Wall_Atlas_Smooth_10: 4669670316028417957
+      Wall_Atlas_Smooth_15: 5098013459170898292
+      Wall_Atlas_Smooth_6: 299065271736226381
+      Wall_Atlas_Smooth_0: -4208201591781012874
+      Wall_Atlas_Smooth_11: -7393403023413210963
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
