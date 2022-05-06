@@ -5,25 +5,46 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // TODO: This will be a class that doesn't get destroyed in change of scenes
     // TODO: This will upon completion inspect the build scene to check if min conditions are met with.
 
     public static GameManager Instance; //This is the only instance of game controller there ever will be.
 
     public float Currency { get; protected set; }
+    public float Respect { get; protected set; }
+    
+    public int[] TechTree { get; protected set; } // if we unlocked 0 th tech it's 1 if not it's 0
+    public int TechCount { get; protected set; } //amount of technologies there are
     public int NumOfWorkersConstruction { get; private set; }
-
-    //TODO: Game state machine to run it maybe first look it up ?
 
     private void Awake() {
         Instance = this;
 
+        TechCount = 10; //TODO: Change this depending on the final size of tech tree.
+
         DontDestroyOnLoad(this.gameObject);
 
-        NumOfWorkersConstruction = 25;  //DEBUG
-        Currency = 10000f;
     }
 
+    public void SaveGame()
+    {
+        SaveSystem.SaveGame(this);
+    }
+
+    public void LoadGame()
+    {
+        GameData data = SaveSystem.LoadGame();
+
+        this.Currency = data.currency;
+        this.Respect = data.respect;
+        this.NumOfWorkersConstruction = data.numOfWorkersConstruction;
+
+        this.TechTree = new int[TechCount];
+        for (int i = 0; i < TechCount; i++)
+        {
+            this.TechTree[i] = data.techTree[i];
+        }
+
+    }
 
     public void GoToBuild() {
 
