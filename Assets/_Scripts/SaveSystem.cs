@@ -9,7 +9,7 @@ public static class SaveSystem
     public static void SaveGame(GameManager manager)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/game.totallyrealextensiontype";
+        string path = Application.persistentDataPath + "/gamesave.totallyrealextensiontype";
         FileStream stream = new FileStream(path, FileMode.Create);
 
         GameData data = new GameData(manager);
@@ -20,7 +20,7 @@ public static class SaveSystem
 
     public static GameData LoadGame()
     {
-        string path = Application.persistentDataPath + "/game.totallyrealextensiontype";
+        string path = Application.persistentDataPath + "/gamesave.totallyrealextensiontype";
 
         if (File.Exists(path))
         {
@@ -34,7 +34,7 @@ public static class SaveSystem
         }
         else
         {
-            Debug.LogError("Load tried to retrieve a non existing path/file in " + path);
+            Debug.Log("Load tried to retrieve a non existing path/file in " + path);
             return null;
         }
     }

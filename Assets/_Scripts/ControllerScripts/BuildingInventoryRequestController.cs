@@ -66,7 +66,7 @@ public class BuildingInventoryRequestController : MonoBehaviour {
         // after this we'll create a haul job from this inventory to build job tile (as destination)
 
         //TODO: Fix this to represent invPrototype we want
-        Job j = new Job(destination, true, _world.InventoryPrototypes["Wall_Scrap"], (theJob) => {
+        Job j = new Job(destination, true, _world.InventoryPrototypes["Metal_Scrap"], (theJob) => {
             //call a what we want to run when this job gets finished
 
             Inventory.PickInventoryUp(destination); // removes inventory on given tile

@@ -5,10 +5,29 @@ public class GameData
 
     public float currency;
     public float respect;
-    public int[] techTree;
     
+    // Technology variables need to deconstructed
+    public int[] TechIds;
+    public int[] TechCosts;
+    public bool[] TechUnlocked;
+
     public int numOfWorkersConstruction;
 
+    public void TechnologyToPrimaries()
+    {
+        GameManager manager = GameManager.Instance;
+        TechIds = new int[manager.TechCount];
+        TechCosts = new int[manager.TechCount];
+        TechUnlocked = new bool[manager.TechCount];
+        
+        for (int i = 0; i < manager.TechCount; i++)
+        {
+            TechIds[i] = i;
+            TechCosts[i] = manager.Techs[i].TechCost;
+            TechUnlocked[i] = manager.Techs[i].IsTechBought;
+        }
+        
+    }
     public GameData(GameManager manager)
     {
         currency = manager.Currency;
@@ -16,11 +35,7 @@ public class GameData
         
         numOfWorkersConstruction = manager.NumOfWorkersConstruction;
 
-        techTree = new int[manager.TechCount];
-        for (int i = 0; i < manager.TechCount; i++)
-        {
-            techTree[i] = manager.TechTree[i];
-        }
+        TechnologyToPrimaries();
 
     }
     

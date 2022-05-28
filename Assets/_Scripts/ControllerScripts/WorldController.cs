@@ -11,7 +11,6 @@ public class WorldController : MonoBehaviour
     public World World { get; private set; }
 
     [SerializeField] private GameObject workerPrefab;
-    [SerializeField] private GameObject visitorPrefab;
     [SerializeField] private GameObject currentSpaceship;
 
 
@@ -27,7 +26,6 @@ public class WorldController : MonoBehaviour
 
         // TODO: Bad implementation.
         World.WorkerPrefab = workerPrefab;
-        World.EngineerPrefab = visitorPrefab;
         World.ShipPrefab = currentSpaceship;
 
 

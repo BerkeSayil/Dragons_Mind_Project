@@ -9,7 +9,6 @@ public class World
     Tile[,] Tiles;
     List<Character> Characters;
     public List<WorkerAI> Workers { get; protected set; }
-    List<VisitorAI> Engineers;
 
     public List<Room> Rooms;
     public List<Designation> Designations;
@@ -72,7 +71,6 @@ public class World
         // Creates characters for us. 
         Characters = new List<Character>();
         Workers = new List<WorkerAI>();
-        Engineers = new List<VisitorAI>();
 
     }
 
@@ -118,7 +116,7 @@ public class World
     internal void DeliverInventoryOnTile(Tile.TileType jobTileType, Tile destination) {
 
         //TODO: Consider objectType for this string
-        string s = "Wall_Scrap";
+        string s = "Metal_Scrap";
 
         Inventory inv = Inventory.PlaceInstance(InventoryPrototypes[s], destination);
 
@@ -130,7 +128,7 @@ public class World
     internal void DeliverInventoryOnTile(string jobObjectType, Tile destination) {
 
         //TODO: Consider objectType
-        string s = "Wall_Scrap";
+        string s = "Metal_Scrap";
 
         Inventory inv = Inventory.PlaceInstance(InventoryPrototypes[s], destination);
 
@@ -260,11 +258,11 @@ public class World
         InventoryPrototypes = new Dictionary<string, Inventory>();
 
         // TODO: Make this get read from a data, XML, json or some other file
-        InventoryPrototypes.Add("Wall_Scrap",
+        InventoryPrototypes.Add("Metal_Scrap",
             Inventory.CreateInventoryProto(
-            "Wall_Scrap" // what the object is
+            "Metal_Scrap" // what the object is
             ));
-
+        Debug.Log(InventoryPrototypes["Metal_Scrap"].ObjectType);
 
     }
     public Tile GetTileAt(int x, int y)
@@ -611,10 +609,10 @@ public class World
                 c.tag = "Worker";
                 break;
 
-            case 1: // visitor
-                c = GameObject.Instantiate(EngineerPrefab, ShipTilePos, Quaternion.identity);
-                c.tag = "Visitor";
-                break;
+            //ase 1: // visitor
+                //c = GameObject.Instantiate(EngineerPrefab, ShipTilePos, Quaternion.identity);
+                //c.tag = "Visitor";
+                //break;
 
         }
 
@@ -626,41 +624,13 @@ public class World
 
         if (WorkerPrefab.GetComponent<WorkerAI>() != null) Workers.Add(WorkerPrefab.GetComponent<WorkerAI>());
         
-        if (WorkerPrefab.GetComponent<VisitorAI>() != null) Engineers.Add(WorkerPrefab.GetComponent<VisitorAI>());
 
         if (_cbCharacterCreated != null) {
             _cbCharacterCreated(c);
         }
         return cScript;
     }
-    /*
-    public void SetUpExampleStation() {
-
-        //TODO: Debug get rid of in the final build
-
-        int l = width / 2 - 5;
-        int b = height / 2 - 5;
-
-        for (int x = l - 10; x < l + 15; x++) {
-            for (int y = b - 10; y < b + 15; y++) {
-                tiles[x, y].Type = Tile.TileType.Floor;
-
-                if ((x == l + 3) || (x == (l + 4)) || (y == b - 3) || (y == (b + 4))) {
-                    if (x != (l + 3) && y != (b + 9)) {
-                        PlaceFurnitureAt("Wall", tiles[x, y]);
-                    }
-                }
-                if ((x == l - 10) || (x == (l + 14)) || (y == b - 10) || (y == (b + 14))) {
-                    PlaceFurnitureAt("Wall", tiles[x, y]);
-
-                }
-            }
-        }
-        //TODO: Get rid of this while you get rid of the example station.
-        GameObject.Find("A*").GetComponent<AstarPath>().Scan();
-
-    }
-    */
+    
     public void RegisterDesignationChanged(Action<Designation> callbackFunc) {
         _cbDesigChanged += callbackFunc;
     }
