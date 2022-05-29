@@ -28,6 +28,10 @@ public class MouseOverInfoToolFurniture : MonoBehaviour
     }
     private void Update() {
         Tile t = mouseController.GetTileUnderMouse();
+        if( t == null)
+        {
+            return;
+        }
 
         string s = "NULL";
         if(t.Furniture != null) {

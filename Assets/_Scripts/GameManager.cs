@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     public ContractCreator _currentContract { get; private set; }
 
+    public Vector2 PlayableArea;
+
     private void Awake() {
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
@@ -102,9 +104,36 @@ public class GameManager : MonoBehaviour
     {
 
         _currentContract = cc;
-    
+
+        SetPlayableArea();
+        
         SceneManager.LoadScene(1, LoadSceneMode.Single);
 
+    }
+
+    private void SetPlayableArea()
+    {
+        if(Techs[3].IsTechBought)
+        {
+            PlayableArea = new Vector2(40, 40);
+        }else if (Techs[6].IsTechBought)
+        {
+            PlayableArea = new Vector2(60, 60);
+        }else if (Techs[9].IsTechBought)
+        {
+            PlayableArea = new Vector2(80, 80);
+        }else if (Techs[12].IsTechBought)
+        {
+            PlayableArea = new Vector2(100, 100);
+        }else if (Techs[15].IsTechBought)
+        {
+            PlayableArea = new Vector2(125, 125);
+        }
+        else
+        {
+            //default
+            PlayableArea = new Vector2(20, 20);
+        }
     }
 
 

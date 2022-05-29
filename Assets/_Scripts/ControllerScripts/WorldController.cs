@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class WorldController : MonoBehaviour
 {
@@ -11,8 +12,6 @@ public class WorldController : MonoBehaviour
     public World World { get; private set; }
 
     [SerializeField] private GameObject workerPrefab;
-    [SerializeField] private GameObject currentSpaceship;
-
 
     private void OnEnable() {
 
@@ -21,24 +20,19 @@ public class WorldController : MonoBehaviour
         }
         else Instance = this;
 
-        
-        World = new World(); //default empty world
+        // create world according to the world size
+        World = new World((int)GameManager.Instance.PlayableArea.x, (int)GameManager.Instance.PlayableArea.y);
 
         // TODO: Bad implementation.
-        World.WorkerPrefab = workerPrefab;
-        World.ShipPrefab = currentSpaceship;
 
 
         // Get the camera to middle of the world
         Camera.main.transform.position = new Vector3(World.Width / 2,
                 World.Height / 2, Camera.main.transform.position.z);
 
-     
+        CreateCharacters(0, new Vector2(World.Width + 10, World.Height / 2));
     }
-    public void CreateStarterBase() {
-        //Instance.world.SetUpExampleStation();
-        Instance.World.DeliverShipToWorld();
-    }
+    
     public Tile GetTileAtCoord(Vector3 coordinates)
     {
         var x = Mathf.FloorToInt(coordinates.x);
@@ -47,6 +41,19 @@ public class WorldController : MonoBehaviour
         return World.GetTileAt(x, y);
 
     }
+    public void CreateCharacters(int jobType, Vector2 position)
+    {
 
-    
+        Vector2 characterSpawnPosition = position;
+        
+        while (World.Workers.Count < GameManager.Instance.NumOfWorkersConstruction)
+        {
+            //Instantiate worker at character spawn position
+            GameObject worker = Instantiate(workerPrefab, characterSpawnPosition, Quaternion.identity);
+            worker.tag = "Worker";
+            World.Workers.Add(worker.GetComponent<WorkerAI>());
+        }
+        
+        
+    }
 }

@@ -6,7 +6,6 @@ using UnityEngine;
 public class Tile
 {
     // Tile can have 1 of these
-    public Inventory LooseObject { get; protected set; }
     public Furniture Furniture { get; protected set; }
 
     public Job PendingFurnitureJob;
@@ -17,7 +16,6 @@ public class Tile
 
     public Room Room;
 
-    public Designation.DesignationType DesignationType;
 
     public bool IsSpaceShip;
 
@@ -54,24 +52,7 @@ public class Tile
                 _cbTileChanged(this);
         }
     }
-    public bool PlaceInventoryObject(Inventory looseObjectInstance) {
-        if (looseObjectInstance == null) {
-            // sending null removes from tile
-            LooseObject = null;
-            return true;
-        }
-
-        if (LooseObject != null) {
-            Debug.LogError("Trying to place inventory on Tile but there already is one.");
-            return false;
-        }
-
-        // If it didn't fall into those traps than we are good to go.
-
-        LooseObject = looseObjectInstance;
-        return true;
-
-    }
+    
 
     public bool PlaceInstalledObject(Furniture objInstance)
     {

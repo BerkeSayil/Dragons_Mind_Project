@@ -88,10 +88,10 @@ public class Furniture
 
           
         // Check N S E W neighboors
-        Tile t;
+        Tile t = null;
         int x = furn.Tile.x;
         int y = furn.Tile.y;
-
+        
         t = tile.World.GetTileAt(x, y + 1);
         if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
             // We have a neighboor with same object type so we callback and change it.

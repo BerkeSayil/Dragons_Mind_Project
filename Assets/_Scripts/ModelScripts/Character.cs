@@ -6,42 +6,44 @@ using Pathfinding;
 
 public class Character : MonoBehaviour
 {
-    public Tile CurrTile { get; protected set; }
+    public float speed = 10f;
+    public Tile CurrTile { get; set; }
     protected Tile DestTile; // if not moving this equals to currTile
     protected Vector3 DestTilePos;
     protected Vector3 CurrTilePos;
 
-    private bool _areWeCloseEnough = false;
-    private float _reachDist = 1.2f;
     private float _timeDeltaTime;
 
     private AIPath _path;
-    private GraphNode _node1;
-    private GraphNode _node2;
 
     protected Job MyJob;
     
     private Action<Character> _cbCharacterChanged;
+    
+    
+    //movement stuck checker
+    private Transform objectTransfom;
+ 
+    private float noMovementThreshold = 0.00001f;
+    private const int noMovementFrames = 600;
+    Vector2[] previousLocations = new Vector2[noMovementFrames];
+    private bool isMoving;
 
 
     private void Awake() {
-        CurrTile = DestTile = WorldController.Instance.World.GetTileAt((int) transform.position.x, (int) transform.position.y);
-
-        CurrTilePos = new Vector3(CurrTile.x, CurrTile.y);
+        
+        DestTilePos = CurrTilePos = new Vector3(transform.position.x, transform.position.y);
 
         _path = gameObject.GetComponent<AIPath>();
 
         AstarPath.active.Scan();
-
         
-
-        _node1 = GetNodeOnTile(CurrTilePos);
-        _node2 = GetNodeOnTile(DestTilePos);
-    }
-    private GraphNode GetNodeOnTile(Vector3 pos) {
-   
-        return AstarPath.active.GetNearest(pos, NNConstraint.Default).node;
-      
+        //For good measure, set the previous locations
+        for(int i = 0; i < previousLocations.Length; i++)
+        {
+            previousLocations[i] = Vector2.zero;
+        }
+        
 
     }
     public void Update() {
@@ -68,24 +70,63 @@ public class Character : MonoBehaviour
                 MyJob.RegisterJobCompleteCallback(OnJobEnded);
             }
         }
-
         
-        if ((transform.position - DestTilePos).sqrMagnitude < _reachDist * _reachDist) {
-            _areWeCloseEnough = true;
+        // if we have a job, move towards it
+        if (MyJob != null) {
+            if (DestTilePos != CurrTilePos) {
+                SetDestination(MyJob.Tile);
+            }
+
+            Work(_timeDeltaTime);
+    
         }
         
-
-        if (_areWeCloseEnough) {
-            if (MyJob == null) return;
-            
-            MyJob.DoWork(_timeDeltaTime);
-            _areWeCloseEnough = false;
-
-            return;
+        //Store the newest vector at the end of the list of vectors
+        for(int i = 0; i < previousLocations.Length - 1; i++)
+        {
+            previousLocations[i] = previousLocations[i+1];
         }
-
+        previousLocations[previousLocations.Length - 1] = transform.position;
+ 
+        //Check the distances between the points in your previous locations
+        //If for the past several updates, there are no movements smaller than the threshold,
+        //you can most likely assume that the object is not moving
+        for(int i = 0; i < previousLocations.Length - 1; i++)
+        {
+            if(Vector3.Distance(previousLocations[i], previousLocations[i + 1]) >= noMovementThreshold)
+            {
+                //The minimum movement has been detected between frames
+                isMoving = true;
+                break;
+            }
+            else
+            {
+                isMoving = false;
+            }
+        }
         _cbCharacterChanged?.Invoke(this);
 
+    }
+
+    private void Work(float timeDeltaTime)
+    {
+        if(_path.reachedDestination)
+        {
+            MyJob.DoWork(timeDeltaTime);
+        }
+        
+        else if (!isMoving)
+        {
+            MyJob.CancelWork();
+            _path.Teleport(new Vector3
+                (WorldController.Instance.World.Width + 10, WorldController.Instance.World.Height/2));
+            CurrTilePos = new Vector3
+                (WorldController.Instance.World.Width + 10, WorldController.Instance.World.Height / 2);
+
+        }
+        
+        
+        
     }
 
     private void GrabJob() {
@@ -104,107 +145,48 @@ public class Character : MonoBehaviour
          * this also should filter with character job in mind so we don't get another occupants jobs.
          * 
          */
-        /*
-         *  Because this should be specialized per occupation
-         *  this is not implemented but in case we want to give people jobs doable by everyone it's a core piece of character class
-         * 
-        if (jobsList.Count == 0) return null;
-
-        float minDist = Mathf.Infinity;
-        Job minDistJob = null;
-
-        foreach (Job job in jobsList) {
-
-            if (IsPathPossible(job)) {
-                
-                float distanceToJob = Vector2.Distance
-                            (new Vector2(transform.position.x, transform.position.y), new Vector2(job.tile.x, job.tile.y)); 
-
-                if (distanceToJob < minDist) {
-                    minDist = distanceToJob;
-                    minDistJob = job;
-                }
-
-
-
-            }
-
-        }
-        if(minDistJob == null) return null;
-
-        WorldController.Instance.world.jobQueue.RemoveMyJob(minDistJob);
-
-        return minDistJob;
-
-        */
-
+        
+        //uses subclasses implementation.
         return null;
-
 
     }
 
     protected bool IsPathPossible(Job myJob) {
         
-        _node1 = GetNodeOnTile(CurrTilePos);
-        _node2 = GetNodeOnTile(new Vector2(myJob.Tile.x, myJob.Tile.y));
+        // Find the closest node to this GameObject's position
+        GraphNode ourNode = AstarPath.active.GetNearest(transform.position).node;
+        // Find the closest node to the job's tile's position
+        GraphNode jobNode = AstarPath.active.GetNearest(new Vector3(myJob.Tile.x, myJob.Tile.y)).node;
+        
+        if (PathUtilities.IsPathPossible(ourNode, jobNode)) {
+            return  true;
+        }
 
-        return PathUtilities.IsPathPossible(_node1, _node2);
-    }
-    public bool IsPathPossible(Vector2 one, Vector2 two) {
+        return false;
 
-        _node1 = GetNodeOnTile(one);
-        _node2 = GetNodeOnTile(two);
-
-        return PathUtilities.IsPathPossible(_node1, _node2);
     }
     
     private void AbandonJob(Tile t, string furnitureType) {
 
         DestTile = CurrTile;
-        CurrTilePos = gameObject.transform.position;
+        CurrTilePos = transform.position;
 
-        //TODO: This doesn't need to be here maybe figure out why it was here in the first place?
-
-        /*
-        Job j = new Job(t, furnitureType, (theJob) =>
-        {
-            WorldController.Instance.world.
-            PlaceFurnitureAt(furnitureType, theJob.tile);
-
-            t.pendingFurnitureJob = null;
-        });
-        */
-
+        
         MyJob = null;
 
-        _node1 = GetNodeOnTile(CurrTilePos);
-        _node2 = GetNodeOnTile(DestTilePos);
 
     }
+
 
     private void SetDestination(Tile tile)
     {
-        if (tile == null) return;
         
         DestTile = tile;
         DestTilePos = new Vector3(tile.x, tile.y);
-
-        _path.destination = new Vector3(tile.x, tile.y);
-
-
-        _node1 = GetNodeOnTile(CurrTilePos);
-        _node2 = GetNodeOnTile(DestTilePos);
+        _path.destination = DestTilePos;
 
     }
     
-
-    public void RegisterOnChangedCallback(Action<Character> cb) {
-        _cbCharacterChanged += cb;
-    }
-    public void UnregisterOnChangedCallback(Action<Character> cb) {
-        _cbCharacterChanged -= cb;
-    }
-
     protected virtual void OnJobEnded(Job j) {
         if(j != MyJob) {
             Debug.LogError("Character is thinking about a job that isn't theirs. You nforgot to unregister  something.");
@@ -217,5 +199,11 @@ public class Character : MonoBehaviour
         MyJob = null;
 
     }
+    
+    public bool IsMoving
+    {
+        //Let other scripts see if the object is moving
 
+        get{ return isMoving; }
+    }
 }

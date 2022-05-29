@@ -26,9 +26,16 @@ public class MouseOverInfoToolRoom : MonoBehaviour
             Debug.Log("How tf do we not have instance of controller ??");
         }
     }
-    private void Update() {
+    private void Update()
+    {
         Tile t = mouseController.GetTileUnderMouse();
+        if( t == null)
+        {
+            return;
+        }
+
         myText.text = "Room Index: " + t.World.Rooms.IndexOf(t.Room).ToString();
+
 
 
     }

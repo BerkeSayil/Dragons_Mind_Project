@@ -10,10 +10,8 @@ public class Job
     
     private float _jobTime;
     public JobType JobOccupation { get; protected set; }
-    public bool HaulingJob { get; protected set; }
 
     public string JobObjectType { get; protected set; }
-    public Inventory Inventory { get; protected set; }
 
     public Tile.TileType JobTileType { get; protected set; }
 
@@ -42,21 +40,6 @@ public class Job
         _cbJobComplete += cbJobComplete;
 
     }
-
-    //Constructor for hauling inventory
-    public Job(Tile tile, bool haulingJob, Inventory inv ,Action<Job> cbJobComplete, JobType occupationType,float jobTime = 0.2f) {
-        Tile = tile;
-        HaulingJob = haulingJob;
-        Inventory = inv;
-        _jobTime = jobTime;
-        JobOccupation = occupationType;
-
-
-        _cbJobComplete += cbJobComplete;
-
-    }
-
-
     public void RegisterJobCompleteCallback(Action<Job> cb) {
         _cbJobComplete += cb;
     }
@@ -90,11 +73,6 @@ public class Job
         Construction, // build, dismantle furniture and haul goods 
         InventoryManagement, // this is for picking up inventory and hauling it off
         Deconstruction,
-        Engineering,
-        Trader,
-        Visitor,
-        Pirate,
-        NotImplemented
-            //TODO: Add more job types as game evolves.
+        
     }
 }

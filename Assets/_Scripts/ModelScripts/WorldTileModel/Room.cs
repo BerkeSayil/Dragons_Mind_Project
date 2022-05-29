@@ -137,7 +137,8 @@ public class Room
         while (tilesToCheck.Count > 0) {
             Tile t = tilesToCheck.Dequeue();
 
-
+            if (t == null) break;
+        
             if (t.Room != oldRoom) continue;
             
             newRoom.AssignTile(t);

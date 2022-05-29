@@ -11,24 +11,15 @@ public class World
     public List<WorkerAI> Workers { get; protected set; }
 
     public List<Room> Rooms;
-    public List<Designation> Designations;
 
     public Dictionary<string, Furniture> FurniturePrototypes { get; private set; }
-    public Dictionary<string, Inventory> InventoryPrototypes { get; private set; }
 
     public int Width { get; }
     public int Height { get; }
 
-    public GameObject WorkerPrefab { get; set; }
-    public GameObject EngineerPrefab { get; set; }
-    public GameObject ShipPrefab { get; set; }
-    public Vector2 ShipTilePos;
 
     private Action<Tile> _cbTileChanged;
     private Action<Furniture> _cbFurnitureCreated;
-    private Action<Inventory> _cbInventoryCreated;
-    private Action<GameObject> _cbCharacterCreated;
-    private Action<Designation> _cbDesigChanged;
     //TODO: When and if we should unregister these callbacks ?
 
     // TODO: This should be replaced with a dedicated class for managing job queues (plural!!!)
@@ -45,7 +36,6 @@ public class World
         Rooms = new List<Room>();
         Rooms.Add(new Room()); // Creates the outside?
 
-        Designations = new List<Designation>();
 
         Tiles = new Tile[width, height];
         for (var x = 0; x < width; x++)
@@ -55,16 +45,11 @@ public class World
                 Tiles[x, y] = new Tile(this, x, y);
                 Tiles[x, y].RegisterTileTypeChangedCallback(OnTileChanged);
                 Tiles[x, y].Room = GetOutsideRoom(); // they all belong to outside at start
-                Tiles[x, y].DesignationType = GetDefaultDesignation(); // all tiles are designated as empty at first
             }
         }
-
+        
         // This loads preset furniture and inventory info into their dictionaries
         CreateFurniturePrototypes();
-        CreateInventoryPrototypes();
-
-        // Get the ship tile center position to spawn crewmates
-        ShipTilePos = new Vector2(width / 2 + 9.5f, height / 2);
 
         JobQueue = new JobQueue();
 
@@ -72,92 +57,13 @@ public class World
         Characters = new List<Character>();
         Workers = new List<WorkerAI>();
 
-    }
-
-    public void ReturnToSender(Job job) {
         
-        //TODO: this deletes given jobs from job queue destroys game-objects and everything about them and later requeue
-
-
-    }
-
-    public void DeliverShipToWorld() {
-
-        //TODO: Make our ship get cooler as our reputation increases.
-        
-
-        GameObject c = GameObject.Instantiate(ShipPrefab, ShipTilePos, Quaternion.identity);
-        c.tag = "SpaceShip";
-
-        MotherShip shipScript = c.GetComponent<MotherShip>();
-
-        List<Tile> shipCargoBay = new List<Tile>();
-
-        // 71-58, 71-68, 75-68, 75-58
-        for (var x = 71; x <= 75; x++) {
-
-            for (var y = 58; y <= 68; y++) {
-
-                if ((int)ShipTilePos.x  == x && (int)ShipTilePos.y  == y) continue;
-
-                Tile t = GetTileAt(x, y);
-
-                shipCargoBay.Add(t);
-
-                t.IsSpaceShip = true;
-            }
-        }
-
-
-        Designation cargoBay = new Designation(shipCargoBay, Designation.DesignationType.TradeGoods);
-
-    }
-
-    internal void DeliverInventoryOnTile(Tile.TileType jobTileType, Tile destination) {
-
-        //TODO: Consider objectType for this string
-        string s = "Metal_Scrap";
-
-        Inventory inv = Inventory.PlaceInstance(InventoryPrototypes[s], destination);
-
-        if (inv == null) return;
-
-        _cbInventoryCreated?.Invoke(inv);
-    }
-
-    internal void DeliverInventoryOnTile(string jobObjectType, Tile destination) {
-
-        //TODO: Consider objectType
-        string s = "Metal_Scrap";
-
-        Inventory inv = Inventory.PlaceInstance(InventoryPrototypes[s], destination);
-
-        if (inv == null) return;
-
-        _cbInventoryCreated?.Invoke(inv);
     }
 
     public void AddRoom(Room r) {
         Rooms.Add(r);
     }
-    public void AddDesignation(Designation d) {
-        Designations.Add(d);
-        d.RegisterDesignationTypeChangedCallback(OnDesignationChanged);
-    }
-
-    public void RemoveDesignation(Designation d) { //TODO: Designation removing should exist in a capacity
-        Designations.Remove(d);
-    }
-    private static Designation.DesignationType GetDefaultDesignation() {
-
-        return Designation.DesignationType.None;
-    }
-
-    public List<Designation> GetDesignationOfType(Designation.DesignationType typeWanted) {
-      
-        return Designations.Any() ? Designations.FindAll((type) => type.Type == typeWanted ) : null;
-
-    }
+    
     public Room GetOutsideRoom() {
 
         return Rooms[0];
@@ -196,54 +102,54 @@ public class World
             false, // links to neighbours to look like linked.
             true //TODO: it actually need to check if closed ?)
             ));
-        FurniturePrototypes.Add("SleepingPod",
+        FurniturePrototypes.Add("Bed01",
             Furniture.CreatePrototype(
-            "SleepingPod",
+            "Bed01",
             0, // impassible
             1, //width
-            1, //height
+            2, //height
             false, // links to neighbours to look like linked.
             false // can this be used as exterior blockage ?
             ));
-        FurniturePrototypes.Add("FoodProcessor",
+        FurniturePrototypes.Add("FoodDispenser",
             Furniture.CreatePrototype(
-            "FoodProcessor",
-            0, // impassible
-            1, //width
-            1, //height
-            false, // links to neighbours to look like linked.
-            false // can this be used as exterior blockage ?
-            ));
-        FurniturePrototypes.Add("Desk",
-            Furniture.CreatePrototype(
-            "Desk",
-            0, // impassible
-            2, //width
-            1, //height
-            false, //TODO: This could look like linked depending on the sprites we use
-            false // can this be used as exterior blockage ?
-            ));
-        FurniturePrototypes.Add("Engine",
-            Furniture.CreatePrototype(
-            "Engine",
+            "FoodDispenser",
             0, // impassible
             2, //width
             2, //height
             false, // links to neighbours to look like linked.
             false // can this be used as exterior blockage ?
             ));
-        FurniturePrototypes.Add("LifeSupportMaintainer",
+        FurniturePrototypes.Add("StorageBox",
             Furniture.CreatePrototype(
-            "LifeSupportMaintainer",
+            "StorageBox",
             0, // impassible
             1, //width
             1, //height
             false, // links to neighbours to look like linked.
             false // can this be used as exterior blockage ?
             ));
-        FurniturePrototypes.Add("AtmosProvider",
+        FurniturePrototypes.Add("Engine01",
             Furniture.CreatePrototype(
-            "AtmosProvider",
+            "Engine01",
+            0, // impassible
+            2, //width
+            2, //height
+            false, // links to neighbours to look like linked.
+            false // can this be used as exterior blockage ?
+            ));
+        FurniturePrototypes.Add("Thruster01",
+            Furniture.CreatePrototype(
+            "Thruster01",
+            0, // impassible
+            1, //width
+            2, //height
+            false, // links to neighbours to look like linked.
+            false // can this be used as exterior blockage ?
+            ));
+        FurniturePrototypes.Add("OxygenGenerator",
+            Furniture.CreatePrototype(
+            "OxygenGenerator",
             0, // impassible
             1, //width
             1, //height
@@ -254,24 +160,11 @@ public class World
 
     }
 
-    private void CreateInventoryPrototypes() {
-        InventoryPrototypes = new Dictionary<string, Inventory>();
-
-        // TODO: Make this get read from a data, XML, json or some other file
-        InventoryPrototypes.Add("Metal_Scrap",
-            Inventory.CreateInventoryProto(
-            "Metal_Scrap" // what the object is
-            ));
-        Debug.Log(InventoryPrototypes["Metal_Scrap"].ObjectType);
-
-    }
     public Tile GetTileAt(int x, int y)
     {
-        if (x >= 0 && x <= Width && y >= 0 && y <= Height) return Tiles[x, y];
+        if (x < 0 || x >= Width || y < 0 || y >= Height) return null;
         
-        // TODO: clean this later
-        Debug.LogError("Tile (" + x + " , " + y + ") is out of range for this world.");
-        return null;
+        return Tiles[x, y];
 
     }
 
@@ -289,111 +182,10 @@ public class World
 
     public void PlaceTileAt(Tile.TileType tileType, Tile t) {
 
-        if (t.Type == Tile.TileType.Floor) {
-            if (tileType == Tile.TileType.Empty) {
-
-                DropInventoryAfterDeconstruction(tileType.ToString(), t);
-            }
-        }
         t.Type = tileType;
         
     }
 
-    private void DropInventoryAfterDeconstruction(string objectType, Tile t) {
-
-        //TODO: Consider objectType
-        string s = "Wall_Scrap";
-        
-        Inventory inv = Inventory.PlaceInstance(InventoryPrototypes[s], t);
-
-        if (inv == null) return;
-
-        _cbInventoryCreated?.Invoke(inv);
-
-        if (t.LooseObject == null) return;
-        // inventory exists on this tile.
-
-        Job j = new Job(t, false, inv ,(theJob) => {
-            GetTheInventory(s, theJob.Tile);
-
-            t.PendingHaulJob = null;
-
-        }, Job.JobType.InventoryManagement );
-
-        t.PendingHaulJob = j;
-        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.PendingHaulJob = null; });
-            
-        WorldController.Instance.World.JobQueue.Enqueue(j);
-
-    }
-    
-    private void DropOffInventoryAtHaulingEnd(string objectType, Tile tile) {
-
-        Inventory inv = Inventory.PlaceInstance(InventoryPrototypes[objectType], tile);
-
-        if (inv == null) return;
-
-        _cbInventoryCreated?.Invoke(inv);
-
-        //TODO: Keep track of inventories that exist in current word so we only create if no exists
-        // .Add(inv);
-    }
-    private void GetTheInventory(string objectType, Tile tile) {
-
-        if (InventoryPrototypes.ContainsKey(objectType) == false) {
-            Debug.LogError("inventoryPrototypes doesn't contain key: " + objectType);
-            return;
-        }
-
-        List<Designation> desigs = GetDesignationOfType(Designation.DesignationType.TradeGoods);
-
-        Tile destination = tile; // at worst we'll put where we found it ?
-
-        // now that the inventory is removed from ground
-        // we'll create a job only the worker that took this could complete
-
-        if (desigs == null) return;
-
-        foreach (var t1 in desigs)
-        {
-            foreach (var t in t1.Tiles.Where
-                         (t => t.LooseObject == null && t.PendingHaulJob == null && IsHaulPlacementValid(t)))
-            {
-                destination = t;
-                break;
-            }
-
-            if (destination != tile) break;
-        }
-
-        if (destination == tile){
-            DropInventoryAfterDeconstruction(objectType, tile);
-            return;
-        }
-
-        Job j = new Job(destination, true, InventoryPrototypes[objectType] , (theJob) => {
-            DropOffInventoryAtHaulingEnd(objectType, theJob.Tile);
-
-            destination.PendingHaulJob = null;
-
-        }, Job.JobType.InventoryManagement);
-
-        destination.PendingHaulJob = j;
-        j.RegisterJobCancelCallback((theJob) => { theJob.Tile.PendingHaulJob = null; });
-
-        WorldController.Instance.World.JobQueue.Enqueue(j);
-
-        Inventory.PickInventoryUp(tile); // removes inventory on given tile
-
-    }
-
-
-    public bool IsHaulPlacementValid(Tile destination) {
-        if (destination.Furniture == null) {
-            return true;
-        }
-        else return false;
-    }
 
     public void PlaceFurnitureAt(string objectType, Tile t)
     {
@@ -539,8 +331,6 @@ public class World
         Furniture whatFurnitureWas = FurniturePrototypes[objectType];
         Furniture.DismantleFurniture(FurniturePrototypes[objectType], t);
 
-        DropInventoryAfterDeconstruction(objectType, t);
-        
 
         // if this is an exterior tile we need to recalculate rooms
         if (whatFurnitureWas.StationExterior == false) return;
@@ -599,44 +389,6 @@ public class World
 
     }
     
-    //TODO: This is not how we want to create characters
-    public Character CreateCharacter(int jobType,Tile t) {
-        GameObject c = null;
-
-        switch (jobType) {
-            case 0: // construction worker
-                c = GameObject.Instantiate(WorkerPrefab, ShipTilePos, Quaternion.identity);
-                c.tag = "Worker";
-                break;
-
-            //ase 1: // visitor
-                //c = GameObject.Instantiate(EngineerPrefab, ShipTilePos, Quaternion.identity);
-                //c.tag = "Visitor";
-                //break;
-
-        }
-
-        if (c == null) return null;
-
-        Character cScript = c.GetComponent<Character>();
-
-        Characters.Add(cScript);
-
-        if (WorkerPrefab.GetComponent<WorkerAI>() != null) Workers.Add(WorkerPrefab.GetComponent<WorkerAI>());
-        
-
-        if (_cbCharacterCreated != null) {
-            _cbCharacterCreated(c);
-        }
-        return cScript;
-    }
-    
-    public void RegisterDesignationChanged(Action<Designation> callbackFunc) {
-        _cbDesigChanged += callbackFunc;
-    }
-    public void UnregisterDesignationChanged(Action<Designation> callbackFunc) {
-        _cbDesigChanged -= callbackFunc;
-    }
 
     public void RegisterTileChanged(Action<Tile> callbackFunc) {
         _cbTileChanged += callbackFunc;
@@ -653,19 +405,8 @@ public class World
     {
         _cbFurnitureCreated -= callbackFunc;
     }
-    public void RegisterInventoryCreated(Action<Inventory> callbackFunc) {
-        _cbInventoryCreated += callbackFunc;
-    }
-    public void UnregisterInventoryCreated(Action<Inventory> callbackFunc) {
-        _cbInventoryCreated -= callbackFunc;
-    }
+    
 
-    public void RegisterCharacterCreated(Action<GameObject> callbackFunc) {
-        _cbCharacterCreated += callbackFunc;
-    }
-    public void UnregisterCharacterCreated(Action<GameObject> callbackFunc) {
-        _cbCharacterCreated -= callbackFunc;
-    }
 
     void OnTileChanged(Tile t) {
         if(_cbTileChanged == null) {
@@ -675,13 +416,6 @@ public class World
         _cbTileChanged(t);
     }
 
-    private void OnDesignationChanged(Designation d) {
-        
-        if(_cbDesigChanged == null) {
-            return;
-        }
-
-        _cbDesigChanged(d);
-    }
+    
 
 }

@@ -50,9 +50,7 @@ public class TileSpriteController : MonoBehaviour
         }
 
         World.RegisterTileChanged(OnTileChanged);
-        GameObject.Find("DesignationController").
-            GetComponent<DesignationController>().
-            RegisterTileDesignationChangedCallback(OnTileChanged);
+        
     }
 
     public Sprite GetSpriteForTile(Tile.TileType jobTileType)
@@ -94,31 +92,7 @@ public class TileSpriteController : MonoBehaviour
                 break;
         }
 
-        switch (tileData.DesignationType)
-        {
-            case Designation.DesignationType.None:
-                return;
-            case Designation.DesignationType.Cafeteria:
-                tileGo.GetComponent<SpriteRenderer>().color = Color.cyan;
-                break;
-            case Designation.DesignationType.Engine:
-                tileGo.GetComponent<SpriteRenderer>().color = Color.yellow;
-                break;
-            case Designation.DesignationType.Kitchen:
-                tileGo.GetComponent<SpriteRenderer>().color = Color.magenta;
-                break;
-            case Designation.DesignationType.LifeSupport:
-                tileGo.GetComponent<SpriteRenderer>().color = Color.red;
-                break;
-            case Designation.DesignationType.PersonalCrewRoom:
-                tileGo.GetComponent<SpriteRenderer>().color = Color.green;
-                break;
-            case Designation.DesignationType.TradeGoods:
-                tileGo.GetComponent<SpriteRenderer>().color = Color.blue;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        
     }
 
     public Tile GetTileAtCoord(Vector3 coordinates)

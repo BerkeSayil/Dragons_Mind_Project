@@ -27,6 +27,13 @@ public class MouseController : MonoBehaviour
     }
 
     public Tile GetTileUnderMouse() {
+        // Don't do anything if we're outside of world width and height.
+        if (_currentFrameMousePos.x < 0 || _currentFrameMousePos.x > WorldController.Instance.World.Width ||
+            _currentFrameMousePos.y < 0 || _currentFrameMousePos.y > WorldController.Instance.World.Height)
+        {
+            return null;
+        }
+        
         return WorldController.Instance.World.GetTileAt((int)_currentFrameMousePos.x, (int)_currentFrameMousePos.y);
     }
     private void Update()
@@ -44,6 +51,14 @@ public class MouseController : MonoBehaviour
 
     private void HandleMouseSelection()
     {
+        // Don't do anything if we're outside of world width and height.
+        if (_currentFrameMousePos.x < 0 || _currentFrameMousePos.x > WorldController.Instance.World.Width ||
+            _currentFrameMousePos.y < 0 || _currentFrameMousePos.y > WorldController.Instance.World.Height)
+        {
+            return;
+        }
+
+        
         // Don't do if over UI element
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
 
@@ -98,7 +113,6 @@ public class MouseController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             BuildModeController bmc = GameObject.FindObjectOfType<BuildModeController>();
-            DesignationController dsc = GameObject.FindObjectOfType<DesignationController>();
 
             for (int x = startX; x <= endX; x++)
             {
@@ -112,36 +126,56 @@ public class MouseController : MonoBehaviour
                         if (bmc.areWeBuilding) {
                             bmc.DoBuild(t);
                         }
-                        if (dsc.areWeDesignating) {
-                            dsc.AddToDesignation(t);
-                        }
+                        
                         
 
                     }
                 }
             }
-            if (dsc.areWeDesignating) {
-                dsc.DoDesignate();
-            }
+            
             
         }
     }
 
     private void HandleMouseMovement()
     {
+        // don't let the camera move if we're outside of world width and height
+        // and smoothly transition camera to center of world while disabling mouse movement
+
+        if (_currentFrameMousePos.x < 0 || _currentFrameMousePos.x > WorldController.Instance.World.Width ||
+            _currentFrameMousePos.y < 0 || _currentFrameMousePos.y > WorldController.Instance.World.Height)
+        {
+            _mainCamera.transform.position = Vector3.Lerp(_mainCamera.transform.position, new Vector3(WorldController.Instance.World.Width / 2, WorldController.Instance.World.Height / 2, -10), Time.deltaTime * 8);
+            return;
+        }
+
+
+
         // Handle the mouse movement.
         if (Input.GetMouseButton(2) || Input.GetMouseButton(1)) // right or middle mouse button
         {
+            
+            
+            
             Vector2 diff = _lastFrameMousePos - _currentFrameMousePos;
+            
             _mainCamera.transform.Translate(diff);
         }
-
+        
+        
         // Handle mouse zoom and pan ( multiplying with itself so it gives a way better feel)
 
         //TODO: These are expensive calls.
         
-        _mainCamera.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * _mainCamera.orthographicSize;
-        Mathf.Clamp(_mainCamera.orthographicSize, 3f, 20f);
+            _mainCamera.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * _mainCamera.orthographicSize;
+            Mathf.Clamp(_mainCamera.orthographicSize, 3f, 6f);
+
+            if (_mainCamera.orthographicSize > 15)
+            {
+                // zoomed too far, lerp back to 15
+                _mainCamera.orthographicSize = Mathf.Lerp(_mainCamera.orthographicSize, 15, Time.deltaTime * 8);
+            }
+        
 
     }
 

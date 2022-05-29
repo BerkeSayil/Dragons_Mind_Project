@@ -27,8 +27,7 @@ public class BuildModeController : MonoBehaviour
         _buildModeIsFurniture = false;
         // This check the marked tiles for furniture objects
         // Removes them
-        // Creates an inventory (looseObject) in the given tile
-        // Which should in turn would get hauled back to tradegoods designation if any exists in designations list ?
+        
 
 
 
