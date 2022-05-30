@@ -91,7 +91,8 @@ public class World
             1, //width
             1, //height
             true, // links to neighbours to look like linked.
-            true // can this be used as exterior blockage ?
+            true, // can this be used as exterior blockage ?
+            10f // cost to build this object
             ));
         FurniturePrototypes.Add("Door",
             Furniture.CreatePrototype(
@@ -100,7 +101,8 @@ public class World
             1, //width
             1, //height
             false, // links to neighbours to look like linked.
-            true //TODO: it actually need to check if closed ?)
+            true, //TODO: it actually need to check if closed ?)
+            25f // cost to build this object
             ));
         FurniturePrototypes.Add("Bed01",
             Furniture.CreatePrototype(
@@ -109,7 +111,8 @@ public class World
             1, //width
             2, //height
             false, // links to neighbours to look like linked.
-            false // can this be used as exterior blockage ?
+            false, // can this be used as exterior blockage ?
+            30f // cost to build this object
             ));
         FurniturePrototypes.Add("FoodDispenser",
             Furniture.CreatePrototype(
@@ -118,7 +121,8 @@ public class World
             2, //width
             2, //height
             false, // links to neighbours to look like linked.
-            false // can this be used as exterior blockage ?
+            false, // can this be used as exterior blockage ?
+            100f // cost to build this object
             ));
         FurniturePrototypes.Add("StorageBox",
             Furniture.CreatePrototype(
@@ -127,7 +131,8 @@ public class World
             1, //width
             1, //height
             false, // links to neighbours to look like linked.
-            false // can this be used as exterior blockage ?
+            false, // can this be used as exterior blockage ?
+            50f // cost to build this object
             ));
         FurniturePrototypes.Add("Engine01",
             Furniture.CreatePrototype(
@@ -136,7 +141,8 @@ public class World
             4, //width
             4, //height
             false, // links to neighbours to look like linked.
-            false // can this be used as exterior blockage ?
+            false, // can this be used as exterior blockage ?
+            1000f // cost to build this object
             ));
         FurniturePrototypes.Add("Thruster01",
             Furniture.CreatePrototype(
@@ -145,7 +151,8 @@ public class World
             1, //width
             2, //height
             false, // links to neighbours to look like linked.
-            false // can this be used as exterior blockage ?
+            false, // can this be used as exterior blockage ?
+            450f // cost to build this object
             ));
         FurniturePrototypes.Add("OxygenGenerator",
             Furniture.CreatePrototype(
@@ -154,7 +161,8 @@ public class World
             1, //width
             1, //height
             false, // links to neighbours to look like linked.
-            false // can this be used as exterior blockage ?
+            false, // can this be used as exterior blockage ?
+            380f // cost to build this object
             ));
 
 
@@ -252,6 +260,9 @@ public class World
                 Room.DoFloodFillRoom(furn);
             }
 
+            //TODO: This being here in open might be bad idk?
+            GameManager.Instance.Currency -= furn.Cost;
+            
             if (_cbFurnitureCreated != null) {
                 _cbFurnitureCreated(furn);
             }
@@ -324,6 +335,8 @@ public class World
         Room.DoReverseFloodFillRoom(neighboorRooms, minIndexedRoom);
 
         minIndexedRoom.AssignTile(t);
+
+        GameManager.Instance.Currency += FurniturePrototypes[objectType].Cost;
 
 
     }

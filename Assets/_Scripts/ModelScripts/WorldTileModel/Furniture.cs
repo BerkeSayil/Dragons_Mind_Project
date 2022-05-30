@@ -23,6 +23,8 @@ public class Furniture
     public int Width { get; protected set; }
     public int Height { get; protected set; }
 
+    public float Cost { get; protected set; }
+
     public bool LinksToNeighboor { get; protected set; } // if we want a sprite to change with regard to surrounding tiles.
 
     private Action<Furniture> _cbOnChanged;
@@ -38,7 +40,7 @@ public class Furniture
 
     // this is a prototypical version
     static public Furniture CreatePrototype(string objectType, float movementCost = 1f, 
-        int width = 1, int height = 1, bool linksToNeighboor = false , bool stationExterior = false )
+        int width = 1, int height = 1, bool linksToNeighboor = false , bool stationExterior = false, float cost = 0f)
     {
         Furniture obj = new Furniture();
 
@@ -48,6 +50,7 @@ public class Furniture
         obj.Height = height;
         obj.LinksToNeighboor = linksToNeighboor;
         obj.StationExterior = stationExterior;
+        obj.Cost = cost;
 
         obj._funcToPositionValidate = obj.IsValidPosition;
 
@@ -71,7 +74,7 @@ public class Furniture
         furn.Height = proto.Height;
         furn.LinksToNeighboor = proto.LinksToNeighboor;
         furn.StationExterior = proto.StationExterior;
-
+        furn.Cost = proto.Cost;
 
         furn.Tile = tile;
 
@@ -142,8 +145,13 @@ public class Furniture
         for (int x = t.x; x < t.x + Width; x++) {
             for (int y = t.y; y < t.y + Height; y++) {
                 Tile tile = t.World.GetTileAt(x, y);
-
-                return IsValidPosition(tile);
+                
+                if(IsValidPosition(tile) == true){
+                    continue;
+                }
+                else{
+                    return false;
+                }
             }
         }
         
