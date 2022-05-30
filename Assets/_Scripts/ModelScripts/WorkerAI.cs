@@ -60,6 +60,21 @@ public class WorkerAI : Character {
             return;
         }
 
+        if (j.JobOccupation == Job.JobType.Deconstruction)
+        {
+            Furniture furniture = WorldController.Instance.World.FurniturePrototypes[j.JobObjectType];
+            if (furniture.Width > 1 || furniture.Height > 1) {
+                for (int x = j.Tile.x; x < j.Tile.x + furniture.Width; x++) {
+                    for (int y = j.Tile.y; y < j.Tile.y + furniture.Height; y++) {
+                        Tile tile = WorldController.Instance.World.GetTileAt(x, y);
+                        if (tile != null && tile.Furniture != null) {
+                            tile.SetFurnitureChild(null);
+                        }
+                    }
+                }
+            }
+        }
+        
         AstarPath.active.Scan();
         CurrTile = DestTile;
         CurrTilePos = DestTilePos = new Vector3(j.Tile.x, j.Tile.y);

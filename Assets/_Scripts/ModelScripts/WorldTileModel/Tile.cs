@@ -125,4 +125,9 @@ public class Tile
 
         return false;
     }
+
+    public void SetFurnitureChild(Furniture furniture)
+    {
+        this.Furniture = furniture;
+    }
 }

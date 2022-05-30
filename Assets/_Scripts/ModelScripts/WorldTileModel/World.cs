@@ -133,8 +133,8 @@ public class World
             Furniture.CreatePrototype(
             "Engine01",
             0, // impassible
-            2, //width
-            2, //height
+            4, //width
+            4, //height
             false, // links to neighbours to look like linked.
             false // can this be used as exterior blockage ?
             ));
@@ -189,116 +189,55 @@ public class World
 
     public void PlaceFurnitureAt(string objectType, Tile t)
     {
-        // if width or height bigger than 1 on world call PlaceFurnitureAt for those other tiles too
+        
 
         if (FurniturePrototypes.ContainsKey(objectType) == false)
         {
             Debug.LogError("installedObjectPrototypes doesn't contain key: " + objectType);
             return;
         }
+        
+        //depending on furnitures width and height determine if we can place it
+        if (IsFurniturePlacementValid(objectType, t) == false)
+        {
+            Debug.LogError("Furniture placement is invalid");
+            return;
+        }
+        else
+        {
+            Furniture furnInfo = FurniturePrototypes[objectType];
+            
+            if (furnInfo.Width > 1 || furnInfo.Height > 1) {
+                for (int x = t.x; x < t.x + furnInfo.Width; x++) {
+                    for (int y = t.y; y < t.y + furnInfo.Height; y++) {
+                        Tile tile = GetTileAt(x, y);
+                        if (IsFurniturePlacementValid(objectType, tile) == false)
+                        {
+                            Debug.Log("Problem at tile: " + x + " " + y);
+                            return;
+                        }
+                    }
+                }
+            } 
+        }
+
         Furniture furniture = Furniture.PlaceInstance(FurniturePrototypes[objectType], t);
 
         // should this type of furniture create furniture instances on multiple tiles ?
         List<Furniture> furnitures = new List<Furniture> {
             furniture
         };
-
-        // not my produest hard code but it works ?
-        // fuck yeah it works :D
-
-        switch (FurniturePrototypes[objectType].Width) {
-            case 1:
-                switch (FurniturePrototypes[objectType].Height) {
-                    case 1:
-                        // already handling as default
-                        break;
-                    case 2:
-                        Furniture f2x1c1c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
-                        furnitures.Add(f2x1c1c2);
-                        break;
-                    case 3:
-                        Furniture f2x1c1c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
-                        Furniture f3x1c1c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North());
-                        furnitures.Add(f2x1c1c3);
-                        furnitures.Add(f3x1c1c3);
-                        break;
+        
+        if (furniture.Width > 1 || furniture.Height > 1) {
+            for (int x = t.x; x < t.x + furniture.Width; x++) {
+                for (int y = t.y; y < t.y + furniture.Height; y++) {
+                    Tile tile = GetTileAt(x, y);
+                    if (tile != null && tile.Furniture == null && tile.Type == Tile.TileType.Floor)
+                    {
+                        tile.SetFurnitureChild(furniture);
+                    }
                 }
-                break;
-            case 2:
-                switch (FurniturePrototypes[objectType].Height) {
-                    case 1:
-                        Furniture f1x2c2c1 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
-                        furnitures.Add(f1x2c2c1);
-                        break;
-                    case 2:
-                        Furniture f1x2c2c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
-                        Furniture f2x1c2c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
-                        Furniture f2x2c2c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().East());
-
-                        furnitures.Add(f1x2c2c2);
-                        furnitures.Add(f2x1c2c2);
-                        furnitures.Add(f2x2c2c2);
-                        break;
-                    case 3:
-                        Furniture f1x2c2c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
-                        Furniture f2x1c2c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
-                        Furniture f2x2c2c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().East());
-                        Furniture f3x1c2c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North());
-                        Furniture f3x2c2c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North().East());
-
-                        furnitures.Add(f1x2c2c3);
-                        furnitures.Add(f2x1c2c3);
-                        furnitures.Add(f2x2c2c3);
-                        furnitures.Add(f3x1c2c3);
-                        furnitures.Add(f3x2c2c3);
-
-                        break;
-                }
-                break;
-            case 3:
-                switch (FurniturePrototypes[objectType].Height) {
-                    case 1:
-                        Furniture f1x2c3c1 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
-                        Furniture f1x3c3c1 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East());
-                        furnitures.Add(f1x2c3c1);
-                        furnitures.Add(f1x3c3c1);
-
-                        break;
-                    case 2:
-                        Furniture f1x2c3c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
-                        Furniture f2x1c3c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
-                        Furniture f2x2c3c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().East());
-                        Furniture f1x3c3c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East());
-                        Furniture f2x3c3c2 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East().North());
-
-                        furnitures.Add(f1x2c3c2);
-                        furnitures.Add(f2x1c3c2);
-                        furnitures.Add(f2x2c3c2);
-                        furnitures.Add(f1x3c3c2);
-                        furnitures.Add(f2x3c3c2);
-                        break;
-                    case 3:
-                        Furniture f1x2c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East());
-                        Furniture f2x1c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North());
-                        Furniture f2x2c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().East());
-                        Furniture f1x3c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East());
-                        Furniture f2x3c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.East().East().North());
-                        Furniture f3x1c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North());
-                        Furniture f3x2c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North().East());
-                        Furniture f3x3c3c3 = Furniture.PlaceInstance(FurniturePrototypes[objectType], t.North().North().East().East());
-
-                        furnitures.Add(f1x2c3c3);
-                        furnitures.Add(f2x1c3c3);
-                        furnitures.Add(f2x2c3c3);
-                        furnitures.Add(f1x3c3c3);
-                        furnitures.Add(f2x3c3c3);
-                        furnitures.Add(f3x1c3c3);
-                        furnitures.Add(f3x2c3c3);
-                        furnitures.Add(f3x3c3c3);
-                        break;
-                }
-                break;
-            
+            }
         }
 
         foreach (Furniture furn in furnitures) {

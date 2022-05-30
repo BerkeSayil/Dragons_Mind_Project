@@ -132,10 +132,7 @@ public class BuildModeController : MonoBehaviour
                     },
                     Job.JobType.Deconstruction
                     );
-
-
-                    // TODO: This being this way very easy to clear or forget make it automated in
-                    // some other way possible
+                    
                     t.PendingFurnitureJob = j;
                     j.RegisterJobCancelCallback((theJob) => { theJob.Tile.PendingFurnitureJob = null; });
 
@@ -143,7 +140,7 @@ public class BuildModeController : MonoBehaviour
 
 
 
-                }                 // are we removing tile ? 
+                }// are we removing tile ? 
                 //TODO: Removing Tile doesn't work
                 else if (WorldController.Instance.World.IsTilePlacementValid(buildModeTile, t) == false
                 && t.PendingTileJob == null) {

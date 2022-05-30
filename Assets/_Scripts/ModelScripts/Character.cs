@@ -24,7 +24,7 @@ public class Character : MonoBehaviour
     //movement stuck checker
     private Transform objectTransfom;
  
-    private float noMovementThreshold = 0.00001f;
+    private float noMovementThreshold = 0.0000001f;
     private const int noMovementFrames = 600;
     Vector2[] previousLocations = new Vector2[noMovementFrames];
     private bool isMoving;

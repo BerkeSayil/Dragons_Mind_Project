@@ -66,7 +66,7 @@ MonoBehaviour:
   startEndModifier:
     addPoints: 0
     exactStartPoint: 0
-    exactEndPoint: 4
+    exactEndPoint: 0
     useRaycasting: 0
     mask:
       serializedVersion: 2
@@ -92,7 +92,7 @@ MonoBehaviour:
   radius: 0.25
   height: 2
   canMove: 1
-  maxSpeed: 4
+  maxSpeed: 10
   gravity: {x: 0, y: 0, z: 0}
   groundMask:
     serializedVersion: 2
@@ -113,7 +113,7 @@ MonoBehaviour:
   rotationSpeed: 360
   slowdownDistance: 0.4
   pickNextWaypointDist: 1.2
-  endReachedDistance: 1
+  endReachedDistance: 3
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 1
@@ -188,8 +188,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1285340145
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bed63f0902ac0ce48a72df8c9983969e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

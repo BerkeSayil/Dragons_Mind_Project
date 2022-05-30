@@ -131,75 +131,26 @@ public class Furniture
 
         //Multi functional until 3 by 3 
 
-        /*        1 2 3 
-         *      3 X X X 
-         *      2 X X X 
-         *      1 X X X 
+        /*        1 2 3 4
+         *      4 X X X X
+         *      3 X X X X
+         *      2 X X X X
+         *      1 X X X X
          */
 
-        switch (Width) {
-            case 1: // X: 1 Y : 1,2,3
+        // check North and East tiles according to the size of the object
+        for (int x = t.x; x < t.x + Width; x++) {
+            for (int y = t.y; y < t.y + Height; y++) {
+                Tile tile = t.World.GetTileAt(x, y);
 
-                switch (Height)
-                {
-                    case 1:
-                        return (_funcToPositionValidate(t));
-                    case 2:
-                        return (_funcToPositionValidate(t)
-                                && _funcToPositionValidate(t.North()));
-                    case 3:
-                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.North()) &&
-                                _funcToPositionValidate(t.North().North()) 
-                            );
-                }
-
-                break;
-            case 2: // X: 2 Y : 1,2,3
-                
-                switch (Height)
-                {
-                    case 1:
-                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East()));
-                    case 2:
-                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East()) 
-                                                           && _funcToPositionValidate(t.North()) && _funcToPositionValidate(t.North().East()));
-                    case 3:
-                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East())
-                                                           && _funcToPositionValidate(t.North()) && _funcToPositionValidate(t.North().East()) &&
-                                                           _funcToPositionValidate(t.North().North()) && _funcToPositionValidate(t.North().North().East()) 
-                            );
-                }
-
-                break;
-            case 3: // X: 3 Y : 1,2,3
-                switch (Height)
-                {
-                    case 1:
-                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East()) && 
-                                _funcToPositionValidate(t.East().East()));
-                    case 2:
-                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East()) && _funcToPositionValidate(t.East().East())
-                                && _funcToPositionValidate(t.North()) && _funcToPositionValidate(t.North().East()) 
-                                && _funcToPositionValidate(t.North().East().East()));
-                    case 3:
-                        return (_funcToPositionValidate(t) && _funcToPositionValidate(t.East()) && _funcToPositionValidate(t.East().East())
-                                && _funcToPositionValidate(t.North()) && _funcToPositionValidate(t.North().East()) && _funcToPositionValidate(t.North().East().East()) 
-                                && _funcToPositionValidate(t.North().North()) && _funcToPositionValidate(t.North().North().East())
-                                && _funcToPositionValidate(t.East().East().North()) && _funcToPositionValidate(t.East().East().North().North())
-                            );
-                }
-
-                break;
-            default:
-                return false;
-                
+                return IsValidPosition(tile);
+            }
         }
+        
         return false;
-
     }
 
 
-    // TODO: Shouldn't call this directly fix it being public
     private bool IsValidPosition(Tile t) {
         // check if is there a base tile there ?
         if(t.Type != Tile.TileType.Floor) {

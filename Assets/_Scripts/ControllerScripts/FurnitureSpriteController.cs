@@ -61,7 +61,6 @@ public class FurnitureSpriteController : MonoBehaviour
     }
 
     private void OnFurnitureRemoved(Furniture furn) {
-        //TODO: DOESN'T CONSIDER MULTI TILE FURNITURES
         // Make sure furniture sprites are correct;
 
         if (furnitureGameObjectMap.ContainsKey(furn) == false) {
@@ -103,9 +102,8 @@ public class FurnitureSpriteController : MonoBehaviour
 
         BoxCollider2D furnGoCollider = furnGo.AddComponent<BoxCollider2D>();
 
-        furnGoCollider.size = new Vector2 (1f,1f);
+        furnGoCollider.size = new Vector2 (furn.Width, furn.Height);
 
-        // TODO: Implement better layering system for movement cost consideration maybe ?
          // This layer is designed to be furniture layer and A* sees this as blockadge
         if(furn.MovementCost == 0) {
             furnGo.layer = ImpassibleLayer;
