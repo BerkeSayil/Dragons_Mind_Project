@@ -144,8 +144,8 @@ public class Furniture
         // check North and East tiles according to the size of the object
         for (int x = t.x; x < t.x + Width; x++) {
             for (int y = t.y; y < t.y + Height; y++) {
-                Tile tile = t.World.GetTileAt(x, y);
                 
+                Tile tile = t.World.GetTileAt(x, y);
                 if(IsValidPosition(tile) == true){
                     continue;
                 }
@@ -155,7 +155,7 @@ public class Furniture
             }
         }
         
-        return false;
+        return true;
     }
 
 

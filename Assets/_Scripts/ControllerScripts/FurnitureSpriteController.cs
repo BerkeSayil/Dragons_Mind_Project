@@ -27,7 +27,7 @@ public class FurnitureSpriteController : MonoBehaviour
 
         furnitureSprites = new Dictionary<string, Sprite>();
 
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Sprite");
+        Sprite[] sprites = Resources.LoadAll<Sprite>("SpriteFinal");
         foreach (Sprite s in sprites) {
             furnitureSprites[s.name] = s;
         }
@@ -85,8 +85,7 @@ public class FurnitureSpriteController : MonoBehaviour
         furnGo.SetActive(false);
     }
     private void OnFurnitureCreated(Furniture furn) {
-        //FIXME: DOES NOT consider multi tiles objects
-
+        
         // Create a visual gameobject 
         GameObject furnGo = new GameObject();
 
@@ -97,12 +96,16 @@ public class FurnitureSpriteController : MonoBehaviour
         furnGo.transform.position = new Vector2(furn.Tile.x, furn.Tile.y);
         furnGo.transform.SetParent(this.transform, true);
 
-        furnGo.AddComponent<SpriteRenderer>().sprite = 
-            GetSpriteForFurniture(furn);
-
         BoxCollider2D furnGoCollider = furnGo.AddComponent<BoxCollider2D>();
 
         furnGoCollider.size = new Vector2 (furn.Width, furn.Height);
+
+        furnGoCollider.offset = new Vector2(0.5f, 0.5f);
+        
+        furnGo.AddComponent<SpriteRenderer>().sprite = 
+            GetSpriteForFurniture(furn);
+
+        
 
          // This layer is designed to be furniture layer and A* sees this as blockadge
         if(furn.MovementCost == 0) {
@@ -123,11 +126,13 @@ public class FurnitureSpriteController : MonoBehaviour
         furn.RegisterOnRemovedCallback(OnFurnitureRemoved);
     }
 
-    public Sprite GetSpriteForFurniture(Furniture furn) {
+    public Sprite GetSpriteForFurniture(Furniture furn)
+    {
         if(furn.LinksToNeighboor == false) {
             return furnitureSprites[furn.ObjectType];
         }
-        else {
+        else
+        {
             // it changes with neighboors so check that.
             string objectNameConvention = furn.ObjectType + "_";
 
@@ -136,34 +141,143 @@ public class FurnitureSpriteController : MonoBehaviour
             int x = furn.Tile.x;
             int y = furn.Tile.y;
 
-            t = World.GetTileAt(x, y + 1);
-            if(t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
-                objectNameConvention += "N";
+            //TODO: When tech is added, this will need to be changed to check for tech.
+            if (furn.ObjectType == "Wall")
+            {
+                Tile north = null;
+                Tile south = null;
+                Tile east = null;
+                Tile west = null;
+
+                if (World.GetTileAt(x + 1, y) != null)
+                {
+                    east = World.GetTileAt(x + 1, y);
+                }
+
+                if (World.GetTileAt(x - 1, y) != null)
+                {
+                    west = World.GetTileAt(x - 1, y);
+                }
+
+                if (World.GetTileAt(x, y + 1) != null)
+                {
+                    north = World.GetTileAt(x, y + 1);
+                }
+
+                if (World.GetTileAt(x, y - 1) != null)
+                {
+                    south = World.GetTileAt(x, y - 1);
+                }
+
+                
+                if(north != null && north.Furniture != null && north.Furniture.ObjectType == furn.ObjectType) {
+                    
+                    objectNameConvention += "N";
+                    
+                    if (south != null && south.Furniture != null && south.Furniture.ObjectType == furn.ObjectType)
+                    {
+                        objectNameConvention += "S";
+                        
+                    }
+                    
+                    if (east != null && east.Furniture != null && east.Furniture.ObjectType == furn.ObjectType)
+                    {
+                        objectNameConvention += "E";
+                    }
+                    else if (west != null && west.Furniture != null && west.Furniture.ObjectType == furn.ObjectType)
+                    {
+                        objectNameConvention += "W";
+                    }
+                    
+                    if (east != null && east.Type == Tile.TileType.Floor)
+                    {
+                        objectNameConvention += "_E";
+                    }
+                    else if (west != null && west.Type == Tile.TileType.Floor)
+                    {
+                        objectNameConvention += "_W";
+                    }
+                    
+                    
+                    if (furnitureSprites.ContainsKey(objectNameConvention) == false)
+                    {
+                        Debug.Log("No sprite with name " + objectNameConvention);
+                        return null;
+                    }
+
+                    return furnitureSprites[objectNameConvention];
+                }
+                /*
+                if (south != null && south.Furniture != null && south.Furniture.ObjectType == furn.ObjectType) {
+                    
+                }
+                */
+                
+                if (east != null && east.Furniture != null && east.Furniture.ObjectType == furn.ObjectType) {
+                    if (west != null && west.Furniture != null && west.Furniture.ObjectType == furn.ObjectType) {
+                        
+                        objectNameConvention += "EW";
+                        
+                        if (south != null && south.Type == Tile.TileType.Floor)
+                        {
+                            objectNameConvention += "_S";
+                        }
+                        else
+                        {
+                            objectNameConvention += "_N";
+                        }
+                    
+                    }
+                    else
+                    {
+                        objectNameConvention += "E";
+
+                        if (south != null && south.Type == Tile.TileType.Floor)
+                        {
+                            objectNameConvention += "_S";
+                        }
+                        else
+                        {
+                            if (east != null && east.Type == Tile.TileType.Floor)
+                            {
+                                objectNameConvention += "_E";
+                            }
+                            else if (west != null && west.Type == Tile.TileType.Floor)
+                            {
+                                objectNameConvention += "_W";
+                            }
+                        }
+                    }
+                }
+                else if (west != null && west.Furniture != null && west.Furniture.ObjectType == furn.ObjectType)
+                {
+
+                    objectNameConvention += "W";
+
+                    if (south != null && south.Type == Tile.TileType.Floor)
+                    {
+                        objectNameConvention += "_S";
+                    }else if (west != null && west.Type == Tile.TileType.Floor)
+                    {
+                        objectNameConvention += "_W";
+                    }
+                }
+                
+                
+                
+
             }
 
-            t = World.GetTileAt(x, y - 1);
-            if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
-                objectNameConvention += "S";
-            }
-
-            t = World.GetTileAt(x + 1, y); 
-            if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
-                objectNameConvention += "E";
-            }
-
-            t = World.GetTileAt(x - 1, y);
-            if (t != null && t.Furniture != null && t.Furniture.ObjectType == furn.ObjectType) {
-                objectNameConvention += "W";
-            }
-
-            // if it has all neighboors result script would look like Walls_NSEW
-            if(furnitureSprites.ContainsKey(objectNameConvention) == false) {
-                Debug.LogError("No sprite with name " + objectNameConvention);
+            if (furnitureSprites.ContainsKey(objectNameConvention) == false)
+            {
+                Debug.Log("No sprite with name " + objectNameConvention);
                 return null;
             }
+
             return furnitureSprites[objectNameConvention];
         }
-
+        
+        
     }
 
     public Sprite GetSpriteForFurniture(string objectType) {

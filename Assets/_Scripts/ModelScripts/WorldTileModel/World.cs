@@ -7,8 +7,7 @@ public class World
 {
 
     Tile[,] Tiles;
-    List<Character> Characters;
-    public List<WorkerAI> Workers { get; protected set; }
+    public List<Character> Characters{ get; set; }
 
     public List<Room> Rooms;
 
@@ -55,7 +54,6 @@ public class World
 
         // Creates characters for us. 
         Characters = new List<Character>();
-        Workers = new List<WorkerAI>();
 
         
     }

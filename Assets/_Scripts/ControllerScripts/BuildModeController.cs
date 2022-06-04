@@ -41,6 +41,7 @@ public class BuildModeController : MonoBehaviour
     }
 
     public void DoBuild(Tile t) {
+        
 
         if (_buildModeIsFurniture) {
             // Create the installed objects on the tile given. And assign.

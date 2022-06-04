@@ -46,12 +46,12 @@ public class WorldController : MonoBehaviour
 
         Vector2 characterSpawnPosition = position;
         
-        while (World.Workers.Count < GameManager.Instance.NumOfWorkersConstruction)
+        while (World.Characters.Count < GameManager.Instance.NumOfWorkersConstruction)
         {
             //Instantiate worker at character spawn position
             GameObject worker = Instantiate(workerPrefab, characterSpawnPosition, Quaternion.identity);
             worker.tag = "Worker";
-            World.Workers.Add(worker.GetComponent<WorkerAI>());
+            World.Characters.Add(worker.GetComponent<Character>());
         }
         
         

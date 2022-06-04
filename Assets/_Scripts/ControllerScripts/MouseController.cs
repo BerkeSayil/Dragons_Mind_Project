@@ -98,6 +98,7 @@ public class MouseController : MonoBehaviour
                 for (var y = startY; y <= endY; y++)
                 {
                     Tile t = WorldController.Instance.World.GetTileAt(x, y);
+                    
                     if (t == null) continue;
                     
                     // Display the building hint on top of tile.
