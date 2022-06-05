@@ -704,7 +704,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_EW_S_W
+      name: Wall_S_E
       rect:
         serializedVersion: 2
         x: 256
@@ -725,7 +725,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wall_EW_S_E
+      name: Wall_S_W
       rect:
         serializedVersion: 2
         x: 192
@@ -746,7 +746,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_borders_32x32_35
+      name: Wall_Roof
       rect:
         serializedVersion: 2
         x: 320
@@ -1379,7 +1379,7 @@ TextureImporter:
       name: Room_Builder_borders_32x32_65
       rect:
         serializedVersion: 2
-        x: 32
+        x: 33
         y: 224
         width: 32
         height: 32
@@ -5097,7 +5097,6 @@ TextureImporter:
       Wall_N_W: -952706403
       Room_Builder_borders_32x32_17: 700798000
       Room_Builder_borders_32x32_125: -1206662113
-      Wall_EW_S_E: 462599827
       Room_Builder_borders_32x32_25: 1235947686
       Wall_EW_N: 541941013
       Room_Builder_borders_32x32_192: -1240859978
@@ -5118,6 +5117,7 @@ TextureImporter:
       Room_Builder_borders_32x32_67: 609216049
       Room_Builder_borders_32x32_161: 1380583347
       Room_Builder_borders_32x32_110: -534104802
+      Wall_S_E: 27569795
       Room_Builder_borders_32x32_99: 210651839
       Room_Builder_borders_32x32_48: -364195958
       Room_Builder_borders_32x32_150: -1833386253
@@ -5168,7 +5168,6 @@ TextureImporter:
       Room_Builder_borders_32x32_66: 602462694
       Room_Builder_borders_32x32_191: 1988425514
       Room_Builder_borders_32x32_16: -2074085844
-      Wall_EW_S_W: 27569795
       Room_Builder_borders_32x32_212: 1038502028
       Room_Builder_borders_32x32_179: -1228269068
       Wall_NSE_E: -1750304778
@@ -5202,7 +5201,6 @@ TextureImporter:
       Room_Builder_borders_32x32_143: 169969121
       Room_Builder_borders_32x32_208: -210841115
       Room_Builder_borders_32x32_215: -850803175
-      Room_Builder_borders_32x32_35: 732079760
       Room_Builder_borders_32x32_181: -921146516
       Room_Builder_borders_32x32_151: 788054229
       Room_Builder_borders_32x32_122: -409631238
@@ -5224,12 +5222,14 @@ TextureImporter:
       Room_Builder_borders_32x32_47: -1421353920
       Room_Builder_borders_32x32_82: -2016009180
       Room_Builder_borders_32x32_232: 1719468656
+      Wall_Roof: 732079760
       Room_Builder_borders_32x32_22: -377142319
       Room_Builder_borders_32x32_189: -174291720
       Room_Builder_borders_32x32_133: 1962097979
       Room_Builder_borders_32x32_28: 1164220187
       Room_Builder_borders_32x32_220: -490376107
       Room_Builder_borders_32x32_73: -1795620790
+      Wall_S_W: 462599827
       Room_Builder_borders_32x32_165: 1754671488
       Room_Builder_borders_32x32_3: -1311109798
       Room_Builder_borders_32x32_221: -1883199389

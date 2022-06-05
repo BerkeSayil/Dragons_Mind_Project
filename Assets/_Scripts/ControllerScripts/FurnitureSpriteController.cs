@@ -69,6 +69,17 @@ public class FurnitureSpriteController : MonoBehaviour
 
     private void MakeWallResponsive(GameObject rootGo, Furniture rootFurn)
     {
+        Tile southRootTile = World.GetTileAt(rootFurn.Tile.x, rootFurn.Tile.y).South();
+
+        if (southRootTile == null || southRootTile.Furniture == null ||
+            southRootTile.Furniture.ObjectType != rootFurn.ObjectType)
+        {
+            return;
+        }
+        
+        
+
+
         SpriteRenderer rootRenderer = rootGo.GetComponent<SpriteRenderer>();
         if (rootRenderer.sprite.name == "Wall_E_S" )
         {
@@ -81,7 +92,7 @@ public class FurnitureSpriteController : MonoBehaviour
             furnGoChild2.transform.position = new Vector2(rootFurn.Tile.x, rootFurn.Tile.y);
             furnGoChild2.transform.SetParent(rootGo.transform, true);
             
-            Sprite cornerSprite = furnitureSprites["Wall_EW_S_W"];
+            Sprite cornerSprite = furnitureSprites["Wall_S_E"];
 
             furnGoChild1.AddComponent<SpriteRenderer>().sprite = cornerSprite;
             furnGoChild1.GetComponent<SpriteRenderer>().sortingLayerName = "Furniture";
@@ -105,7 +116,7 @@ public class FurnitureSpriteController : MonoBehaviour
             furnGoChild2.transform.position = new Vector2(rootFurn.Tile.x, rootFurn.Tile.y);
             furnGoChild2.transform.SetParent(rootGo.transform, true);
             
-            Sprite cornerSprite = furnitureSprites["Wall_EW_S_E"];
+            Sprite cornerSprite = furnitureSprites["Wall_S_W"];
 
             furnGoChild1.AddComponent<SpriteRenderer>().sprite = cornerSprite;
             furnGoChild1.GetComponent<SpriteRenderer>().sortingLayerName = "Furniture";
@@ -214,7 +225,6 @@ public class FurnitureSpriteController : MonoBehaviour
             string objectNameConvention = furn.ObjectType + "_";
 
             // Check N S E W neighboors
-            Tile t;
             int x = furn.Tile.x;
             int y = furn.Tile.y;
 
@@ -246,55 +256,9 @@ public class FurnitureSpriteController : MonoBehaviour
                     south = World.GetTileAt(x, y - 1);
                 }
 
-                //Vertical Walls
-                if(north != null && north.Furniture != null && north.Furniture.ObjectType == furn.ObjectType) {
-                    
-                    objectNameConvention += "N";
-                    
-                    //Wall_N
-                    if (south != null && south.Furniture != null && south.Furniture.ObjectType == furn.ObjectType)
-                    {
-                        objectNameConvention += "S";
-                        //Wall_NS
-                        
-                    }
-                    
-                    if (east != null && east.Furniture != null && east.Furniture.ObjectType == furn.ObjectType)
-                    {
-                        objectNameConvention += "E";
-                        //Wall_NSE , Wall_NE
-                    }
-                    else if (west != null && west.Furniture != null && west.Furniture.ObjectType == furn.ObjectType)
-                    {
-                        objectNameConvention += "W";
-                        //Wall_NSW , Wall_NW
-                    }
-                    
-                    if (east != null && east.Type == Tile.TileType.Floor)
-                    {
-                        objectNameConvention += "_E";
-                        //Wall_NSE_E , Wall_NE_E
-                        //Wall_NSW_E , Wall_NW_E
-                    }
-                    else if (west != null && west.Type == Tile.TileType.Floor)
-                    {
-                        objectNameConvention += "_W";
-                        //Wall_NSE_W , Wall_NE_W
-                        //Wall_NSW_W , Wall_NW_W
-                    }
-                    
-                    
-                    if (furnitureSprites.ContainsKey(objectNameConvention) == false)
-                    {
-                        Debug.Log("No sprite with name " + objectNameConvention);
-                        return null;
-                    }
-        
-                    return furnitureSprites[objectNameConvention];
-                }
                 
                 // Horizontal Walls
-                else if (east != null && east.Furniture != null && east.Furniture.ObjectType == furn.ObjectType) {
+                if (east != null && east.Furniture != null && east.Furniture.ObjectType == furn.ObjectType) {
                     if (west != null && west.Furniture != null && west.Furniture.ObjectType == furn.ObjectType) {
                         
                         objectNameConvention += "EW";
@@ -323,20 +287,21 @@ public class FurnitureSpriteController : MonoBehaviour
                         }
                         else
                         {
-                            if (east != null && east.Type == Tile.TileType.Floor)
-                            {
-                                objectNameConvention += "_E";
-                                //Wall_E_E
-                            }
-                            else if (west != null && west.Type == Tile.TileType.Floor)
-                            {
-                                objectNameConvention += "_W";
-                                //Wall_E_W
-                            }
+                            objectNameConvention += "_E";
+                            //Wall_E_E
+                            
+                            
                         }
                     }
-                }
-                else if (west != null && west.Furniture != null && west.Furniture.ObjectType == furn.ObjectType)
+                    
+                    if (furnitureSprites.ContainsKey(objectNameConvention) == false)
+                    {
+                        Debug.Log("No sprite with name " + objectNameConvention);
+                        return null;
+                    }
+        
+                    return furnitureSprites[objectNameConvention];
+                }  else if (west != null && west.Furniture != null && west.Furniture.ObjectType == furn.ObjectType)
                 {
 
                     objectNameConvention += "W";
@@ -346,16 +311,69 @@ public class FurnitureSpriteController : MonoBehaviour
                     {
                         objectNameConvention += "_S";
                         //Wall_W_S
-                    }else if (west != null && west.Type == Tile.TileType.Floor)
+                    }else
                     {
                         objectNameConvention += "_W";
                         //Wall_W_W
                     }
+                    if (furnitureSprites.ContainsKey(objectNameConvention) == false)
+                    {
+                        Debug.Log("No sprite with name " + objectNameConvention);
+                        return null;
+                    }
+        
+                    return furnitureSprites[objectNameConvention];
+                }               
+                
+                else //Vertical Walls 
+                if(north != null && north.Furniture != null && north.Furniture.ObjectType == furn.ObjectType) {
+                    
+                    objectNameConvention += "N";
+                    
+                    //Wall_N
+                    if (south != null && south.Furniture != null && south.Furniture.ObjectType == furn.ObjectType)
+                    {
+                        objectNameConvention += "S";
+                        //Wall_NS
+                        
+                    }
+                    
+                    else if (east != null && east.Furniture != null && east.Furniture.ObjectType == furn.ObjectType)
+                    {
+                        objectNameConvention += "E";
+                        //Wall_NE
+                    }
+                    else if (west != null && west.Furniture != null && west.Furniture.ObjectType == furn.ObjectType)
+                    {
+                        objectNameConvention += "W";
+                        //Wall_NW
+                    }
+                    
+                    if (east != null && east.Type == Tile.TileType.Floor)
+                    {
+                        objectNameConvention += "_E";
+                        //Wall_N_E
+                        //Wall_NS_E , Wall_NE_E 
+                        //Wall_NW_E
+                    }
+                    else
+                    {
+                        objectNameConvention += "_W";
+                        //Wall_N_W
+                        //Wall_NS_W , Wall_NE_W 
+                        //Wall_NW_W
+                    }
+                    
+                    
+                    if (furnitureSprites.ContainsKey(objectNameConvention) == false)
+                    {
+                        Debug.Log("No sprite with name " + objectNameConvention);
+                        return null;
+                    }
+        
+                    return furnitureSprites[objectNameConvention];
                 }
                 
-                
-                
-
             }
 
             if (furnitureSprites.ContainsKey(objectNameConvention) == false)
