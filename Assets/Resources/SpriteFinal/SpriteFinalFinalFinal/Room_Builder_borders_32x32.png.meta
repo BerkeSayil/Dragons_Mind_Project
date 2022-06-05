@@ -179,27 +179,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_borders_32x32_3
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 288
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8dc9a5ce3ebc74e46a3f4980ff14a164
-      internalID: -1311109798
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Wall_
       rect:
         serializedVersion: 2
@@ -720,69 +699,6 @@ TextureImporter:
       bones: []
       spriteID: d2d07996dbd978741ad4c1c4a119a74b
       internalID: 1164220187
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_borders_32x32_29
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 256
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 96709a1a4b28a8e48b16d77194c7b50f
-      internalID: 33746456
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_borders_32x32_30
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 256
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 28e30609bb209de45a8a5290cebb2981
-      internalID: -59871996
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_borders_32x32_31
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 256
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ac0410972416f944691ced0abb42d8dc
-      internalID: -1616303835
       vertices: []
       indices: 
       edges: []
@@ -1548,7 +1464,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 238
-        y: 224
+        y: 236
         width: 32
         height: 32
       alignment: 6
@@ -1569,7 +1485,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 210
-        y: 224
+        y: 236
         width: 32
         height: 32
       alignment: 6
@@ -2279,15 +2195,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_borders_32x32_104
+      name: Wall_NSE_E
       rect:
         serializedVersion: 2
         x: 288
         y: 192
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2321,15 +2237,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_borders_32x32_106
+      name: Wall_NSW_W
       rect:
         serializedVersion: 2
         x: 352
         y: 192
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5054,8 +4970,8 @@ TextureImporter:
       name: Wall_E_E
       rect:
         serializedVersion: 2
-        x: 210
-        y: 192
+        x: 160
+        y: 276
         width: 32
         height: 32
       alignment: 6
@@ -5075,8 +4991,8 @@ TextureImporter:
       name: Wall_W_W
       rect:
         serializedVersion: 2
-        x: 238
-        y: 192
+        x: 128
+        y: 276
         width: 32
         height: 32
       alignment: 6
@@ -5124,6 +5040,7 @@ TextureImporter:
       Room_Builder_borders_32x32_39: 713976836
       Room_Builder_borders_32x32_68: -1645675568
       Room_Builder_borders_32x32_213: 415915937
+      Wall_NSW_W: -814287804
       Room_Builder_borders_32x32_108: 1767781285
       Room_Builder_borders_32x32_111: 51695761
       Room_Builder_borders_32x32_24: 424837046
@@ -5148,7 +5065,6 @@ TextureImporter:
       Room_Builder_borders_32x32_65: 1632218571
       Room_Builder_borders_32x32_188: 651065321
       Room_Builder_borders_32x32_55: 685082758
-      Room_Builder_borders_32x32_106: -814287804
       Room_Builder_borders_32x32_187: 1287343165
       Room_Builder_borders_32x32_138: -37400951
       Room_Builder_borders_32x32_160: -500869626
@@ -5255,6 +5171,7 @@ TextureImporter:
       Wall_EW_S_W: 27569795
       Room_Builder_borders_32x32_212: 1038502028
       Room_Builder_borders_32x32_179: -1228269068
+      Wall_NSE_E: -1750304778
       Room_Builder_borders_32x32_52: 160743823
       Room_Builder_borders_32x32_156: -1709636814
       Room_Builder_borders_32x32_76: 1638048520
@@ -5337,7 +5254,6 @@ TextureImporter:
       Room_Builder_borders_32x32_167: -55800581
       Room_Builder_borders_32x32_126: -1421893158
       Room_Builder_borders_32x32_92: -153087869
-      Room_Builder_borders_32x32_104: -1750304778
       Room_Builder_borders_32x32_223: 1930018733
       Room_Builder_borders_32x32_177: -1474998821
       Room_Builder_borders_32x32_100: -389812034

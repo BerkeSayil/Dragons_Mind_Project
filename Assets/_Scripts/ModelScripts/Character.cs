@@ -82,6 +82,7 @@ public class Character : MonoBehaviour
                 SetDestination(MyJob.Tile);
             }
 
+            
             Work(_timeDeltaTime);
     
         }
