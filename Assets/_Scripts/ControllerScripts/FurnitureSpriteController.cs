@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -69,23 +70,57 @@ public class FurnitureSpriteController : MonoBehaviour
 
     private void MakeWallResponsive(GameObject rootGo, Furniture rootFurn)
     {
+        SpriteRenderer rootRenderer = rootGo.GetComponent<SpriteRenderer>();
+
         Tile southRootTile = World.GetTileAt(rootFurn.Tile.x, rootFurn.Tile.y).South();
+        Tile northRootTile = World.GetTileAt(rootFurn.Tile.x, rootFurn.Tile.y).North();
 
         if (southRootTile == null || southRootTile.Furniture == null ||
             southRootTile.Furniture.ObjectType != rootFurn.ObjectType)
         {
             return;
         }
-        
+
+        if (northRootTile is {Furniture: { }} && northRootTile.Furniture.ObjectType == rootFurn.ObjectType )
+        {
+            try
+            {
+                if (furnitureGameObjectMap[northRootTile.Furniture].GetComponent<SpriteRenderer>() == null) return;
+            
+                SpriteRenderer spriteRenderer =
+                    furnitureGameObjectMap[northRootTile.Furniture].GetComponent<SpriteRenderer>();
+            
+                if (spriteRenderer.sprite.name == "Wall_E_S" || spriteRenderer.sprite.name == "Wall_W_S" ||
+                    spriteRenderer.sprite.name == "Wall_EW_S")
+                {
+                    spriteRenderer.sprite = furnitureSprites["Wall_Roof"];
+
+                    rootRenderer.sprite = furnitureSprites["Wall_Front"];
+                
+                    // destroy child gameobjects if they exist
+                    if (rootGo.transform.childCount > 0)
+                    {
+                        Destroy(rootGo.transform.GetChild(0).gameObject);
+                        Destroy(rootGo.transform.GetChild(1).gameObject);
+                    }
+                }
+            }
+            catch{
+                Debug.Log("MakeWallResponsive ~ sprite renderer funky.");
+            }
+
+            
+
+        }
         
 
-
-        SpriteRenderer rootRenderer = rootGo.GetComponent<SpriteRenderer>();
         if (rootRenderer.sprite.name == "Wall_E_S" )
         {
            
             GameObject furnGoChild1 = new GameObject();
             GameObject furnGoChild2 = new GameObject();
+            
+
             furnGoChild1.transform.position = new Vector2(rootFurn.Tile.x, rootFurn.Tile.y + 1);
             furnGoChild1.transform.SetParent(rootGo.transform, true);
 
@@ -110,6 +145,8 @@ public class FurnitureSpriteController : MonoBehaviour
            
             GameObject furnGoChild1 = new GameObject();
             GameObject furnGoChild2 = new GameObject();
+            
+            
             furnGoChild1.transform.position = new Vector2(rootFurn.Tile.x, rootFurn.Tile.y + 1);
             furnGoChild1.transform.SetParent(rootGo.transform, true);
 

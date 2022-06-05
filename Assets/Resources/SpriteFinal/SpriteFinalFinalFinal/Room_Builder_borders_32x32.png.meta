@@ -753,8 +753,8 @@ TextureImporter:
         y: 256
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5124,10 +5124,9 @@ TextureImporter:
       Room_Builder_borders_32x32_155: -553206158
       Room_Builder_borders_32x32_78: -1536964508
       Room_Builder_borders_32x32_105: -2135211011
-      Room_Builder_borders_32x32_210: 341667662
-      Room_Builder_borders_32x32_228: -225408264
-      Room_Builder_borders_32x32_75: -1287057846
       Room_Builder_borders_32x32_57: -1040099623
+      Room_Builder_borders_32x32_75: -1287057846
+      Room_Builder_borders_32x32_210: 341667662
       Room_Builder_borders_32x32_168: -1355882953
       Room_Builder_borders_32x32_109: 490984849
       Room_Builder_borders_32x32_182: -1557069045
@@ -5139,6 +5138,7 @@ TextureImporter:
       Wall_: -1834753240
       Room_Builder_borders_32x32_21: 285161533
       Room_Builder_borders_32x32_222: 1540235647
+      Room_Builder_borders_32x32_228: -225408264
       Room_Builder_borders_32x32_53: -1340091707
       Room_Builder_borders_32x32_132: 1340029110
       Room_Builder_borders_32x32_95: -958539001
