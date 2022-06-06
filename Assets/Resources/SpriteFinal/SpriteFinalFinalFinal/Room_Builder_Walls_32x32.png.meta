@@ -1670,90 +1670,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_74
-      rect:
-        serializedVersion: 2
-        x: 704
-        y: 1184
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8bcd76335859bfa47840ea5a0071fbfc
-      internalID: -1345242842
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_75
-      rect:
-        serializedVersion: 2
-        x: 736
-        y: 1184
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8e79560891477764dacea38817175f76
-      internalID: -641669247
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_76
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 1184
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d2294e4dce0826a4db2e28673e3e2930
-      internalID: -937633585
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_77
-      rect:
-        serializedVersion: 2
-        x: 800
-        y: 1184
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a014aa2b864151b4aa248806f1fb6a2a
-      internalID: -2120859465
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Room_Builder_Walls_32x32_78
       rect:
         serializedVersion: 2
@@ -1812,69 +1728,6 @@ TextureImporter:
       bones: []
       spriteID: 09ee2e7cd416eaa4e86361436cc9fe5a
       internalID: 1039080013
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_81
-      rect:
-        serializedVersion: 2
-        x: 928
-        y: 1184
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a3e29f3004599bd4185e490cc3b5d26a
-      internalID: -132807245
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_82
-      rect:
-        serializedVersion: 2
-        x: 960
-        y: 1184
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 35ae8620d9003e146888e73197d62b51
-      internalID: 1330051117
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_83
-      rect:
-        serializedVersion: 2
-        x: 992
-        y: 1184
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e9b875a2de6372d4dbf3251324d4e1e0
-      internalID: 783235048
       vertices: []
       indices: 
       edges: []
@@ -2216,15 +2069,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_100
+      name: Wall_3_E_S
       rect:
         serializedVersion: 2
         x: 704
         y: 1152
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2237,15 +2090,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_101
+      name: Wall_3_EW_S
       rect:
         serializedVersion: 2
         x: 736
         y: 1152
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2258,15 +2111,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_102
+      name: Wall_3_W_S
       rect:
         serializedVersion: 2
         x: 768
         y: 1152
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2279,15 +2132,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_103
+      name: Wall_3_Front
       rect:
         serializedVersion: 2
         x: 800
         y: 1152
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2321,15 +2174,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_105
+      name: Wall_3_E_S_N
       rect:
         serializedVersion: 2
         x: 928
         y: 1152
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2342,15 +2195,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_106
+      name: Wall_3_E_EW_N
       rect:
         serializedVersion: 2
         x: 960
         y: 1152
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2363,15 +2216,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_107
+      name: Wall_3_E_W_N
       rect:
         serializedVersion: 2
         x: 992
         y: 1152
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -7340,90 +7193,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_344
-      rect:
-        serializedVersion: 2
-        x: 704
-        y: 864
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0ec325992bf7b654e813f0f3cf67b63a
-      internalID: -61119192
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_345
-      rect:
-        serializedVersion: 2
-        x: 736
-        y: 864
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 231563799e289204f810b0c0b2fb3fbc
-      internalID: -450309309
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_346
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 864
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b80a332a68501d949bdc3837168487ab
-      internalID: 1114443709
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_347
-      rect:
-        serializedVersion: 2
-        x: 800
-        y: 864
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6d14ac91d955425418844319e2fe5090
-      internalID: 836942080
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Room_Builder_Walls_32x32_348
       rect:
         serializedVersion: 2
@@ -7482,69 +7251,6 @@ TextureImporter:
       bones: []
       spriteID: 469c4f9f45f7a194ea959355f3d5a5c2
       internalID: -606217943
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_351
-      rect:
-        serializedVersion: 2
-        x: 928
-        y: 864
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 513c48879014f9d4095167e2374b890c
-      internalID: -1623683461
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_352
-      rect:
-        serializedVersion: 2
-        x: 960
-        y: 864
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2a7a3074d764e47469f049fdae635341
-      internalID: 843989315
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_353
-      rect:
-        serializedVersion: 2
-        x: 992
-        y: 864
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b8ff4f52738e95b458a52834ce01e0fc
-      internalID: -301830315
       vertices: []
       indices: 
       edges: []
@@ -7886,15 +7592,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_370
+      name: Wall_2_E_S
       rect:
         serializedVersion: 2
         x: 704
         y: 832
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -7907,15 +7613,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_371
+      name: Wall_2_EW_S
       rect:
         serializedVersion: 2
         x: 736
         y: 832
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -7928,15 +7634,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_372
+      name: Wall_2_W_S
       rect:
         serializedVersion: 2
         x: 768
         y: 832
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -7949,15 +7655,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_373
+      name: Wall_2_Front
       rect:
         serializedVersion: 2
         x: 800
         y: 832
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -7991,15 +7697,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_375
+      name: Wall_2_E_S_N
       rect:
         serializedVersion: 2
         x: 928
         y: 832
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -8012,15 +7718,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_376
+      name: Wall_2_E_EW_N
       rect:
         serializedVersion: 2
         x: 960
         y: 832
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -8033,15 +7739,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Walls_32x32_377
+      name: Wall_2_E_W_N
       rect:
         serializedVersion: 2
         x: 992
         y: 832
         width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 64
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -20428,6 +20134,7 @@ TextureImporter:
       Room_Builder_Walls_32x32_111: 246729023
       Room_Builder_Walls_32x32_818: 358724093
       Room_Builder_Walls_32x32_411: 783396644
+      Wall_3_W_S: -1533479952
       Room_Builder_Walls_32x32_932: 1782101640
       Room_Builder_Walls_32x32_88: -1524448783
       Room_Builder_Walls_32x32_946: 609407372
@@ -20451,6 +20158,7 @@ TextureImporter:
       Room_Builder_Walls_32x32_659: -1392644309
       Room_Builder_Walls_32x32_143: 84193744
       Room_Builder_Walls_32x32_385: -619800358
+      Wall_2_EW_S: -1431881977
       Room_Builder_Walls_32x32_779: -222417153
       Room_Builder_Walls_32x32_810: -395853981
       Room_Builder_Walls_32x32_643: 1474188662
@@ -20471,6 +20179,7 @@ TextureImporter:
       Room_Builder_Walls_32x32_135: 1297510615
       Room_Builder_Walls_32x32_647: -607898741
       Room_Builder_Walls_32x32_164: 553097294
+      Wall_2_E_S_N: -613865192
       Room_Builder_Walls_32x32_461: -1734242305
       Room_Builder_Walls_32x32_688: -1830038841
       Room_Builder_Walls_32x32_788: -181117160
@@ -20485,6 +20194,7 @@ TextureImporter:
       Room_Builder_Walls_32x32_869: -822982990
       Room_Builder_Walls_32x32_870: 1943370275
       Room_Builder_Walls_32x32_488: 469664093
+      Wall_2_W_S: 294607108
       Room_Builder_Walls_32x32_407: 547754436
       Room_Builder_Walls_32x32_495: 850240085
       Room_Builder_Walls_32x32_875: -388082412
@@ -20528,7 +20238,6 @@ TextureImporter:
       Room_Builder_Walls_32x32_664: 268406858
       Room_Builder_Walls_32x32_487: -1892618023
       Room_Builder_Walls_32x32_623: 2069229246
-      Room_Builder_Walls_32x32_105: -997468811
       Room_Builder_Walls_32x32_283: -183608617
       Room_Builder_Walls_32x32_6: -517739973
       Room_Builder_Walls_32x32_681: -251479767
@@ -20554,8 +20263,8 @@ TextureImporter:
       Room_Builder_Walls_32x32_609: -1500942929
       Room_Builder_Walls_32x32_220: -52034348
       Room_Builder_Walls_32x32_131: -148524337
-      Room_Builder_Walls_32x32_582: -1343803812
       Room_Builder_Walls_32x32_206: -1182218335
+      Room_Builder_Walls_32x32_582: -1343803812
       Room_Builder_Walls_32x32_47: -1484161534
       Room_Builder_Walls_32x32_194: -1638050073
       Room_Builder_Walls_32x32_260: 789651624
@@ -20567,6 +20276,7 @@ TextureImporter:
       Room_Builder_Walls_32x32_236: -1960233052
       Room_Builder_Walls_32x32_824: 200790417
       Room_Builder_Walls_32x32_418: -1883322255
+      Wall_3_EW_S: -170853553
       Room_Builder_Walls_32x32_509: 687303271
       Room_Builder_Walls_32x32_893: -1045320021
       Room_Builder_Walls_32x32_112: -1801242044
@@ -20581,6 +20291,7 @@ TextureImporter:
       Room_Builder_Walls_32x32_650: -328109676
       Room_Builder_Walls_32x32_387: 1573948073
       Room_Builder_Walls_32x32_862: 334473356
+      Wall_3_E_EW_N: 166192795
       Room_Builder_Walls_32x32_267: 682898827
       Room_Builder_Walls_32x32_466: -1145170551
       Room_Builder_Walls_32x32_479: 1420588664
@@ -20688,6 +20399,7 @@ TextureImporter:
       Room_Builder_Walls_32x32_612: 675450431
       Room_Builder_Walls_32x32_689: -1903321380
       Room_Builder_Walls_32x32_690: -152540091
+      Wall_3_E_S_N: -997468811
       Room_Builder_Walls_32x32_240: -823659640
       Wall_E_EW_N: -68560112
       Room_Builder_Walls_32x32_204: -147134416
@@ -20696,12 +20408,11 @@ TextureImporter:
       Room_Builder_Walls_32x32_767: 1856476724
       Room_Builder_Walls_32x32_363: -1193162284
       Room_Builder_Walls_32x32_423: -103803366
-      Room_Builder_Walls_32x32_850: 108469226
-      Room_Builder_Walls_32x32_771: 614825046
       Room_Builder_Walls_32x32_336: 1922324530
+      Room_Builder_Walls_32x32_771: 614825046
       Room_Builder_Walls_32x32_12: -1761995395
-      Room_Builder_Walls_32x32_100: 1857134556
       Room_Builder_Walls_32x32_600: -45101759
+      Room_Builder_Walls_32x32_850: 108469226
       Room_Builder_Walls_32x32_895: -225257383
       Room_Builder_Walls_32x32_296: -397991417
       Room_Builder_Walls_32x32_604: -1025206043
@@ -20738,7 +20449,6 @@ TextureImporter:
       Room_Builder_Walls_32x32_250: 1851339787
       Room_Builder_Walls_32x32_109: 1221320885
       Room_Builder_Walls_32x32_559: 776927830
-      Room_Builder_Walls_32x32_106: 166192795
       Room_Builder_Walls_32x32_694: -1704518898
       Room_Builder_Walls_32x32_777: -959319239
       Room_Builder_Walls_32x32_935: 1455617177
@@ -20756,7 +20466,6 @@ TextureImporter:
       Room_Builder_Walls_32x32_186: 508502915
       Room_Builder_Walls_32x32_580: 1351147150
       Room_Builder_Walls_32x32_117: -1181546078
-      Room_Builder_Walls_32x32_103: 2020293121
       Room_Builder_Walls_32x32_108: 906431914
       Wall_W_S: 700710443
       Room_Builder_Walls_32x32_658: -264770173
@@ -20867,6 +20576,7 @@ TextureImporter:
       Room_Builder_Walls_32x32_456: -2133726190
       Room_Builder_Walls_32x32_268: 250419307
       Room_Builder_Walls_32x32_127: -323135407
+      Wall_3_E_S: 1857134556
       Room_Builder_Walls_32x32_43: -1755102701
       Room_Builder_Walls_32x32_259: 1984044385
       Room_Builder_Walls_32x32_162: -161702335
@@ -20917,9 +20627,9 @@ TextureImporter:
       Room_Builder_Walls_32x32_865: -619604225
       Room_Builder_Walls_32x32_258: -1738842732
       Room_Builder_Walls_32x32_970: 1899476683
-      Room_Builder_Walls_32x32_126: 1779380084
       Room_Builder_Walls_32x32_587: 216852713
       Room_Builder_Walls_32x32_925: 2049863711
+      Room_Builder_Walls_32x32_126: 1779380084
       Room_Builder_Walls_32x32_7: -1374804739
       Room_Builder_Walls_32x32_911: -361623609
       Room_Builder_Walls_32x32_361: -361490770
@@ -20953,7 +20663,6 @@ TextureImporter:
       Room_Builder_Walls_32x32_740: 1997888160
       Room_Builder_Walls_32x32_147: 1448249855
       Room_Builder_Walls_32x32_926: -873982213
-      Room_Builder_Walls_32x32_377: -241556544
       Room_Builder_Walls_32x32_78: 131299568
       Room_Builder_Walls_32x32_384: 699992270
       Room_Builder_Walls_32x32_863: 1828582669
@@ -20964,6 +20673,8 @@ TextureImporter:
       Room_Builder_Walls_32x32_93: 1666739286
       Wall_Front: 674350602
       Room_Builder_Walls_32x32_67: -1508683883
+      Wall_2_E_EW_N: -1017012493
+      Wall_2_Front: 1586480488
       Room_Builder_Walls_32x32_282: -1694735596
       Room_Builder_Walls_32x32_80: 1039080013
       Room_Builder_Walls_32x32_264: -295794307
@@ -20972,24 +20683,22 @@ TextureImporter:
       Room_Builder_Walls_32x32_576: -807159260
       Room_Builder_Walls_32x32_575: -1344370689
       Room_Builder_Walls_32x32_789: 635003553
+      Wall_3_E_W_N: -1393575393
       Room_Builder_Walls_32x32_74: -1345242842
       Room_Builder_Walls_32x32_439: -44788133
       Room_Builder_Walls_32x32_793: -434795227
       Room_Builder_Walls_32x32_394: 1365959761
       Room_Builder_Walls_32x32_468: 453541392
-      Room_Builder_Walls_32x32_372: 294607108
       Room_Builder_Walls_32x32_819: -1751095353
       Room_Builder_Walls_32x32_914: 919922725
-      Room_Builder_Walls_32x32_375: -613865192
+      Room_Builder_Walls_32x32_853: 2118173908
       Room_Builder_Walls_32x32_215: 134511294
       Room_Builder_Walls_32x32_426: -1439298661
       Room_Builder_Walls_32x32_469: -1947758255
-      Room_Builder_Walls_32x32_853: 2118173908
       Room_Builder_Walls_32x32_115: 528634855
-      Room_Builder_Walls_32x32_373: 1586480488
+      Room_Builder_Walls_32x32_538: -1368396057
       Room_Builder_Walls_32x32_763: -1214645892
       Room_Builder_Walls_32x32_221: -1712327399
-      Room_Builder_Walls_32x32_538: -1368396057
       Room_Builder_Walls_32x32_261: -850818351
       Room_Builder_Walls_32x32_890: -1955351784
       Room_Builder_Walls_32x32_618: -1048865784
@@ -20997,10 +20706,10 @@ TextureImporter:
       Room_Builder_Walls_32x32_35: 1738236068
       Room_Builder_Walls_32x32_210: 953827958
       Room_Builder_Walls_32x32_440: -1961769563
-      Room_Builder_Walls_32x32_370: 596165032
       Room_Builder_Walls_32x32_561: -741491017
       Room_Builder_Walls_32x32_380: 1507713546
       Room_Builder_Walls_32x32_474: 2082100922
+      Wall_3_Front: 2020293121
       Room_Builder_Walls_32x32_521: -639757882
       Room_Builder_Walls_32x32_951: 838412923
       Room_Builder_Walls_32x32_119: 381138607
@@ -21041,7 +20750,6 @@ TextureImporter:
       Room_Builder_Walls_32x32_438: 718422735
       Room_Builder_Walls_32x32_747: 1934624938
       Room_Builder_Walls_32x32_516: 1735166817
-      Room_Builder_Walls_32x32_376: -1017012493
       Room_Builder_Walls_32x32_536: 549477425
       Room_Builder_Walls_32x32_341: -1654041355
       Room_Builder_Walls_32x32_225: -1010546922
@@ -21058,6 +20766,7 @@ TextureImporter:
       Room_Builder_Walls_32x32_155: -1287195106
       Room_Builder_Walls_32x32_219: -1238891891
       Room_Builder_Walls_32x32_703: -1117809961
+      Wall_2_E_W_N: -241556544
       Room_Builder_Walls_32x32_422: -333312857
       Room_Builder_Walls_32x32_831: 636135121
       Room_Builder_Walls_32x32_591: 988670864
@@ -21071,9 +20780,8 @@ TextureImporter:
       Room_Builder_Walls_32x32_619: -371481366
       Room_Builder_Walls_32x32_166: -1039585838
       Room_Builder_Walls_32x32_692: -706961067
-      Room_Builder_Walls_32x32_101: -170853553
-      Room_Builder_Walls_32x32_687: 430045126
       Room_Builder_Walls_32x32_956: 1284472741
+      Room_Builder_Walls_32x32_687: 430045126
       Room_Builder_Walls_32x32_149: 1482932278
       Room_Builder_Walls_32x32_808: 1963897912
       Room_Builder_Walls_32x32_142: 2071387816
@@ -21128,7 +20836,6 @@ TextureImporter:
       Room_Builder_Walls_32x32_369: 1091884933
       Room_Builder_Walls_32x32_830: 1224533189
       Room_Builder_Walls_32x32_833: -291270280
-      Room_Builder_Walls_32x32_371: -1431881977
       Room_Builder_Walls_32x32_872: 2124947683
       Room_Builder_Walls_32x32_492: -2144541318
       Room_Builder_Walls_32x32_484: 1685100800
@@ -21226,13 +20933,13 @@ TextureImporter:
       Room_Builder_Walls_32x32_497: 73470126
       Room_Builder_Walls_32x32_470: -1083314915
       Room_Builder_Walls_32x32_674: -1853720026
-      Room_Builder_Walls_32x32_102: -1533479952
       Room_Builder_Walls_32x32_613: 345866434
       Room_Builder_Walls_32x32_517: 492219723
       Room_Builder_Walls_32x32_552: -172437085
       Room_Builder_Walls_32x32_617: -2098292561
       Room_Builder_Walls_32x32_510: 2031154750
       Room_Builder_Walls_32x32_285: -403596286
+      Wall_2_E_S: 596165032
       Room_Builder_Walls_32x32_227: 1753029587
       Room_Builder_Walls_32x32_366: -578591310
       Room_Builder_Walls_32x32_201: 758351722
@@ -21354,7 +21061,6 @@ TextureImporter:
       Room_Builder_Walls_32x32_211: -738962441
       Room_Builder_Walls_32x32_30: -43811194
       Room_Builder_Walls_32x32_63: -2063038987
-      Room_Builder_Walls_32x32_107: -1393575393
       Room_Builder_Walls_32x32_284: -970674634
       Room_Builder_Walls_32x32_15: 171243940
       Room_Builder_Walls_32x32_330: -1643345296

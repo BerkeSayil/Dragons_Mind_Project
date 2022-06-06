@@ -641,15 +641,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Floors_32x32_25
+      name: Floor_3_N
       rect:
         serializedVersion: 2
         x: 416
         y: 1184
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -893,15 +893,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Floors_32x32_37
+      name: Floor_3
       rect:
         serializedVersion: 2
         x: 416
         y: 1152
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4673,15 +4673,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Floors_32x32_217
+      name: Floor_6_N
       rect:
         serializedVersion: 2
         x: 416
         y: 672
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4925,15 +4925,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Floors_32x32_229
+      name: Floor_6
       rect:
         serializedVersion: 2
         x: 416
         y: 640
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5114,15 +5114,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Floors_32x32_238
+      name: Floor_4_N
       rect:
         serializedVersion: 2
         x: 288
         y: 608
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5366,15 +5366,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Floors_32x32_250
+      name: Floor_4
       rect:
         serializedVersion: 2
         x: 288
         y: 576
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -7571,15 +7571,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Floors_32x32_355
+      name: Floor_2_N
       rect:
         serializedVersion: 2
         x: 160
         y: 288
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -7823,15 +7823,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Floors_32x32_367
+      name: Floor_2_
       rect:
         serializedVersion: 2
         x: 160
         y: 256
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -9020,15 +9020,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Floors_32x32_424
+      name: Floor_5_N
       rect:
         serializedVersion: 2
         x: 32
         y: 96
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -9272,15 +9272,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Room_Builder_Floors_32x32_436
+      name: Floor_5
       rect:
         serializedVersion: 2
         x: 32
         y: 64
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -9515,9 +9515,9 @@ TextureImporter:
     nameFileIdTable:
       Room_Builder_Floors_32x32_108: 2102844617
       Room_Builder_Floors_32x32_405: 618623227
+      Floor_4: 1550144339
       Room_Builder_Floors_32x32_272: 650985607
       Room_Builder_Floors_32x32_422: 711715795
-      Room_Builder_Floors_32x32_436: -804385773
       Room_Builder_Floors_32x32_154: -1073769309
       Room_Builder_Floors_32x32_336: -1625631954
       Room_Builder_Floors_32x32_273: -230498950
@@ -9540,7 +9540,6 @@ TextureImporter:
       Room_Builder_Floors_32x32_234: -856420997
       Room_Builder_Floors_32x32_236: -423416777
       Room_Builder_Floors_32x32_435: -463350927
-      Room_Builder_Floors_32x32_217: -735661095
       Room_Builder_Floors_32x32_253: -1552092279
       Room_Builder_Floors_32x32_121: -361889448
       Room_Builder_Floors_32x32_20: -1938534974
@@ -9550,11 +9549,10 @@ TextureImporter:
       Room_Builder_Floors_32x32_302: 41036042
       Room_Builder_Floors_32x32_176: 471824766
       Room_Builder_Floors_32x32_393: 1084867776
-      Room_Builder_Floors_32x32_37: 334153876
+      Room_Builder_Floors_32x32_249: 1828131438
       Room_Builder_Floors_32x32_258: 1433567954
       Room_Builder_Floors_32x32_291: 1468682808
       Room_Builder_Floors_32x32_6: 231150092
-      Room_Builder_Floors_32x32_249: 1828131438
       Room_Builder_Floors_32x32_206: -1333605618
       Room_Builder_Floors_32x32_351: 665849701
       Room_Builder_Floors_32x32_297: -1584491757
@@ -9592,7 +9590,6 @@ TextureImporter:
       Room_Builder_Floors_32x32_317: -1758367633
       Room_Builder_Floors_32x32_73: 1499310369
       Room_Builder_Floors_32x32_347: -79545559
-      Room_Builder_Floors_32x32_250: 1550144339
       Room_Builder_Floors_32x32_419: 21110397
       Room_Builder_Floors_32x32_8: 865314173
       Room_Builder_Floors_32x32_420: -1317694298
@@ -9624,11 +9621,11 @@ TextureImporter:
       Room_Builder_Floors_32x32_283: -1788563274
       Room_Builder_Floors_32x32_119: 889501409
       Room_Builder_Floors_32x32_415: -1034168403
-      Room_Builder_Floors_32x32_79: -1581500699
+      Room_Builder_Floors_32x32_33: 249704222
       Room_Builder_Floors_32x32_5: -1304781535
       Room_Builder_Floors_32x32_16: 1108776150
       Room_Builder_Floors_32x32_141: 532096853
-      Room_Builder_Floors_32x32_33: 249704222
+      Room_Builder_Floors_32x32_79: -1581500699
       Room_Builder_Floors_32x32_169: -1936775558
       Room_Builder_Floors_32x32_41: 409153389
       Room_Builder_Floors_32x32_246: -673098132
@@ -9647,7 +9644,6 @@ TextureImporter:
       Room_Builder_Floors_32x32_102: 301033660
       Room_Builder_Floors_32x32_223: -1358562490
       Room_Builder_Floors_32x32_396: -874462602
-      Room_Builder_Floors_32x32_424: -972679203
       Room_Builder_Floors_32x32_0: 1968380554
       Room_Builder_Floors_32x32_110: -1167038420
       Room_Builder_Floors_32x32_31: -552981121
@@ -9655,12 +9651,10 @@ TextureImporter:
       Room_Builder_Floors_32x32_189: -1282211453
       Room_Builder_Floors_32x32_120: -600905838
       Room_Builder_Floors_32x32_423: 591556561
-      Room_Builder_Floors_32x32_25: 799883222
       Room_Builder_Floors_32x32_49: 1491747474
+      Floor_NE: -1537617171
       Room_Builder_Floors_32x32_66: -1760440493
       Room_Builder_Floors_32x32_369: -1762907097
-      Room_Builder_Floors_32x32_355: 1343679799
-      Floor_NE: -1537617171
       Room_Builder_Floors_32x32_90: -1618760026
       Room_Builder_Floors_32x32_426: -1676275752
       Room_Builder_Floors_32x32_104: 645734790
@@ -9699,6 +9693,7 @@ TextureImporter:
       Room_Builder_Floors_32x32_182: -665107264
       Room_Builder_Floors_32x32_111: -1307545957
       Room_Builder_Floors_32x32_315: 2055505698
+      Floor_4_N: 1426584186
       Room_Builder_Floors_32x32_349: -1367699766
       Room_Builder_Floors_32x32_337: 554028737
       Room_Builder_Floors_32x32_101: 1528114858
@@ -9709,6 +9704,7 @@ TextureImporter:
       Room_Builder_Floors_32x32_391: 1492044784
       Room_Builder_Floors_32x32_80: -117035531
       Room_Builder_Floors_32x32_412: -1377945768
+      Floor_3_N: 799883222
       Room_Builder_Floors_32x32_252: -15030798
       Room_Builder_Floors_32x32_307: -1151275101
       Room_Builder_Floors_32x32_372: -472941890
@@ -9716,7 +9712,6 @@ TextureImporter:
       Room_Builder_Floors_32x32_180: 789458565
       Room_Builder_Floors_32x32_190: 1091784504
       Room_Builder_Floors_32x32_242: 2000756530
-      Room_Builder_Floors_32x32_238: 1426584186
       Room_Builder_Floors_32x32_12: 349934907
       Room_Builder_Floors_32x32_348: 1597479174
       Room_Builder_Floors_32x32_392: -1233656633
@@ -9770,7 +9765,6 @@ TextureImporter:
       Room_Builder_Floors_32x32_266: 1809786702
       Room_Builder_Floors_32x32_9: 229398425
       Room_Builder_Floors_32x32_354: -1801707615
-      Room_Builder_Floors_32x32_229: -553374548
       Room_Builder_Floors_32x32_345: -1546152367
       Room_Builder_Floors_32x32_67: 1955679562
       Room_Builder_Floors_32x32_197: -303548088
@@ -9800,6 +9794,7 @@ TextureImporter:
       Room_Builder_Floors_32x32_74: 199513793
       Room_Builder_Floors_32x32_69: -1093416059
       Room_Builder_Floors_32x32_228: -1906644645
+      Floor_3: 334153876
       Room_Builder_Floors_32x32_75: -946050464
       Room_Builder_Floors_32x32_60: -1247385960
       Room_Builder_Floors_32x32_178: -358199836
@@ -9816,6 +9811,7 @@ TextureImporter:
       Room_Builder_Floors_32x32_219: -1492299763
       Room_Builder_Floors_32x32_304: 2072038397
       Room_Builder_Floors_32x32_116: 551894012
+      Floor_6: -553374548
       Room_Builder_Floors_32x32_441: 1461180052
       Room_Builder_Floors_32x32_19: -196927177
       Room_Builder_Floors_32x32_213: -1525370139
@@ -9830,6 +9826,7 @@ TextureImporter:
       Room_Builder_Floors_32x32_215: 1591499863
       Room_Builder_Floors_32x32_261: 1998453972
       Room_Builder_Floors_32x32_162: 675760812
+      Floor_5_N: -972679203
       Room_Builder_Floors_32x32_359: -1290500219
       Room_Builder_Floors_32x32_140: 944366490
       Room_Builder_Floors_32x32_18: 630612210
@@ -9879,6 +9876,7 @@ TextureImporter:
       Room_Builder_Floors_32x32_384: -1809993120
       Room_Builder_Floors_32x32_303: -378685498
       Room_Builder_Floors_32x32_443: -50863137
+      Floor_2_N: 1343679799
       Room_Builder_Floors_32x32_138: -1180182971
       Room_Builder_Floors_32x32_156: 789803217
       Room_Builder_Floors_32x32_165: 414596942
@@ -9890,6 +9888,7 @@ TextureImporter:
       Floor_N: -1857131075
       Room_Builder_Floors_32x32_164: -1217399789
       Room_Builder_Floors_32x32_312: 1207352184
+      Floor_5: -804385773
       Room_Builder_Floors_32x32_194: 849959579
       Room_Builder_Floors_32x32_185: 263314543
       Room_Builder_Floors_32x32_65: 1185176729
@@ -9910,6 +9909,7 @@ TextureImporter:
       Room_Builder_Floors_32x32_200: 1072000805
       Room_Builder_Floors_32x32_390: 1688152849
       Room_Builder_Floors_32x32_300: 773897846
+      Floor_2_: 260519135
       Room_Builder_Floors_32x32_224: -1140003490
       Room_Builder_Floors_32x32_237: 2083260143
       Room_Builder_Floors_32x32_313: -667157112
@@ -9928,6 +9928,7 @@ TextureImporter:
       Room_Builder_Floors_32x32_59: 2027327455
       Room_Builder_Floors_32x32_22: -463101770
       Room_Builder_Floors_32x32_87: 532063074
+      Floor_6_N: -735661095
       Room_Builder_Floors_32x32_411: 761359327
       Room_Builder_Floors_32x32_50: -1457521174
       Room_Builder_Floors_32x32_23: -523745808
@@ -9936,7 +9937,6 @@ TextureImporter:
       Room_Builder_Floors_32x32_409: 270624346
       Room_Builder_Floors_32x32_174: 1553965779
       Room_Builder_Floors_32x32_437: 484069790
-      Room_Builder_Floors_32x32_367: 260519135
       Room_Builder_Floors_32x32_124: -1862743015
       Room_Builder_Floors_32x32_428: -1949722337
       Room_Builder_Floors_32x32_243: 1521915708
