@@ -15,7 +15,7 @@ D:/Github/Dragons_Mind_Project
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-60546
+64923
 Successfully changed project path to: D:/Github/Dragons_Mind_Project
 D:/Github/Dragons_Mind_Project
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -47,7 +47,7 @@ D:/Github/Dragons_Mind_Project
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Refreshing native plugins compatible for Editor in 136.25 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 78.05 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2021.3.0f1 (6eacc8284459)
 [Subsystems] Discovering subsystems at path D:/Unity/EditorFolder/2021.3.0f1/Editor/Data/Resources/UnitySubsystems
@@ -63,97 +63,97 @@ Initialize mono
 Mono path[0] = 'D:/Unity/EditorFolder/2021.3.0f1/Editor/Data/Managed'
 Mono path[1] = 'D:/Unity/EditorFolder/2021.3.0f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'D:/Unity/EditorFolder/2021.3.0f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56580
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56260
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: D:/Unity/EditorFolder/2021.3.0f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: D:/Unity/EditorFolder/2021.3.0f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: D:/Unity/EditorFolder/2021.3.0f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: D:/Unity/EditorFolder/2021.3.0f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.011010 seconds.
+Registered in 0.004197 seconds.
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 164.48 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 74.11 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  2.638 seconds
+- Completed reload, in  0.626 seconds
 Domain Reload Profiling:
-	ReloadAssembly (2639ms)
-		BeginReloadAssembly (1402ms)
+	ReloadAssembly (626ms)
+		BeginReloadAssembly (84ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (984ms)
-			LoadAssemblies (1406ms)
+		EndReloadAssembly (436ms)
+			LoadAssemblies (84ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (237ms)
+			SetupTypeCache (103ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (51ms)
-			SetupLoadedEditorAssemblies (588ms)
+			RebuildScriptCaches (30ms)
+			SetupLoadedEditorAssemblies (257ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (20ms)
+				InitializePlatformSupportModulesInManaged (11ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (165ms)
-				BeforeProcessingInitializeOnLoad (3ms)
-				ProcessInitializeOnLoadAttributes (287ms)
-				ProcessInitializeOnLoadMethodAttributes (113ms)
+				RefreshPlugins (74ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (124ms)
+				ProcessInitializeOnLoadMethodAttributes (46ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.011111 seconds.
+Registered in 0.004549 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory is not a mono symbol file
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 158.81 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 82.91 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  2.369 seconds
+- Completed reload, in  1.314 seconds
 Domain Reload Profiling:
-	ReloadAssembly (2371ms)
-		BeginReloadAssembly (282ms)
+	ReloadAssembly (1315ms)
+		BeginReloadAssembly (124ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (11ms)
+			DisableScriptedObjects (5ms)
 			BackupInstance (0ms)
-			ReleaseScriptingObjects (2ms)
-			CreateAndSetChildDomain (46ms)
-		EndReloadAssembly (1913ms)
-			LoadAssemblies (281ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (20ms)
+		EndReloadAssembly (1077ms)
+			LoadAssemblies (118ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (382ms)
+			SetupTypeCache (270ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (105ms)
-			SetupLoadedEditorAssemblies (1101ms)
+			RebuildScriptCaches (96ms)
+			SetupLoadedEditorAssemblies (542ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (15ms)
+				InitializePlatformSupportModulesInManaged (8ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (159ms)
-				BeforeProcessingInitializeOnLoad (144ms)
-				ProcessInitializeOnLoadAttributes (598ms)
-				ProcessInitializeOnLoadMethodAttributes (180ms)
-				AfterProcessingInitializeOnLoad (4ms)
+				RefreshPlugins (83ms)
+				BeforeProcessingInitializeOnLoad (91ms)
+				ProcessInitializeOnLoadAttributes (238ms)
+				ProcessInitializeOnLoadMethodAttributes (119ms)
+				AfterProcessingInitializeOnLoad (3ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (15ms)
+			AwakeInstancesAfterBackupRestoration (8ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.10 seconds
-Refreshing native plugins compatible for Editor in 1.55 ms, found 3 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
+Refreshing native plugins compatible for Editor in 1.40 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4016 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 36 unused Assets / (0.7 MB). Loaded Objects now: 4476.
-Memory consumption went from 180.2 MB to 179.5 MB.
-Total: 7.415400 ms (FindLiveObjects: 0.613000 ms CreateObjectMapping: 0.589100 ms MarkObjects: 5.388600 ms  DeleteObjects: 0.822900 ms)
+Unloading 4149 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 48 unused Assets / (1.9 MB). Loaded Objects now: 4597.
+Memory consumption went from 191.3 MB to 189.4 MB.
+Total: 4.977400 ms (FindLiveObjects: 0.471400 ms CreateObjectMapping: 0.191600 ms MarkObjects: 3.530300 ms  DeleteObjects: 0.781700 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -168,340 +168,7 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 2044645.870038 seconds.
-  path: Assets/_Scripts/ControllerScripts/FurnitureSpriteController.cs
-  artifactKey: Guid(6b54b43db0c9f7945b3c6d3733188ea6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Scripts/ControllerScripts/FurnitureSpriteController.cs using Guid(6b54b43db0c9f7945b3c6d3733188ea6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ce0b0ff2eca66b69ebc1bff72aedfa1d') in 0.053468 seconds 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.005485 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory is not a mono symbol file
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.41 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.441 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1442ms)
-		BeginReloadAssembly (206ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (8ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (50ms)
-		EndReloadAssembly (1099ms)
-			LoadAssemblies (172ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (362ms)
-			ReleaseScriptCaches (4ms)
-			RebuildScriptCaches (65ms)
-			SetupLoadedEditorAssemblies (473ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (18ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (2ms)
-				BeforeProcessingInitializeOnLoad (80ms)
-				ProcessInitializeOnLoadAttributes (242ms)
-				ProcessInitializeOnLoadMethodAttributes (126ms)
-				AfterProcessingInitializeOnLoad (4ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (13ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 2.11 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3863 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 23 unused Assets / (0.7 MB). Loaded Objects now: 4479.
-Memory consumption went from 169.8 MB to 169.2 MB.
-Total: 4.092800 ms (FindLiveObjects: 0.494400 ms CreateObjectMapping: 0.227900 ms MarkObjects: 3.040100 ms  DeleteObjects: 0.327400 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 137.314613 seconds.
-  path: Assets/_Scripts/ControllerScripts/FurnitureSpriteController.cs
-  artifactKey: Guid(6b54b43db0c9f7945b3c6d3733188ea6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Scripts/ControllerScripts/FurnitureSpriteController.cs using Guid(6b54b43db0c9f7945b3c6d3733188ea6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eb35553c9b4370ac6b405be306560db8') in 0.023126 seconds 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.004300 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory is not a mono symbol file
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 0.95 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.265 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1267ms)
-		BeginReloadAssembly (171ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (7ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (43ms)
-		EndReloadAssembly (937ms)
-			LoadAssemblies (164ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (256ms)
-			ReleaseScriptCaches (2ms)
-			RebuildScriptCaches (57ms)
-			SetupLoadedEditorAssemblies (417ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (15ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (71ms)
-				ProcessInitializeOnLoadAttributes (221ms)
-				ProcessInitializeOnLoadMethodAttributes (104ms)
-				AfterProcessingInitializeOnLoad (4ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (16ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 2.37 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3863 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 23 unused Assets / (0.7 MB). Loaded Objects now: 4482.
-Memory consumption went from 169.8 MB to 169.2 MB.
-Total: 4.149900 ms (FindLiveObjects: 0.386500 ms CreateObjectMapping: 0.101200 ms MarkObjects: 3.320200 ms  DeleteObjects: 0.340400 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.007928 seconds.
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory is not a mono symbol file
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 1.37 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.966 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1967ms)
-		BeginReloadAssembly (253ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (12ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (56ms)
-		EndReloadAssembly (1527ms)
-			LoadAssemblies (229ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (408ms)
-			ReleaseScriptCaches (3ms)
-			RebuildScriptCaches (87ms)
-			SetupLoadedEditorAssemblies (765ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (31ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (144ms)
-				ProcessInitializeOnLoadAttributes (392ms)
-				ProcessInitializeOnLoadMethodAttributes (191ms)
-				AfterProcessingInitializeOnLoad (4ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (16ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 3.05 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3863 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 23 unused Assets / (0.7 MB). Loaded Objects now: 4485.
-Memory consumption went from 169.8 MB to 169.2 MB.
-Total: 7.127000 ms (FindLiveObjects: 0.458200 ms CreateObjectMapping: 0.232200 ms MarkObjects: 5.567500 ms  DeleteObjects: 0.867200 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 27402.292099 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/1_Generic_Shadowless32x32.png
-  artifactKey: Guid(001e816237a2c4446aed88b6ac2fd70d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/1_Generic_Shadowless32x32.png using Guid(001e816237a2c4446aed88b6ac2fd70d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4b817ece54c340d7e98adfe334736a35') in 0.658541 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 112.086838 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/2_LivingRoom_Shadowless_32x32.png
-  artifactKey: Guid(41fa53bd947c2164baa39f320f3534a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/2_LivingRoom_Shadowless_32x32.png using Guid(41fa53bd947c2164baa39f320f3534a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8d91630c0572aafb4756c1dd0a8ce39') in 0.067941 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 83.732678 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/26_Condominium_Shadowless_32x32.png
-  artifactKey: Guid(dde035ce73d4cfa4abbd7a3569b0a7c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/26_Condominium_Shadowless_32x32.png using Guid(dde035ce73d4cfa4abbd7a3569b0a7c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a8aff2845e6792b741ae0960694fe803') in 0.044879 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 68.493459 seconds.
-  path: Assets/Scenes/Demo.unity
-  artifactKey: Guid(7e5e16b21be8a48439e5b43438d15494) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scenes/Demo.unity using Guid(7e5e16b21be8a48439e5b43438d15494) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f3dfc6370206ebcfafffd7d69266a1e') in 0.013277 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 5316.362726 seconds.
-  path: Assets/Scenes/Demo.unity
-  artifactKey: Guid(7e5e16b21be8a48439e5b43438d15494) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scenes/Demo.unity using Guid(7e5e16b21be8a48439e5b43438d15494) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '15b12ed12258711fb429229ec1a8abe1') in 0.014116 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 385.929343 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Floors_32x32.png
-  artifactKey: Guid(2f223c262944c1c4e81895cad2cec9a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Floors_32x32.png using Guid(2f223c262944c1c4e81895cad2cec9a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '359817514efe6a4af44f2e59bce68a24') in 1.896432 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 69.786929 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/12_Kitchen_Shadowless_32x32.png
-  artifactKey: Guid(1bca161e43ecf1544bd8dca5105e0cc5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/12_Kitchen_Shadowless_32x32.png using Guid(1bca161e43ecf1544bd8dca5105e0cc5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b2073e3f52a673e2f19ede486e56fa5e') in 0.070007 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 288.616267 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Animations
-  artifactKey: Guid(e169015285c8db84abcd6945381b25a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Animations using Guid(e169015285c8db84abcd6945381b25a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '210d4730f4d6fe2de5d6ec8f514a00cb') in 0.011436 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 646.923718 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/roomBuilder.prefab
-  artifactKey: Guid(0c5ab068cfacfa3448fbf3a48b4a0c8b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/roomBuilder.prefab using Guid(0c5ab068cfacfa3448fbf3a48b4a0c8b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7ea1fd78216f67e0c5670d67b53c832d') in 0.603116 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 404.246894 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Walls_32x32.png
-  artifactKey: Guid(ffd2dc5d611d66943800cc7eacc55b2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Walls_32x32.png using Guid(ffd2dc5d611d66943800cc7eacc55b2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a937196fa89e868f231c20ed63bf6346') in 3.965046 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 168.383553 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Walls_32x32.png
-  artifactKey: Guid(ffd2dc5d611d66943800cc7eacc55b2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Walls_32x32.png using Guid(ffd2dc5d611d66943800cc7eacc55b2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1db9095ee2921a9046f1168a6d27e35b') in 3.330168 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 335.560127 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Walls_32x32.png
-  artifactKey: Guid(ffd2dc5d611d66943800cc7eacc55b2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Walls_32x32.png using Guid(ffd2dc5d611d66943800cc7eacc55b2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'deede5d6bde2fab710152b1689ccacd4') in 3.723275 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 111.040676 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_borders_32x32.png
-  artifactKey: Guid(8c35ca4a764142d428d64582956799e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_borders_32x32.png using Guid(8c35ca4a764142d428d64582956799e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4a78f15f8b72849414354d3c29f9bfce') in 0.910227 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 1810.142382 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Floors_32x32.png
-  artifactKey: Guid(2f223c262944c1c4e81895cad2cec9a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Floors_32x32.png using Guid(2f223c262944c1c4e81895cad2cec9a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f50bf4940a2c362f9a908d96c9be1ff5') in 2.164660 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 35.963966 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Floors_32x32.png
-  artifactKey: Guid(2f223c262944c1c4e81895cad2cec9a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_Floors_32x32.png using Guid(2f223c262944c1c4e81895cad2cec9a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a4c4a2d26a9a8f04c7b34bb4c5f20089') in 2.070367 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 3731.035453 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/18_Jail_Shadowless_32x32.png
-  artifactKey: Guid(970115a939f50954d94490a1b6fd6135) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/18_Jail_Shadowless_32x32.png using Guid(970115a939f50954d94490a1b6fd6135) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2e92a1a1fdd582705a69200e82e78882') in 0.343583 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 13.210853 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/18_Jail_Shadowless_32x32.png
-  artifactKey: Guid(970115a939f50954d94490a1b6fd6135) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/18_Jail_Shadowless_32x32.png using Guid(970115a939f50954d94490a1b6fd6135) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '32b202bc64bb26e11e7b08ef3a5cbfc0') in 0.122121 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 2.964117 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/18_Jail_Shadowless_32x32.png
-  artifactKey: Guid(970115a939f50954d94490a1b6fd6135) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/18_Jail_Shadowless_32x32.png using Guid(970115a939f50954d94490a1b6fd6135) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '30a11cd1f1865401f886ba382b5e6adf') in 0.032177 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 75.972520 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/18_Jail_Shadowless_32x32.png
-  artifactKey: Guid(970115a939f50954d94490a1b6fd6135) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/18_Jail_Shadowless_32x32.png using Guid(970115a939f50954d94490a1b6fd6135) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6dce8ad1b27df01f29ce4ed0c295a717') in 2.944618 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 1441.701101 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/16_Grocery_store_Shadowless_32x32.png
-  artifactKey: Guid(9a2b556a28131324f83700a743ba6bb8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/16_Grocery_store_Shadowless_32x32.png using Guid(9a2b556a28131324f83700a743ba6bb8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2011f37c13bb3d5a96d0b36b41a7d66f') in 0.349072 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 202.023087 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/3_Bathroom_Shadowless_32x32.png
-  artifactKey: Guid(9f260d324304b54448e191db3e958f71) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/3_Bathroom_Shadowless_32x32.png using Guid(9f260d324304b54448e191db3e958f71) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c386296ef41e8bd4619ed78056d96262') in 0.203722 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000073 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/5_Classroom_and_library_Shadowless_32x32.png
-  artifactKey: Guid(ba1d41d0a285a2e46a3ab18d9a31a316) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/5_Classroom_and_library_Shadowless_32x32.png using Guid(ba1d41d0a285a2e46a3ab18d9a31a316) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '867cab9979b2b4925aff67f136b3f8de') in 0.135886 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000096 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/6_Music_and_sport_Shadowless_32x32.png
-  artifactKey: Guid(f09d745b8975f3d4d9403df1acd4556c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/6_Music_and_sport_Shadowless_32x32.png using Guid(f09d745b8975f3d4d9403df1acd4556c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bad116600348f9ff4ab55077c65e437b') in 0.154311 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000057 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/7_Art_Shadowless_32x32.png
-  artifactKey: Guid(7be9185c984aa7d4bb9ec7e2195fe1de) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/7_Art_Shadowless_32x32.png using Guid(7be9185c984aa7d4bb9ec7e2195fe1de) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0bf0a5b87c02229a0488b9f0b1c6f4e4') in 0.079976 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 1.344496 seconds.
-  path: Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_borders_32x32.png
-  artifactKey: Guid(8c35ca4a764142d428d64582956799e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/SpriteFinal/SpriteFinalFinalFinal/Room_Builder_borders_32x32.png using Guid(8c35ca4a764142d428d64582956799e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1c61af23b08aa5611e5f8d3aebe0354a') in 1.169619 seconds 
+  Time since last request: 259350.629855 seconds.
+  path: Assets/_Scripts/ControllerScripts/BuildModeController.cs
+  artifactKey: Guid(cc82ea57275251144b66d78805807294) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Scripts/ControllerScripts/BuildModeController.cs using Guid(cc82ea57275251144b66d78805807294) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aef819c5a3da03d10c1c529d0b7d4cfb') in 0.048988 seconds 
