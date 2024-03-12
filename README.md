@@ -2,9 +2,10 @@ En büyük olmakla beraber asla bitiremediğim oyun projem. Scope konsepti hakk�
 
 Hevesim kırıldığı için oyun yapımını bırakmama sebep olmuştur. (biraz post-mortem tadında readme)
 * Çalışan ve varolan sistem RimWorld oyununa benzer bir colony survival oyunu içerir
-* Oyun uzayda birbaşına kalmış astronotlarımızı yönetip onlara yaşaanbilir bir ev kurmamız etrafında geçer
+* Oyun uzayda birbaşına kalmış astronotlarımızı yönetip onlara yaşanbilir bir ev kurmamız etrafında geçer
 * Oyunu üretim sürecimi kayıt altına alıp internette paylaştım : https://www.tiktok.com/@berkethedev
 * Birden çok agent ın birbirinden bağımsız görevleri görev queue dan alıp gerçekleştirmesi ve bunun performanslı kontrolü ve devamlılığı için sistemler yazdım
+* Agentların pathfinding gereksinimleri için A* algoritması kullandım
 * Interrupt durumlarında tekrar kaldıkları yerden devam etmeleri için sistemler geliştirdim
 * Randomize evrenler yaratılması sistemiyle her oyunun birbirinden farklı olmasını sağladım
 * Çalışan UI sistemleri kurup oyun menüleri navigasyonu sağladım (bu noktalarda skill treeler geliştrilicekti ancak yarım bırakıldı)
